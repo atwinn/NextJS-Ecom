@@ -2,12 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+Đầu tiên, chạy web:
 
 ```bash
 npm run dev
 # or
-yarn dev
+yarn dev (Sử dụng cái này)
 # or
 pnpm dev
 ```
