@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/charts": "^1.4.2",
     "@craco/craco": "^7.0.0",
     "@reduxjs/toolkit": "^1.9.3",
     "@tailwindcss/postcss7-compat": "^2.2.17",
