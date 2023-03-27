@@ -1,5 +1,4 @@
 import { LayoutManager } from '@/layout/layoutAdmin';
-import { pageRoutes } from '@/redux/constant/page-routes.constant';
 import * as React from 'react';
 import Header from '../head';
 

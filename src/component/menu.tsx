@@ -4,6 +4,7 @@ import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import { FileOutlined, PieChartOutlined } from "@ant-design/icons";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
+import Link from "next/link";
 export interface IMenuProps {}
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -22,17 +23,17 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem(
-    pageRoutes.home.route,
+    <Link href={pageRoutes.home.route}>Dashboard</Link>,
     "1",
     <PieChartOutlined />
   ),
   getItem(
-    pageRoutes.nhanVien.route,
+    <Link href={pageRoutes.nhanVien.route}>Quản lý nhân viên</Link>,
     "2",
     <FileOutlined />
   ),
   getItem(
-    pageRoutes.sanPham.route,
+    <Link href={pageRoutes.sanPham.route}>Quản lý sản phẩm</Link>,
     "3",
     <FileOutlined />
   ),

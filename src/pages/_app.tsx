@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import store from "../redux/store";
+import Header from './head';
 
 const queryClient = new QueryClient();
 type ComponentWithPageLayout = AppProps & {
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+        <Header/>
         {Component.PageLayout ? (
           <Component.PageLayout>
             <Component {...pageProps}/>
