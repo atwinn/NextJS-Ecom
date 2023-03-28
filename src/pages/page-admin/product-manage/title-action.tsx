@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Col, Row, Button } from 'antd';
+import { Col, Row, Button, Modal } from 'antd';
 import { ImportOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons'
+import ProdForm from './form';
 
 export default function TitleAndAction() {
 
+    const [modalOpen, setModalOpen] = useState(false);
+
     return (
-        <>
-            <Row gutter={16} style={{ marginTop: '100px', paddingLeft: '100px', paddingRight: '100px' }}>
+        <div className='bg-white mt-5 py-5 border-b-2 rounded-md'>
+            <Row gutter={16} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
                 <Col md={18} xs={0} >
                     <p className='text-black text-4xl'>Sản Phẩm</p>
                 </Col>
@@ -33,11 +36,21 @@ export default function TitleAndAction() {
                         size='large'
                         icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
                         style={{ backgroundColor: '#1890ff' }}
+                        onClick={() => setModalOpen(true)}
                     >
                         Thêm
                     </Button>
+                    <Modal
+                        title="Thêm sản phẩm mới"
+                        centered
+                        open={modalOpen}
+                        onOk={() => setModalOpen(false)}
+                        onCancel={() => setModalOpen(false)}
+                    >
+                        <ProdForm />
+                    </Modal>
                 </Col>
             </Row>
-        </>
+        </div>
     );
 }

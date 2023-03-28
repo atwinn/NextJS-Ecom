@@ -36,7 +36,7 @@ const DemoColumn = () => {
       sales: 38,
     },
   ];
-  const config :any = {
+  const config: any = {
     data,
     xField: 'type',
     yField: 'sales',

@@ -19,10 +19,10 @@ function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <Header/>
+        <Header />
         {Component.PageLayout ? (
           <Component.PageLayout>
-            <Component {...pageProps}/>
+            <Component {...pageProps} />
           </Component.PageLayout>
         ) : (
           <Component {...pageProps} />

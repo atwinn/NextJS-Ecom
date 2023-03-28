@@ -1,9 +1,9 @@
 import { LayoutManager } from '@/layout/layoutAdmin';
 import * as React from 'react';
 import { useState } from 'react';
-import ProdFilter from './prodfilter';
-import TitleAndAction from './title-action'
-import ProdTable from './prodtable';
+import ProdFilter from './product-manage/prodfilter';
+import TitleAndAction from './product-manage/title-action'
+import ProdTable from './product-manage/prodtable';
 
 export interface IQLSanPhamProps {
 }

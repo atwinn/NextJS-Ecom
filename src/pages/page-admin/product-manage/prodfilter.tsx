@@ -33,8 +33,8 @@ export default function ProdFilter() {
     }
 
     return (
-        <>
-            <Row gutter={16} style={{ marginTop: '50px', paddingLeft: '20px', paddingRight: '20px' }}>
+        <div className='bg-white mt-5 py-5 border-b-2 rounded-md'>
+            <Row gutter={16} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
                 <Col xl={6} md={12} sm={24}>
                     <Input.Search
                         placeholder="Tìm kiếm"
@@ -92,6 +92,6 @@ export default function ProdFilter() {
                     </Button>
                 </Col>
             </Row>
-        </>
+        </div>
     );
 }
