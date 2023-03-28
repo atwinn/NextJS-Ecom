@@ -2,22 +2,14 @@ import Head from 'next/head';
 import * as React from 'react';
 import { usePathname } from "next/navigation";
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
-
-export interface IHeaderProps {
-    title?: string
-}
-export default function Header (props: IHeaderProps) {
+export default function Header () {
   var pathName = usePathname();
   Object.keys(pageRoutes).forEach((obj: string) => {
-    // console.log(pageRoutes[obj].route?.props?.href);
-    // console.log(pageRoutes[obj].title);
       return (
           (pathName == pageRoutes[obj].route) ?
               pathName = pageRoutes[obj].title : null
       )
-  })
-  // console.log(pathName);
-  
+  })  
   return (
       <Head>
         <title>{pathName}</title>

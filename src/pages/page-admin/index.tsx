@@ -1,10 +1,10 @@
 import React from "react";
-import { Layout } from "antd";
 import { LayoutManager } from "@/layout/layoutAdmin";
+import Dashboard from "@/local-page/dashboard";
 const PageAdmin = () => {
   return (
    <>
-    dashboard
+    <Dashboard/>
   </>
   );
 };
