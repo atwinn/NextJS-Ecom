@@ -5,7 +5,7 @@ import type { MenuProps } from "antd";
 import { FileOutlined, PieChartOutlined } from "@ant-design/icons";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Link from "next/link";
-export interface IMenuProps {}
+export interface IMenuProps { }
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label: React.ReactNode,
