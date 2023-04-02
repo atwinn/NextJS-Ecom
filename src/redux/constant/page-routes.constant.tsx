@@ -1,5 +1,5 @@
 interface title {
-    route: string; title: string; key: string;
+    route: string; title: string; key?: string;
 }
 export const pageRoutes: { [key: string]: title } = {
     home: {
@@ -8,7 +8,7 @@ export const pageRoutes: { [key: string]: title } = {
         key: "1",
     },
     nhanVien: {
-        route: "/page-admin/quan-ly-nhan-vien",
+        route: "/page-admin/employee-manage/view",
         title: 'Quản lý nhân viên',
         key: "2",
     },
@@ -37,9 +37,9 @@ export const pageRoutes: { [key: string]: title } = {
         title: 'Đăng ký',
         key: "5",
     },
-    taiKhoan: {
-        route: "/page-admin/quan-ly-tai-khoan",
-        title: 'Quản lý nhân viên',
-        key: "2",
+    account: {
+        route: "/page-admin/account-manage/view",
+        title: 'Quản lý tài khoản',
+        
     },
 };

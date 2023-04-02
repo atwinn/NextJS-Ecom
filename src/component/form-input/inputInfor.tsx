@@ -3,11 +3,11 @@ import { Button, Col, Form, Input, Row,Space } from "antd";
 import { Typography } from "antd";
 import { Select } from "antd";
 import Modal1 from "../modal";
-
+const { TextArea } = Input;
 const { Title } = Typography;
 const layout = {
   labelCol: { span: 4 },
-  wrapperCol: { span: 20 },
+  wrapperCol: { span: 18 },
 };
 
 /* eslint-disable no-template-curly-in-string */
@@ -40,27 +40,29 @@ const InputInfor: React.FC = () => {
         Thêm nhân viên
       </Title>
         <Form
+          
           {...layout}
           name="nest-messages"
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
           <Row>
-            <Col style={style} span={8}>
+            <Col style={style} sm={8} xs={9} >
               <Form.Item
                 name={["user", "name"]}
                 label="Name"
                 rules={[{ required: true }]}
+                labelAlign="left"
               >
                 <Input />
               </Form.Item>
-
-              <Form.Item name={["user", "age"]} label="Role">
+              <Form.Item  label="Role" labelAlign="left" >
                 <Select
                   labelInValue
                   defaultValue={{ value: "1", label: "Nhân viên" }}
                   style={{ width: 120 }}
                   onChange={handleChange}
+                  
                   options={[
                     {
                       value: "1",
@@ -78,23 +80,24 @@ const InputInfor: React.FC = () => {
                 />
               </Form.Item>
             </Col>
-            <Col style={style} span={8}>
-              <Form.Item name={["user", "website"]} label="Địa chỉ">
-                <Input />
-              </Form.Item>
-              <Form.Item name={["user", "introduction"]} label="SĐT">
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col style={style} span={6}>
-              <Form.Item
+            <Col style={style} md={8} xs={9}>
+            <Form.Item
                 name={["user", "email"]}
                 label="Email"
                 rules={[{ type: "email" }]}
+                labelAlign="left"
               >
                 <Input />
               </Form.Item>
-
+              
+              <Form.Item name={["user", "introduction"]} label="SĐT" labelAlign="left">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col style={style} md={6}>
+            <Form.Item name={["user", "website"]} label="Địa chỉ" labelAlign="left" > 
+              <TextArea allowClear/>
+              </Form.Item>
               <Space className="flex justify-end">
               <Button
                 type="primary"

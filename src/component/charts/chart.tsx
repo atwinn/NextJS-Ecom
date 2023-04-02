@@ -1,52 +1,53 @@
-import React from 'react';
-import { Column } from '@ant-design/plots';
+import React from "react";
+import { Column } from "@ant-design/plots";
+import { Card } from "antd";
 
 const DemoColumn = () => {
   const data = [
     {
-      type: '家具家电',
+      type: "家具家电",
       sales: 38,
     },
     {
-      type: '粮油副食',
+      type: "粮油副食",
       sales: 52,
     },
     {
-      type: '生鲜水果',
+      type: "生鲜水果",
       sales: 61,
     },
     {
-      type: '美容洗护',
+      type: "美容洗护",
       sales: 145,
     },
     {
-      type: '母婴用品',
+      type: "母婴用品",
       sales: 48,
     },
     {
-      type: '进口食品',
+      type: "进口食品",
       sales: 38,
     },
     {
-      type: '食品饮料',
+      type: "食品饮料",
       sales: 38,
     },
     {
-      type: '家庭清洁',
+      type: "家庭清洁",
       sales: 38,
     },
   ];
   const config: any = {
     data,
-    xField: 'type',
-    yField: 'sales',
+    xField: "type",
+    yField: "sales",
     label: {
       // 可手动配置 label 数据标签位置
-      position: 'middle',
+      position: "middle",
       // 'top', 'bottom', 'middle',
       // 配置样式
       style: {
-        fill: '#FFFFFF',
+        fill: "#FFFFFF",
         opacity: 0.6,
       },
     },
@@ -58,13 +59,17 @@ const DemoColumn = () => {
     },
     meta: {
       type: {
-        alias: '类别',
+        alias: "类别",
       },
       sales: {
-        alias: '销售额',
+        alias: "销售额",
       },
     },
   };
-  return <Column {...config} />;
+  return (
+    <Card bordered={false}>
+      <Column {...config} />
+    </Card>
+  );
 };
-export default DemoColumn
+export default DemoColumn;
