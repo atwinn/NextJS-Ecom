@@ -3,7 +3,6 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic } from 'antd';
 
 const App: React.FC = () => (
-  
   <Row gutter={16} style={{marginBottom:"3rem"}}>
     <Col span={6}>
       <Card bordered={false}>

@@ -1,16 +1,11 @@
-import { LayoutManager } from '@/layout/layoutAdmin';
-import * as React from 'react';
-import Header from '../head';
-
-export interface IQlnhanVienProps {
-}
-
-export default function QlnhanVien (props: IQlnhanVienProps) {
+import { LayoutManager } from "@/layout/layoutAdmin";
+import * as React from "react";
+import QLnhanVien from "@/local-page/admin/emp-manager";
+export default function QlnhanVienPage() {
   return (
-    <div>
-      {/* <Header title={pageRoutes.nhanVien.title}/> */}
-      QUản lý nhan viên
-    </div>
+    <>
+      <QLnhanVien />
+    </>
   );
 }
-QlnhanVien.PageLayout = LayoutManager
+QlnhanVienPage.PageLayout = LayoutManager;

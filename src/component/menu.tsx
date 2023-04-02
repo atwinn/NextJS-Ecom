@@ -39,6 +39,12 @@ const items: MenuItem[] = [
   ),
   getItem(
     <Link href={pageRoutes.orderManage.route}>Quản lý đơn hàng</Link>,
+    
+    "4",
+    <ContainerOutlined />
+  ),
+  getItem(
+    <Link href={pageRoutes.taiKhoan.route}>Quản lý tài khoản</Link>,
     "4",
     <ContainerOutlined />
   ),
