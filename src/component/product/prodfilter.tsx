@@ -83,7 +83,7 @@ export default function ProdFilter() {
                 <Col xl={2} md={4} xs={8}>
                     <Button
                         type="primary"
-                        style={{ backgroundColor: '#1890ff', width: '100%', overflow: 'hidden' }}
+                        style={{ width: '100%', overflow: 'hidden' }}
                         size='large'
                         loading={loadings[0]}
                         onClick={() => enterLoading(0)}

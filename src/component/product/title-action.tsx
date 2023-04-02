@@ -37,7 +37,6 @@ export default function TitleAndAction() {
                         type='primary'
                         size='large'
                         icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
-                        style={{ backgroundColor: '#1890ff' }}
                         className='sm:w-full'
                         onClick={() => setModalOpen(true)}
                     >

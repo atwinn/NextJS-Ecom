@@ -69,7 +69,7 @@ const ProdTable: React.FC = () => {
     const [selectionType, setSelectionType] = useState<'checkbox' | 'radio'>('checkbox');
 
     return (
-        <div style={{ marginTop: '50px' }}>
+        <div>
             <Table
                 rowSelection={{
                     type: selectionType,
