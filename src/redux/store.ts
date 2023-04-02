@@ -3,11 +3,13 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
 // Import các reducers của bạn
 import counterReducer from './counterSlice'
+import modalSlice from './modalSlide'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
   reducer: {
     counter: counterReducer,
+    modal: modalSlice,
   },
 })
 
