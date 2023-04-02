@@ -13,9 +13,14 @@ export const pageRoutes: { [key: string]: title } = {
         key: "2",
     },
     sanPham: {
-        route: "/page-admin/quan-ly-san-pham",
+        route: "/page-admin/product-manage/view",
         title: 'Quản lý sản phẩm',
         key: "3",
+    },
+    orderManage: {
+        route: "/page-admin/order-manage/view",
+        title: 'Quản lý đơn hàng',
+        key: "4",
     },
     trangchu: {
         route: "/",

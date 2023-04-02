@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
 import Menu1 from "@/component/menu";
-const { Sider,Content, Footer  } = Layout;
+import * as logo from "./logoL3M.png"
+
+const { Sider, Content, Footer } = Layout;
 export function LayoutManager({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
-    return (
+  return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
         breakpoint="lg"
@@ -17,20 +19,20 @@ export function LayoutManager({ children }: { children: React.ReactNode }) {
           style={{
             height: 32,
             margin: 16,
-            background: "rgba(255, 255, 255, 0.2)",
+            backgroundImage: `url(${logo})`,
           }}
         />
-        <Menu1/>
+        <Menu1 />
       </Sider>
       <Layout style={{ minHeight: "100vh" }}>
-      <Layout className="site-layout">
-        <Content style={{ margin: "0 16px" }}>
-          {children}
-        </Content>
-        <Footer style={{ textAlign: "center" }}>L3M Manager</Footer>
+        <Layout className="site-layout">
+          <Content style={{ margin: "0 16px" }}>
+            {children}
+          </Content>
+          <Footer style={{ textAlign: "center" }}>L3M Manager</Footer>
+        </Layout>
       </Layout>
     </Layout>
-    </Layout>
-    );
+  );
 
-  }
+}

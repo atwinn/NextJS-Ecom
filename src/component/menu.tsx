@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
-import { FileOutlined, PieChartOutlined } from "@ant-design/icons";
+import { FileOutlined, PieChartOutlined, ContainerOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Link from "next/link";
 export interface IMenuProps { }
@@ -35,12 +35,12 @@ const items: MenuItem[] = [
   getItem(
     <Link href={pageRoutes.sanPham.route}>Quản lý sản phẩm</Link>,
     "3",
-    <FileOutlined />
+    <AppstoreOutlined />
   ),
   getItem(
-    "##",
+    <Link href={pageRoutes.orderManage.route}>Quản lý đơn hàng</Link>,
     "4",
-    <FileOutlined />
+    <ContainerOutlined />
   ),
 ];
 
