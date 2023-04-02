@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutManager } from '@/layout/layoutAdmin';
-import OrderTab from './tabs';
+import OrderTab from '../../../component/order/tabs';
 
 export default function OrderManage() {
     return (

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Col, Row, Button, Modal } from 'antd';
 import { ImportOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons'
-import ProdForm from './form';
+import ProdForm from '../form-input/ProdForm';
 
 export default function TitleAndAction() {
 
@@ -10,32 +10,35 @@ export default function TitleAndAction() {
 
     return (
         <div className='bg-white mt-5 py-5 border-b-2 rounded-md'>
-            <Row gutter={16} style={{ paddingLeft: '100px', paddingRight: '100px' }}>
-                <Col md={18} xs={0} >
+            <Row gutter={[16, 8]} className='px-3 lg:px-5'>
+                <Col xl={15} lg={0} className='hidden xl:block'>
                     <p className='text-black text-4xl'>Sản Phẩm</p>
                 </Col>
-                <Col md={2} xs={4}>
+                <Col xl={3} sm={8}>
                     <Button
                         size='large'
                         icon={<ImportOutlined style={{ verticalAlign: 'middle' }} />}
+                        className='sm:w-full'
                     >
                         Import
                     </Button>
                 </Col>
-                <Col md={2} xs={4}>
+                <Col xl={3} sm={8}>
                     <Button
                         size='large'
                         icon={<ExportOutlined style={{ verticalAlign: 'middle' }} />}
+                        className='sm:w-full'
                     >
                         Export
                     </Button>
                 </Col>
-                <Col md={2} xs={4}>
+                <Col xl={3} sm={8}>
                     <Button
                         type='primary'
                         size='large'
                         icon={<PlusOutlined style={{ verticalAlign: 'middle' }} />}
                         style={{ backgroundColor: '#1890ff' }}
+                        className='sm:w-full'
                         onClick={() => setModalOpen(true)}
                     >
                         Thêm

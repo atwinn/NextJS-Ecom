@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
-import ProdFilter from '../product-manage/prodfilter';
-import ProdTable from '../product-manage/prodtable';
+import ProdFilter from '../product/prodfilter';
+import ProdTable from '../product/prodtable';
 
 const onChange = (key: string) => {
     console.log(key);

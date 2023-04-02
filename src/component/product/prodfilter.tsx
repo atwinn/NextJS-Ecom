@@ -34,15 +34,15 @@ export default function ProdFilter() {
 
     return (
         <div className='bg-white mt-5 py-5 border-b-2 rounded-md'>
-            <Row gutter={16} style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-                <Col xl={6} md={12} sm={24}>
+            <Row gutter={[16, 8]} className='px-3 lg:px-5'>
+                <Col xl={6} md={12} xs={24}>
                     <Input.Search
                         placeholder="Tìm kiếm"
                         size="large"
                         allowClear
                     />
                 </Col>
-                <Col xl={4} md={8} sm={12}>
+                <Col xl={4} md={6} xs={12}>
                     <Select
                         mode="multiple"
                         allowClear
@@ -53,7 +53,7 @@ export default function ProdFilter() {
                         options={options}
                     />
                 </Col>
-                <Col xl={4} md={8} sm={12}>
+                <Col xl={4} md={6} xs={12}>
                     <Select
                         allowClear
                         style={{ width: '100%' }}
@@ -62,7 +62,7 @@ export default function ProdFilter() {
                         options={options}
                     />
                 </Col>
-                <Col xl={4} md={8} sm={12}>
+                <Col xl={4} md={6} xs={12}>
                     <Select
                         allowClear
                         style={{ width: '100%' }}
@@ -71,7 +71,7 @@ export default function ProdFilter() {
                         options={options}
                     />
                 </Col>
-                <Col xl={4} md={8} sm={12}>
+                <Col xl={4} md={6} xs={12}>
                     <Select
                         allowClear
                         style={{ width: '100%' }}
@@ -80,15 +80,15 @@ export default function ProdFilter() {
                         options={options}
                     />
                 </Col>
-                <Col xl={2} md={4} sm={8}>
+                <Col xl={2} md={4} xs={8}>
                     <Button
                         type="primary"
-                        style={{ backgroundColor: '#1890ff' }}
+                        style={{ backgroundColor: '#1890ff', width: '100%', overflow: 'hidden' }}
                         size='large'
                         loading={loadings[0]}
                         onClick={() => enterLoading(0)}
                     >
-                        Lọc sản phẩm
+                        Lọc
                     </Button>
                 </Col>
             </Row>
