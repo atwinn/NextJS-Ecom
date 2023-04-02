@@ -9,7 +9,7 @@ export default function TitleAndAction() {
     const [modalOpen, setModalOpen] = useState(false);
 
     return (
-        <div className='bg-white mt-5 py-5 border-b-2 rounded-md'>
+        <div className='bg-white mt-5 pt-9 border-b-2 rounded-md'>
             <Row gutter={[16, 8]} className='px-3 lg:px-5'>
                 <Col xl={15} lg={0} className='hidden xl:block'>
                     <p className='text-black text-4xl'>Sản Phẩm</p>
