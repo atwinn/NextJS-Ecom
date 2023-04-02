@@ -4,8 +4,10 @@ import type { ColumnsType } from "antd/es/table";
 import Divider1 from "@/component/devider";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import ButtonToolTip from "@/component/button";
-import {CloseOutlined,EditOutlined  }  from "@ant-design/icons" 
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import InputInfor from "@/component/form-input/inputInfor";
+import Modal1 from "@/component/modal";
+import { useSelector } from "react-redux";
 
 interface DataType {
   key: string;
@@ -58,8 +60,8 @@ const columns: ColumnsType<DataType> = [
     render: (_, record) => (
       <>
         <Space wrap>
-          <ButtonToolTip title="Sửa" icon={<EditOutlined />}/>
-          <ButtonToolTip title="Xóa" icon={<CloseOutlined />} red={true}/>
+          <ButtonToolTip title="Sửa" icon={<EditOutlined />} />
+          <ButtonToolTip title="Xóa" icon={<CloseOutlined />} red={true} />
         </Space>
       </>
     ),
@@ -91,10 +93,13 @@ const data: DataType[] = [
 ];
 
 const App: React.FC = () => {
+  const { isOpen } = useSelector((store: any) => store.modal);
   return (
     <>
+      {isOpen && <Modal1 />}
       <Divider1 name={pageRoutes.nhanVien.title} />
-      <InputInfor/>
+      <InputInfor />
+      <Divider1 name={"Danh sách nhân viên"} />
       <Table columns={columns} dataSource={data} />
     </>
   );
