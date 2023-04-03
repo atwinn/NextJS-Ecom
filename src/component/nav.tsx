@@ -4,7 +4,7 @@ import RespNav from "./navbar/drawer";
 
 const Navbar = () => {
     return (
-        <div className="bg-[#0071dc] px-3 py-4 lg:px-8 text-white flex justify-between items-center">
+        <div className="bg-[#0071dc] px-3 py-4 lg:px-8 text-white flex justify-between items-center sticky top-0">
             <RespNav />
             <Left />
             <Middle />
