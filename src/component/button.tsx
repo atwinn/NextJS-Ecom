@@ -9,7 +9,6 @@ export interface IButton1Props {
 }
 export default function ButtonToolTip({title,icon,red}: IButton1Props) { 
   const dispatch = useDispatch();
-  const open = true;
   const confirm = () => {
     message.success('Xóa thành công');
   };
@@ -35,7 +34,7 @@ export default function ButtonToolTip({title,icon,red}: IButton1Props) {
         </Popconfirm>
       </Tooltip> :   <Tooltip title={title}>
         <Button
-          onClick={()=> dispatch(openModal(open))}
+          onClick={()=> dispatch(openModal())}
           className="flex justify-center items-center"
           shape="circle"
           icon={icon}

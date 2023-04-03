@@ -1,36 +1,133 @@
-import React from "react";
-
-import { Tabs } from 'antd';
-import type { TabsProps } from 'antd';
-import LoginForm from "./login-form/login-form";
-const onFinish = (values: any) => {
-  console.log("Success:", values);
+import React from 'react';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Card, Checkbox, Form, Input,Space } from 'antd';
+import { Typography } from 'antd';
+import {
+  GoogleOutlined,
+  GithubOutlined,
+  FacebookOutlined
+} from '@ant-design/icons';
+const { Title } = Typography;
+import '../../styles/Home.module.css'
+import Link from 'next/link';
+import { pageRoutes } from '@/redux/constant/page-routes.constant';
+import Divider1 from '../devider';
+import type { CSSProperties } from 'react';
+const iconStyles: CSSProperties = {
+  color: 'rgba(0, 0, 0, 0.2)',
+  fontSize: '18px',
+  verticalAlign: 'middle',
+  cursor: 'pointer',
 };
+const App: React.FC = () => {
+  const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+  };
+  return (
+    <>
+    <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center'>
+    <Card bordered={false}>
+    <Title level={2} className='text-center'>Login</Title>
+    <Form
+      name="normal_login"
+      className="login-form"
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+    >
+      <Form.Item
+        name="username"
+        
+        rules={[{ required: true, message: 'Please input your Username!' }]}
+      >
+        <Input size='large' prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+      </Form.Item>
+      <Form.Item
+        name="password"
+        rules={[{ required: true, message: 'Please input your Password!' }]}
+      >
+        <Input
+          size='large'
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Password"
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log("Failed:", errorInfo);
+        />
+      </Form.Item>
+      <Form.Item>
+        <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <a className="login-form-forgot" href="">
+          Forgot password
+        </a>
+      </Form.Item>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button">
+          Log in
+        </Button>
+        Or <Link href={pageRoutes.register.route} >Register</Link>
+      </Form.Item>
+    </Form>
+    <Divider1  name='Login other'/>
+    <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            
+            <Space align="center" size={24}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid #D4D8DD',
+                  borderRadius: '50%',
+                }}
+              >
+                <GoogleOutlined  style={{ ...iconStyles, color: '#000' }} />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid #D4D8DD',
+                  borderRadius: '50%',
+                }}
+              >
+                <GithubOutlined  style={{ ...iconStyles, color: '#000' }} />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  height: 40,
+                  width: 40,
+                  border: '1px solid #D4D8DD',
+                  borderRadius: '50%',
+                }}
+              >
+                <FacebookOutlined style={{ ...iconStyles, color: '#333333' }} />
+              </div>
+            </Space>
+          </div>
+    </Card>
+    </div>
+    </>
+  );
 };
-const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: `Đăng nhập`,
-    children: <LoginForm/>,
-  },
-  {
-    key: '2',
-    label: `Đăng ký`,
-    children: <LoginForm/>,
-  },
-];
-
-const onChange = (key: string) => {
-  console.log(key);
-};
-const App: React.FC = () => 
-<div className="w-full h-[100vh] flex justify-center items-center">
-  <div className="bg-white w-96 h-96 rounded-lg">
-  <Tabs  defaultActiveKey="1" items={items} onChange={onChange} centered/>
-  </div>
-</div>;
-
 export default App;

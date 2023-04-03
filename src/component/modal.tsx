@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Button, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { openModal, closeModal } from "../redux/modalSlide";
-
-const Modal1: React.FC = () => {
+import { openModal, closeModal, currModal } from "../redux/modalSlide";
+type ModalProps = {
+  title?: string,
+  children?: React.ReactNode;
+  submit?: React.ReactNode;
+  clickFunction?: () => void;
+};
+const Modal1 = ({children,title} : ModalProps) => {
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(closeModal(false));
+    dispatch(closeModal());
+    dispatch(currModal(""))
   };
   return (
     <>
       <Modal
-        title="Title"
+        title={title}
         open={true}
         onCancel={handleClose}
         footer={[
@@ -21,11 +27,7 @@ const Modal1: React.FC = () => {
           <Button key="submit" style={{backgroundColor:"#1890ff"}} type="primary">Submit</Button>,
         ]}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+       {children}
       </Modal>
     </>
   );

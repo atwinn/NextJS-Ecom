@@ -9,13 +9,11 @@ import { pageRoutes } from "@/redux/constant/page-routes.constant";
 export default function Dashboard() {
   return (
     <>
-      <Divider1 name={pageRoutes.home.title}/>
-        <Statistic1/>
-      <Row>
+      <Divider1 name={pageRoutes.home.title} />
+      <Statistic1 />
+      <Row gutter={16}>
         <Col span={8}>
-          <Space size={"middle"}>
-            <DemoPie />
-          </Space>
+          <DemoPie />
         </Col>
         <Col span={16}>
           <DemoColumn />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card } from "antd";
 
 import { Pie } from '@ant-design/plots';
 
@@ -50,7 +51,14 @@ const DemoPie = () => {
       },
     ],
   };
-  return <Pie {...config} />;
+  return (
+    <Card bordered={false}>
+      
+      <Pie {...config} />
+
+      </Card>
+      );
+
 };
 
 export default DemoPie

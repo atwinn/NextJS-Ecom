@@ -96,7 +96,7 @@ const App: React.FC = () => {
   const { isOpen } = useSelector((store: any) => store.modal);
   return (
     <>
-      {isOpen && <Modal1 />}
+      {isOpen && <Modal1  title="Chỉnh sửa nhân viên">jajskdhasjkdh</Modal1>}
       <Divider1 name={pageRoutes.nhanVien.title} />
       <InputInfor />
       <Divider1 name={"Danh sách nhân viên"} />

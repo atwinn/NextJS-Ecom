@@ -43,7 +43,7 @@ const items: MenuItem[] = [
     <ContainerOutlined />
   ),
   getItem(
-    <Link href={pageRoutes.taiKhoan.route}>Quản lý tài khoản</Link>,
+    <Link href={pageRoutes.account.route}>Quản lý tài khoản</Link>,
     "5",
     <ContainerOutlined />
   ),
