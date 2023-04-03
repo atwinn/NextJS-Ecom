@@ -8,7 +8,7 @@ export default function Home() {
     <>
       {/* <Header title="Trang chủ" /> */}
       <main className={styles.main}>
-        Trang chủ
+        <Link href={"/sanpham"}>Trang chu</Link>
         <Link href={"/page-admin"}>Admin</Link>
       </main>
     </>

@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Layout } from "antd";
-import Menu1 from "@/component/menu";
-import * as logo from "./logoL3M.png"
+import Menu1 from "@/component/menu"
+import logo from '../assets/logoL3M.png'
+import Image from 'next/image'
 
 const { Sider, Content, Footer } = Layout;
 export function LayoutManager({ children }: { children: React.ReactNode }) {
@@ -15,13 +16,7 @@ export function LayoutManager({ children }: { children: React.ReactNode }) {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div
-          style={{
-            height: 32,
-            margin: 16,
-            backgroundImage: `url(${logo})`,
-          }}
-        />
+        <Image src={logo} alt='' width={50} height={50} />
         <Menu1 />
       </Sider>
       <Layout style={{ minHeight: "100vh" }}>
