@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/logoL3M.png";
 import { FaLayerGroup } from "react-icons/fa";
 import { HiUserGroup } from "react-icons/hi";
 import { GoSearch } from "react-icons/go";
 import { MdLogin, MdLogout } from "react-icons/md"
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
+import { log } from "console";
 
 export const Left = () => {
     return (
@@ -50,6 +52,16 @@ export const Right = () => {
 }
 
 export const Middle = () => {
+    const [show, setShow] = useState(false);
+    const [onSearch, setOnSearch] = useState("");
+
+    useEffect(() => {
+        if (onSearch != "")
+            setShow(true);
+        else
+            setShow(false);
+    }, [onSearch])
+
     return (
         <>
             <div className="relative flex items-center flex-1 mx-1 md:mx-6 ">
@@ -59,12 +71,20 @@ export const Middle = () => {
                         type="text"
                         className="rounded-none border-0 py-3 w-full outline-0 text-black bg-white"
                         placeholder="Tìm kiếm sản phẩm"
+                        onChange={(e) => setOnSearch(e.target.value)}
+                        value={onSearch}
                     />
-                    <div className="rounded-r-full bg-white py-2.5 pr-5 h-10"></div>
+                    <div className="rounded-r-full bg-white py-2.5 pr-5 pl-16 h-10"></div>
                 </div>
-                <div className="absolute bg-[#ffc220] px-2 py-1.5 rounded-full right-1.5">
+                <div className="absolute bg-[#ffc220] hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer">
                     <GoSearch className="text-black" />
                 </div>
+                {show ?
+                    <div className="absolute right-12 hover:bg-slate-300/50 rounded-full px-1.5 py-1 cursor-pointer" onClick={() => setOnSearch("")}>
+                        <CloseOutlined className="text-black" />
+                    </div>
+                    : null
+                }
             </div>
         </>
     )
