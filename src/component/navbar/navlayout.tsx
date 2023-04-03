@@ -6,13 +6,14 @@ import { GoSearch } from "react-icons/go";
 import { MdLogin, MdLogout } from "react-icons/md"
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import Image from "next/image";
+import Link from "next/link";
 
 export const Left = () => {
     return (
         <>
             <div className="flex items-center gap-x-3 shrink-0">
                 <div className="rounded-full">
-                    <Image src={logo} alt="" height={70} />
+                    <Link href={"/"}><Image src={logo} alt="" height={70} /></Link>
                 </div>
                 <div className="md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all">
                     <FaLayerGroup className="text-[17px]" />
