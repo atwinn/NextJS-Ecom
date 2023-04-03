@@ -4,7 +4,11 @@ import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import ButtonToolTip from '@/component/button';
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-
+import Modal1 from '@/component/modal';
+import { useSelector } from 'react-redux';
+import { Button } from 'antd';
+import { useDispatch } from 'react-redux';
+import { currModal, openModal } from '@/redux/modalSlide';
 interface DataType {
     key: string;
     name: string;
@@ -98,9 +102,23 @@ const data: DataType[] = [
     },
   ];
 export default function AccountManager () {
+  const { isOpen,curModal } = useSelector((store: any) => store.modal);
+  const dispatch = useDispatch() 
+  const addAcc = () => {
+    dispatch(currModal("2"))
+    dispatch(openModal())
+  }
   return (
     <>
+      {isOpen &&  <Modal1 title='Cập nhật tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>}
+      {isOpen && (curModal == "2" && <Modal1 title='thêm tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>) }
+      
       <Divider1 name='Quản lý Tài khoản'/>
+      <div className='m-4'>
+
+      <Button onClick={addAcc} type="primary">Cấp tài khoản</Button>
+
+      </div>
       <Table columns={columns} dataSource={data} />
 
     </>

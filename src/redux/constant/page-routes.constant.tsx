@@ -40,6 +40,9 @@ export const pageRoutes: { [key: string]: title } = {
     account: {
         route: "/page-admin/account-manage/view",
         title: 'Quản lý tài khoản',
-        
+    },
+    forgotPass: {
+        route: "/auth/forgot-pass",
+        title: 'Lấy lại mật khẩu',
     },
 };
