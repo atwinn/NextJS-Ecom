@@ -8,7 +8,6 @@ import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import InputInfor from "@/component/form-input/inputInfor";
 import Modal1 from "@/component/modal";
 import { useSelector } from "react-redux";
-
 interface DataType {
   key: string;
   name: string;

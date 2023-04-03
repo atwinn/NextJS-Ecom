@@ -1,13 +1,10 @@
 import ForgotPass from '@/component/author/forgot-pass';
 import * as React from 'react';
-
-export interface IAppProps {
-}
-
-export default function App (props: IAppProps) {
+export default function App () {
   return (
     <div>
       <ForgotPass/>
     </div>
   );
 }
+

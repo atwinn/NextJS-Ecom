@@ -4,7 +4,7 @@ import { Card, Col, Row, Statistic } from 'antd';
 
 const App: React.FC = () => (
   <Row gutter={16} style={{marginBottom:"3rem"}}>
-    <Col span={6}>
+    <Col md={6}>
       <Card bordered={false}>
         <Statistic
           title="Active"
@@ -16,7 +16,7 @@ const App: React.FC = () => (
         />
       </Card>
     </Col>
-    <Col span={6} >
+    <Col md={6} >
       <Card bordered={false}>
         <Statistic
           title="Idle"
@@ -28,7 +28,7 @@ const App: React.FC = () => (
         />
       </Card>
     </Col>
-    <Col span={6} >
+    <Col md={6} >
       <Card bordered={false}>
         <Statistic
           title="Idle"
@@ -40,7 +40,7 @@ const App: React.FC = () => (
         />
       </Card>
     </Col>
-    <Col span={6} >
+    <Col md={6} >
       <Card bordered={false}>
         <Statistic
           title="Idle"
