@@ -8,22 +8,24 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
-import { log } from "console";
+
+const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
+const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all cursor-pointer";
 
 export const Left = () => {
     return (
         <>
             <div className="flex items-center gap-x-3 shrink-0">
-                <div className="rounded-full">
+                <div className="rounded-full cursor-pointer">
                     <Link href={"/"}><Image src={logo} alt="" height={70} /></Link>
                 </div>
-                <div className="md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all">
+                <div className={buttonContainer}>
                     <FaLayerGroup className="text-[17px]" />
-                    <p className="text-[16px] font-semibold pt-4">Sections</p>
+                    <p className={NavButtonCss}>Sections</p>
                 </div>
-                <div className="md:flex items-center hidden gap-2 hover:bg-[#06529a] px-3 rounded-full transition-all">
+                <div className={buttonContainer}>
                     <HiUserGroup className="text-[20px]" />
-                    <p className="text-[16px] font-semibold pt-4">Partners</p>
+                    <p className={NavButtonCss}>Partners</p>
                 </div>
             </div>
         </>
@@ -35,15 +37,15 @@ export const Right = () => {
         <>
             {/* Right */}
             <div className="flex items-center gap-x-2">
-                <div className="hidden md:flex items-center gap-2 hover:bg-[#06529a] px-3 rounded-full transition-all">
-                    <MdLogin className="text-[17px] rotate-90" />
-                    <p className="text-[16px] font-semibold pt-4">Register</p>
+                <div className={buttonContainer}>
+                    <MdLogin className="text-[21px] rotate-90" />
+                    <p className={NavButtonCss}>Register</p>
                 </div>
-                <div className="hidden md:flex items-center gap-2 hover:bg-[#06529a] px-3 rounded-full whitespace-nowrap transition-all">
+                <div className={buttonContainer}>
                     <MdLogout className="text-[20px] -rotate-90" />
-                    <p className="text-[16px] font-semibold pt-4">Sign in</p>
+                    <p className={NavButtonCss}>Sign in</p>
                 </div>
-                <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all">
+                <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
                     <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
                 </div>
             </div>
