@@ -12,9 +12,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { deleteCookie } from "../../../cookies";
 import { useRouter } from "next/navigation";
 import { clearUser } from "@/redux/userSlice";
+import { pageRoutes } from "@/redux/constant/page-routes.constant";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
-const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all cursor-pointer";
+const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all cursor-pointer hover:text-white";
 
 export const Left = () => {
     return (
@@ -27,10 +28,10 @@ export const Left = () => {
                     <FaLayerGroup className="text-[17px]" />
                     <p className={NavButtonCss}>Sections</p>
                 </div>
-                <div className={buttonContainer}>
+                <Link href={pageRoutes.sanPhamUser.route} className={buttonContainer}>
                     <HiUserGroup className="text-[20px]" />
                     <p className={NavButtonCss}>Partners</p>
-                </div>
+                </Link>
             </div>
         </>
     );

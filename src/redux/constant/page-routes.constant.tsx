@@ -27,13 +27,17 @@ export const pageRoutes: { [key: string]: title } = {
         title: 'Trang chủ',
         key: "3",
     },
+    sanPhamUser: {
+        route: "/sanpham",
+        title: 'Sản phẩm',
+    },
     login: {
-        route:"/auth/login",
+        route: "/auth/login",
         title: 'Đăng nhập',
         key: "4",
     },
     register: {
-        route:"/auth/register",
+        route: "/auth/register",
         title: 'Đăng ký',
         key: "5",
     },
