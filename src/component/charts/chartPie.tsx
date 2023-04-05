@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from "antd";
-
-import { Pie } from '@ant-design/plots';
+import dynamic from 'next/dynamic';
+const Pie = dynamic(() => import('@ant-design/plots').then(({ Pie }) => Pie), { ssr: false });
 
 const DemoPie = () => {
   const data = [
@@ -39,7 +39,7 @@ const DemoPie = () => {
     label: {
       type: 'inner',
       offset: '-30%',
-      content: ({ percent } : any) => `${(percent * 100).toFixed(0)}%`,
+      content: ({ percent }: any) => `${(percent * 100).toFixed(0)}%`,
       style: {
         fontSize: 14,
         textAlign: 'center',
@@ -53,11 +53,11 @@ const DemoPie = () => {
   };
   return (
     <Card bordered={false}>
-      
+
       <Pie {...config} />
 
-      </Card>
-      );
+    </Card>
+  );
 
 };
 
