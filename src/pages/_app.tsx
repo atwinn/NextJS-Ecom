@@ -1,22 +1,50 @@
-import { AppProps } from 'next/app'
-import 'antd/dist/reset.css';
-import '../styles/globals.css'
-import { Provider } from 'react-redux'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
-import store from '../redux/store'
+import React, { ComponentType } from 'react';
+import type { AppProps } from "next/app";
+import "antd/dist/reset.css";
+import "../styles/globals.css";
+import { Provider } from "react-redux";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import store from "../redux/store";
+import Header from './head';
+import axios from "axios";
 
-const queryClient = new QueryClient()
+axios.defaults.baseURL = "https://l3mshop.onrender.com";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers.post["Accept"] = "application/json";
+axios.defaults.withCredentials = true;
+// axios.defaults.headers.common["Authorization"] =
+//   "Bearer " + localStorage.getItem("auth_token");
 
-function MyApp({ Component, pageProps }: AppProps) {
+// axios.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("auth_token");
+//   config.headers.Authorization = token ? `Bearer ${token}` : "";
+//   return config;
+// });
+
+const queryClient = new QueryClient();
+type ComponentWithPageLayout = AppProps & {
+  Component: AppProps["Component"] & {
+    PageLayout?: any;
+  };
+};
+
+function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <Header />
+        {Component.PageLayout ? (
+          <Component.PageLayout>
+            <Component {...pageProps} />
+          </Component.PageLayout>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </Provider>
       <ReactQueryDevtools />
     </QueryClientProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
