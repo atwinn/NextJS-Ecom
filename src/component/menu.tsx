@@ -47,6 +47,11 @@ const items: MenuItem[] = [
     "5",
     <ContainerOutlined />
   ),
+  getItem(
+    <Link href={pageRoutes.phieuNhap.route}>Phiếu nhập</Link>,
+    "6",
+    <ContainerOutlined />
+  ),
 ];
 
 export default function Menu1(props: IMenuProps) {

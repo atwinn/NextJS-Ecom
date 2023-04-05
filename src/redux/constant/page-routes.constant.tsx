@@ -49,4 +49,8 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/auth/forgot-pass",
         title: 'Lấy lại mật khẩu',
     },
+    phieuNhap: {
+        route: "/page-admin/phieu-nhap/view",
+        title: 'Phiếu nhập',
+    },
 };

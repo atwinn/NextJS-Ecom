@@ -5,6 +5,7 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import counterReducer from './counterSlice'
 import modalSlice from './modalSlide'
 import userSlice from './userSlice'
+import tableSlice from './tableSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -12,6 +13,7 @@ const store = configureStore({
     counter: counterReducer,
     modal: modalSlice,
     user: userSlice,
+    table: tableSlice,
   },
 })
 
