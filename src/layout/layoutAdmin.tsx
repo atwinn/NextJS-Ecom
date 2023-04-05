@@ -1,12 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Layout } from "antd";
 import Menu1 from "@/component/menu"
 import logo from '../assets/logoL3M.png'
 import Image from 'next/image'
 
 const { Sider, Content, Footer } = Layout;
-export function LayoutManager({ children }: { children: React.ReactNode }) {
+
+interface IProps {
+  children: ReactNode;
+}
+
+export function LayoutManager({ children }: IProps) {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Layout style={{ minHeight: "100vh" }}>

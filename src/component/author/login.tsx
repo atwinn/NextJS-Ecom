@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Form, Input, Space } from "antd";
 import { Typography } from "antd";
@@ -13,16 +13,42 @@ import Link from "next/link";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Divider1 from "../devider";
 import type { CSSProperties } from "react";
+import { setCookie } from "../../../cookies";
+import { setUser } from "@/redux/userSlice";
+import { useDispatch } from "react-redux";
+
 const iconStyles: CSSProperties = {
   color: "rgba(0, 0, 0, 0.2)",
   fontSize: "18px",
   verticalAlign: "middle",
   cursor: "pointer",
 };
+import axios from "axios"
+import { useRouter } from "next/navigation";
+
+
 const App: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const userName = useRef("");
+  const pass = useRef("");
+  const { push } = useRouter();
+  const dispatch = useDispatch();
+
+  const onFinish = () => {
+    const data = {
+      identifier: userName.current,
+      password: pass.current,
+    }
+
+    axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
+      if (res.status === 200) {
+        localStorage.setItem("username", res.data.user.username)
+        setCookie("token", res.data.jwt)
+        dispatch(setUser(res.data.user));
+        push("/sanpham")
+      }
+    })
   };
+
   return (
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
@@ -37,7 +63,6 @@ const App: React.FC = () => {
             onFinish={onFinish}
           >
             <Form.Item
-              name="username"
               rules={[
                 { required: true, message: "Please input your Username!" },
               ]}
@@ -46,10 +71,10 @@ const App: React.FC = () => {
                 size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Username"
+                onChange={(e) => (userName.current = e.target.value)}
               />
             </Form.Item>
             <Form.Item
-              name="password"
               rules={[
                 { required: true, message: "Please input your Password!" },
               ]}
@@ -59,13 +84,14 @@ const App: React.FC = () => {
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"
+                onChange={(e) => (pass.current = e.target.value)}
               />
             </Form.Item>
             <Form.Item>
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
-                
+
               <Link className="login-form-forgot" href={pageRoutes.forgotPass.route}>
                 Forgot password
               </Link>

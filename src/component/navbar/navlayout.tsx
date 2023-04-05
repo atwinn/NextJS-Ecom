@@ -8,6 +8,10 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteCookie } from "../../../cookies";
+import { useRouter } from "next/navigation";
+import { clearUser } from "@/redux/userSlice";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all cursor-pointer";
@@ -33,21 +37,51 @@ export const Left = () => {
 };
 
 export const Right = () => {
+    const user = useSelector((state: any) => state.user)
+    const dispatch = useDispatch()
+    const { push } = useRouter()
+    const handleLogout = () => {
+        localStorage.removeItem("username")
+        deleteCookie("token")
+        push("/sanpham")
+        dispatch(clearUser())
+    }
     return (
         <>
             {/* Right */}
             <div className="flex items-center gap-x-2">
-                <div className={buttonContainer}>
-                    <MdLogin className="text-[21px] rotate-90" />
-                    <p className={NavButtonCss}>Register</p>
-                </div>
-                <div className={buttonContainer}>
-                    <MdLogout className="text-[20px] -rotate-90" />
-                    <p className={NavButtonCss}>Sign in</p>
-                </div>
-                <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
-                    <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
-                </div>
+                {user.username != "" ? (
+                    <>
+                        <div className={buttonContainer}>
+                            <MdLogin className="text-[21px] rotate-90" />
+                            <p className={NavButtonCss}>{user.username}</p>
+                        </div>
+                        <div className={buttonContainer} onClick={handleLogout}>
+                            <MdLogout className="text-[20px] -rotate-90" />
+                            <p className={NavButtonCss}>Sign out</p>
+                        </div>
+                        <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
+                            <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className={buttonContainer}>
+                            <MdLogin className="text-[21px] rotate-90" />
+                            <p className={NavButtonCss}>Register</p>
+                        </div>
+                        <Link href={"/auth/login"}>
+                            <div className={buttonContainer}>
+                                <MdLogout className="text-[20px] -rotate-90" />
+                                <p className={NavButtonCss}>Sign in</p>
+                            </div>
+                        </Link>
+                        <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
+                            <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                        </div>
+                    </>
+                )
+                }
             </div>
         </>
     )
