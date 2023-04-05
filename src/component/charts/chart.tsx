@@ -1,6 +1,7 @@
 import React from "react";
-import { Column } from "@ant-design/plots";
+const Column = dynamic(() => import('@ant-design/plots').then(({ Column }) => Column), { ssr: false });
 import { Card } from "antd";
+import dynamic from "next/dynamic";
 
 const DemoColumn = () => {
   const data = [
