@@ -1,5 +1,5 @@
 import Divider1 from "@/component/devider";
-import { Button, Card, Col, Input, Row } from "antd";
+import { Button, Card, Col, Input, Row, Tooltip } from "antd";
 import * as React from "react";
 import PhieuNhapTable from "./table-pn";
 import { Typography } from "antd";
@@ -7,12 +7,15 @@ const { Title } = Typography;
 import { UserOutlined } from "@ant-design/icons";
 import { AutoComplete } from "antd";
 import TableChiTietPN from "./table-chi-tiet-pn";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Modal1 from "@/component/modal";
+import { openModal } from "@/redux/modalSlide";
+import ModalAddNCC from "@/component/modalAddNCC";
 export interface IAppProps {}
 
 export default function ViewPN(props: IAppProps) {
   const birthday: Date = new Date();
-  const [value, setValue] = React.useState("");
-
   const renderTitle = (title: string) => (
     <span>
       {title}
@@ -54,8 +57,14 @@ export default function ViewPN(props: IAppProps) {
   const onSelect = (data: string) => {
     console.log("onSelect", data);
   };
+  const { isOpen } = useSelector((store: any) => store.modal);
+  const dispatch = useDispatch() 
+  const addNCC = () => {
+    dispatch(openModal())
+  }
   return (
     <>
+      {isOpen &&  <Modal1 title='Thêm nhà cung cấp'><ModalAddNCC/></Modal1>}
       <Card>
         <Row gutter={16}>
           <Col md={3}>
@@ -70,7 +79,10 @@ export default function ViewPN(props: IAppProps) {
                 // onSearch={(text) => setOptions(getPanelValue(text))}
                 placeholder="nhà cung cấp"
               />
-              <Button className="ml-4">Thêm</Button>
+              <Tooltip title="Thêm nhà cung cấp">
+
+              <Button className="ml-4" onClick={addNCC}>Thêm</Button>
+              </Tooltip>
             </div>
           </Col>
           <Col md={6}>

@@ -20,12 +20,7 @@ const Modal1 = ({children,title} : ModalProps) => {
         title={title}
         open={true}
         onCancel={handleClose}
-        footer={[
-          <Button key="back" onClick={handleClose}>
-            Return
-          </Button>,
-          <Button key="submit" style={{backgroundColor:"#1890ff"}} type="primary">Submit</Button>,
-        ]}
+        footer={[]}
       >
        {children}
       </Modal>
