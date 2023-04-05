@@ -1,12 +1,12 @@
-import React, { CSSProperties } from 'react';
-import { Tabs,Input } from 'antd';
-import Divider1 from '@/component/devider';
-import { type } from 'os';
+import React from 'react';
+import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import ViewPN from './view-pn';
 import ListPN from './list-phieunhap';
 import HistoryPN from './history-PN';
+import { Typography } from 'antd';
 
+const { Title } = Typography;
 const items: TabsProps['items'] = [
     {
       key: '1',
@@ -30,7 +30,7 @@ const items: TabsProps['items'] = [
 const PhieuNhap: React.FC = () => {
     return (
         <>
-            <Divider1 name='Phiếu nhập'/>
+             <Title level={3}>Quản lý phiếu nhập</Title>
             <Tabs
                 onChange={onChange}
                 type="card"
