@@ -25,6 +25,8 @@ const iconStyles: CSSProperties = {
 };
 import axios from "axios"
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import logo from "../../assets/logoL3M.png";
 
 
 const App: React.FC = () => {
@@ -52,10 +54,8 @@ const App: React.FC = () => {
   return (
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
-        <Card bordered={false}>
-          <Title level={2} className="text-center">
-            Login
-          </Title>
+        <Card bordered={false} className="sm:w-[35%] md:w-[30%] lg:w-[25%] xl:w-[20%]">
+          <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
           <Form
             name="normal_login"
             className="login-form"
@@ -64,7 +64,7 @@ const App: React.FC = () => {
           >
             <Form.Item
               rules={[
-                { required: true, message: "Please input your Username!" },
+                { required: true, message: "Vui lòng nhập username của bạn!" },
               ]}
             >
               <Input
@@ -76,39 +76,51 @@ const App: React.FC = () => {
             </Form.Item>
             <Form.Item
               rules={[
-                { required: true, message: "Please input your Password!" },
+                { required: true, message: "Vui lòng nhập mật khẩu của bạn!" },
               ]}
             >
               <Input
                 size="large"
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 onChange={(e) => (pass.current = e.target.value)}
               />
             </Form.Item>
-            <Form.Item>
+            {/* <div className="flex justify-between">
               <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-
+                <Checkbox>Duy trì đăng nhập</Checkbox>
+              </Form.Item> */}
+            <Form.Item>
               <Link className="login-form-forgot" href={pageRoutes.forgotPass.route}>
-                Forgot password
+                Quên mật khẩu
               </Link>
             </Form.Item>
+            {/* </div> */}
+            <div className="flex justify-between">
+              <Form.Item >
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                  size="large"
+                >
+                  Đăng nhập
+                </Button>
+              </Form.Item>
+              <p className="lg:block hidden mt-2">Hoặc</p>
+              <Link href={pageRoutes.register.route}>
+                <Button
+                  type="primary"
+                  size="large"
+                >
+                  Đăng ký
+                </Button></Link>
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
-                Log in
-              </Button>
-              Or <Link href={pageRoutes.register.route}>Register</Link>
-            </Form.Item>
+            </div>
+
           </Form>
-          <Divider1 name="Login other" />
+          <Divider1 name="Cách khác" />
           <div
             style={{
               display: "flex",
@@ -130,7 +142,9 @@ const App: React.FC = () => {
                   borderRadius: "50%",
                 }}
               >
-                <GoogleOutlined style={{ ...iconStyles, color: "#000" }} />
+                <GoogleOutlined
+                  style={{ ...iconStyles, color: "#000" }}
+                  className="hover:text-2xl" />
               </div>
               <div
                 style={{
@@ -144,7 +158,9 @@ const App: React.FC = () => {
                   borderRadius: "50%",
                 }}
               >
-                <GithubOutlined style={{ ...iconStyles, color: "#000" }} />
+                <GithubOutlined
+                  style={{ ...iconStyles, color: "#000" }}
+                  className="hover:text-2xl" />
               </div>
               <div
                 style={{
@@ -158,7 +174,9 @@ const App: React.FC = () => {
                   borderRadius: "50%",
                 }}
               >
-                <FacebookOutlined style={{ ...iconStyles, color: "#333333" }} />
+                <FacebookOutlined
+                  style={{ ...iconStyles, color: "#333333" }}
+                  className="hover:text-2xl" />
               </div>
             </Space>
           </div>

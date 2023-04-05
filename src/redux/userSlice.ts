@@ -37,14 +37,7 @@ const userSlice = createSlice({
             state.username = action.payload.username;
         },
         clearUser: (state) => {
-            state.blocked = initialState.blocked;
-            state.confirmed = initialState.confirmed;
-            state.createdAt = initialState.createdAt;
-            state.email = initialState.email;
-            state.id = initialState.id;
-            state.provider = initialState.provider;
-            state.updatedAt = initialState.updatedAt;
-            state.username = initialState.username;
+            Object.assign(state, initialState);
         },
     },
 });
