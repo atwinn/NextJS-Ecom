@@ -53,4 +53,8 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/page-admin/phieu-nhap/view",
         title: 'Phiếu nhập',
     },
+    ncc_nsx: {
+        route: "/page-admin/ncc-nsx/view",
+        title: 'Phiếu nhập',
+    },
 };

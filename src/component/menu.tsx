@@ -52,6 +52,11 @@ const items: MenuItem[] = [
     "6",
     <ContainerOutlined />
   ),
+  getItem(
+    <Link href={pageRoutes.ncc_nsx.route}>NCC/NSX</Link>,
+    "7",
+    <ContainerOutlined />
+  ),
 ];
 
 export default function Menu1(props: IMenuProps) {
