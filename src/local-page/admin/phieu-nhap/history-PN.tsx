@@ -3,10 +3,10 @@ import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Button, Card, Col, Input, Row } from "antd";
 import { Typography } from "antd";
-import type { DatePickerProps } from 'antd';
-import { DatePicker } from 'antd';
+import type { DatePickerProps } from "antd";
+import { DatePicker } from "antd";
 import Divider1 from "@/component/devider";
-import { ExportOutlined  } from "@ant-design/icons";
+import { ExportOutlined } from "@ant-design/icons";
 
 interface DataType {
   key: string;
@@ -90,9 +90,9 @@ const data: DataType[] = [
 ];
 
 const HistoryPN: React.FC = () => {
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
-        console.log(date, dateString);
-      };
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    console.log(date, dateString);
+  };
   return (
     <>
       <Card>
@@ -106,14 +106,19 @@ const HistoryPN: React.FC = () => {
           </Col>
           <Col md={6}>
             <Button className="mx-3">Xem</Button>
-            
           </Col>
           <Col md={11} className="flex justify-end">
-            <Button  icon={<ExportOutlined />}>Xuất file excel</Button>
+            <Button icon={<ExportOutlined />}>Xuất file excel</Button>
           </Col>
         </Row>
-        <Divider1 name="Lịch sử"/>
-        <Table columns={columns} dataSource={data} />;
+        <Divider1 name="Lịch sử" />
+        <Table
+          columns={columns}
+          dataSource={data}
+          style={{ maxWidth: "100vw" }}
+          scroll={{ x: true }}
+        />
+        ;
       </Card>
     </>
   );

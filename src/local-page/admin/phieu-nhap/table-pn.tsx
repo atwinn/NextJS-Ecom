@@ -68,7 +68,7 @@ const options = [
       renderItem("AntDesign", 10000),
       renderItem("AntDesign UI", 10600),
     ],
-  }
+  },
 ];
 const App: React.FC = () => {
   const [form] = Form.useForm();
@@ -76,6 +76,8 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const data1 = useSelector((state: RootState) => state.table.data);
   const onFinish = (values: FormData) => {
+    console.log(values);
+
     const { sanpham, soluong, gia } = values;
     dispatch(
       addRow({ sanpham, soluong: parseInt(soluong), gia: parseInt(gia) })
@@ -88,69 +90,72 @@ const App: React.FC = () => {
   };
 
   return (
-    <Form
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Table dataSource={data} pagination={false} style={{maxWidth: "100vw"}} scroll={{x:true}}>
-        <Form.Item name={sanpham} label="sanpham">
-          <Column
-            title="Sản phẩm"
-            dataIndex="sanpham"
-            render={(text: number, record: TableData, index: number) => {
-              return (
-                <>
+    <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+      <Table
+        dataSource={data}
+        pagination={false}
+        style={{ maxWidth: "100vw" }}
+        scroll={{ x: true }}
+      >
+        <Column
+          title="Sản phẩm"
+          dataIndex="sanpham"
+          render={(text: number, record: TableData, index: number) => {
+            return (
+              <>
+                <Form.Item name={"sanpham"}>
                   <AutoComplete
                     popupClassName="certain-category-search-dropdown"
                     dropdownMatchSelectWidth={300}
                     style={{ width: 300 }}
                     options={options}
                   />
-                </>
-              );
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="gia" label="gia">
-          <Column
-            title="Giá"
-            dataIndex="gia"
-            key="address"
-            render={() => {
-              return (
-                <>
-                  <Input type="number" min={0} style={{minWidth:100}}/>
-                </>
-              );
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="soluong" label="soluong">
-          <Column
-            title="Số lượng"
-            dataIndex="soluong"
-            key="tags"
-            render={() => {
-              return (
-                <>
-                  <Input type="number" min={0} style={{minWidth:100}}/>
-                </>
-              );
-            }}
-          />
-        </Form.Item>
+                </Form.Item>
+              </>
+            );
+          }}
+        />
+        <Column
+          title="Giá"
+          dataIndex="gia"
+          key="address"
+          render={() => {
+            return (
+              <>
+                <Form.Item name="gia">
+                  <Input type="number" min={0} style={{ minWidth: 100 }} />
+                </Form.Item>
+              </>
+            );
+          }}
+        />
+        <Column
+          title="Số lượng"
+          dataIndex="soluong"
+          key="tags"
+          render={() => {
+            return (
+              <>
+                <Form.Item name="soluong">
+                  <Input type="number" min={0} style={{ minWidth: 100 }} />
+                </Form.Item>
+              </>
+            );
+          }}
+        />
         <Column
           title="Action"
           key="action"
           render={(_: any, record: DataType) => (
             <Tooltip title={"thêm"}>
-              <Button
-                htmlType="submit"
-                className="flex justify-center items-center"
-                shape="circle"
-                icon={<FileAddOutlined />}
-              />
+              <Form.Item>
+                <Button
+                  htmlType="submit"
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<FileAddOutlined />}
+                />
+              </Form.Item>
             </Tooltip>
           )}
         />

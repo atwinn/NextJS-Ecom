@@ -95,6 +95,8 @@ const App: React.FC = () => {
         columns={columns}
         expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
         dataSource={data}
+        style={{ maxWidth: "100vw" }}
+        scroll={{ x: true }}
       />
     
     </>

@@ -15,11 +15,9 @@ export default function ModalAddNCC(props: IModalAddNCCProps) {
             <Input required />
           </Form.Item>
           <Form.Item  label="Địa chỉ" name={"diachi"}>
-           
             <Input required />
           </Form.Item>
           <Form.Item  label="Số điện thoại" name={"sdt"}>
-            
             <Input required />
           </Form.Item>
           <Form.Item className="flex justify-center">
