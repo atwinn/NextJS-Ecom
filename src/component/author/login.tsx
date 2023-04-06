@@ -51,6 +51,13 @@ const App: React.FC = () => {
     })
   };
 
+  const loginGoogle = () => {
+    axios.get("/api/connect/google").then((res) => {
+      console.log(res);
+
+    })
+  }
+
   return (
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
@@ -144,7 +151,8 @@ const App: React.FC = () => {
               >
                 <GoogleOutlined
                   style={{ ...iconStyles, color: "#000" }}
-                  className="hover:text-2xl" />
+                  className="hover:text-2xl"
+                  onClick={loginGoogle} />
               </div>
               <div
                 style={{
