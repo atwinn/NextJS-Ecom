@@ -24,12 +24,11 @@ const UserProduct = () => {
 
     return (
         <div className='p-5'>
-            <Row gutter={16}>
-                <Col xs={0} lg={5}>
+            <Row gutter={32}>
+                <Col xs={0} lg={6}>
                     <UserProdFilter />
                 </Col>
-                <Col xs={0} lg={1}></Col>
-                <Col lg={18}>
+                <Col lg={18} className='p-5 bg-white rounded-md'>
                     <Row gutter={[16, 16]}>
                         {prodData && prodData.map((item: any) => (
                             <Col xs={12} lg={8} xl={6} key={item.id}>
