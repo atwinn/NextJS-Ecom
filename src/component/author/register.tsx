@@ -63,7 +63,7 @@ const Register: React.FC = () => {
       password: values.password,
     }
 
-    axios.post('/api/auth/local/register', data).then((res: any) => {
+    axios.post('/api/register-with-customer', data).then((res: any) => {
       if (res.status === 200) {
         messageApi.open({
           type: 'success',

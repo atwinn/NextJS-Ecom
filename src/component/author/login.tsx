@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Form, Input, Space } from "antd";
 import { Typography } from "antd";
@@ -28,11 +28,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../assets/logoL3M.png";
 
-
 const App: React.FC = () => {
   const userName = useRef("");
   const pass = useRef("");
+  const [loginGG, setLoginGG] = useState("")
   const { push } = useRouter();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const onFinish = () => {
@@ -52,16 +53,7 @@ const App: React.FC = () => {
   };
 
   const loginGoogle = () => {
-    axios
-      .get("api/connect/google", {
-        headers: {
-          authorization: "google",
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
-        console.log(res);
-
-      })
+    push("https://l3mshop.onrender.com/api/connect/google")
   }
 
   return (
