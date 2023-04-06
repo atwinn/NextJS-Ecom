@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
-import { Col, Row } from 'antd'
+import { Col, Pagination, Row } from 'antd'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
 
 const UserProduct = () => {
     const [prodData, setProdData] = useState([])
+    const [paginate, setPaginate] = useState({
+        page: 0,
+        pageCount: 0,
+        pageSize: 0,
+        total: 0
+    })
 
     useEffect(() => {
         axios.get("https://l3mshop.onrender.com/api/products?populate=*").then((res) => {
             if (res.status === 200) {
                 setProdData(res.data.data)
+                setPaginate(res.data.meta)
             }
         })
     }, [])
@@ -35,6 +42,14 @@ const UserProduct = () => {
                         ))
                         }
                     </Row>
+                    <Pagination
+                        total={paginate.total}
+                        pageSize={10}
+                        showTotal={(total) => `${total} sản phẩm`}
+                        hideOnSinglePage
+                        showSizeChanger={false}
+                        className='mt-10 text-center'
+                    />
                 </Col>
             </Row>
         </div>
