@@ -52,10 +52,16 @@ const App: React.FC = () => {
   };
 
   const loginGoogle = () => {
-    axios.get("/api/connect/google").then((res) => {
-      console.log(res);
+    axios
+      .get("api/connect/google", {
+        headers: {
+          authorization: "google",
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        console.log(res);
 
-    })
+      })
   }
 
   return (
