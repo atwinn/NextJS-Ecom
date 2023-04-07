@@ -11,7 +11,10 @@ const App: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values: any) => {
-    axios.post("/api/auth/forgot-password", values.email).then(res => {
+    const data = {
+      email: values.email
+    }
+    axios.post("/api/auth/forgot-password", data).then(res => {
       messageApi.open({
         type: 'success',
         content: 'Vui lòng kiểm tra email của bạn để đặt lại mật khẩu',
