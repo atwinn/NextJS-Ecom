@@ -24,8 +24,9 @@ export const Left = () => {
     return (
         <>
             <div className="flex items-center gap-x-3 shrink-0">
-                <div className="rounded-full cursor-pointer">
+                <div className="md:flex items-center rounded-full cursor-pointer">
                     <Link href={"/"}><Image src={logo} alt="" height={70} /></Link>
+                    <div className="hidden md:block text-white text-4xl font-bold mt-1.5">SHOP</div>
                 </div>
                 <Category>
                     <div className={buttonContainer}>
@@ -51,7 +52,7 @@ export const Right = () => {
         localStorage.removeItem("username")
         localStorage.removeItem("id")
         deleteCookie("token")
-        push("/sanpham")
+        push("/")
         dispatch(clearUser())
     }
     return (
@@ -114,15 +115,15 @@ export const Middle = () => {
         <>
             <div className="relative flex items-center flex-1 mx-1 md:mx-6 ">
                 <div className="flex justify-center items-center w-full">
-                    <div className="rounded-l-full bg-white py-2.5 pl-5 h-10"></div>
-                    <input
-                        type="text"
-                        className="rounded-none border-0 py-3 w-full outline-0 text-black bg-white"
-                        placeholder="Tìm kiếm sản phẩm"
-                        onChange={(e) => setOnSearch(e.target.value)}
-                        value={onSearch}
-                    />
-                    <div className="rounded-r-full bg-white py-2.5 pr-5 pl-16 h-10"></div>
+                    <div className="rounded-full bg-white pl-5 pr-20 w-full">
+                        <input
+                            type="text"
+                            className="rounded-none border-0 py-3 w-full outline-0 text-black bg-white"
+                            placeholder="Tìm kiếm sản phẩm"
+                            onChange={(e) => setOnSearch(e.target.value)}
+                            value={onSearch}
+                        />
+                    </div>
                 </div>
                 <div className="absolute bg-black hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer transition-all">
                     <GoSearch className="text-white" />
