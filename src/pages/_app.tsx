@@ -9,18 +9,19 @@ import store from "../redux/store";
 import Header from './head';
 import axios from "axios";
 
+const token = typeof window != 'undefined' ? localStorage.getItem("token") : null;
+
 axios.defaults.baseURL = "https://l3mshop.onrender.com";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["Accept"] = "application/json";
 axios.defaults.withCredentials = true;
-// axios.defaults.headers.common["Authorization"] =
-//   "Bearer " + localStorage.getItem("auth_token");
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + token;
 
-// axios.interceptors.request.use((config) => {
-//   const token = localStorage.getItem("auth_token");
-//   config.headers.Authorization = token ? `Bearer ${token}` : "";
-//   return config;
-// });
+axios.interceptors.request.use((config) => {
+  config.headers.Authorization = token ? `Bearer ${token}` : "";
+  return config;
+});
 
 const queryClient = new QueryClient();
 type ComponentWithPageLayout = AppProps & {
