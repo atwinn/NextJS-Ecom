@@ -6,12 +6,23 @@ export interface IButton1Props {
   title?: string;
   icon?: React.ReactNode;
   red?: boolean;
+  delete1?: any
 }
-export default function ButtonToolTip({ title, icon, red }: IButton1Props) {
+export default function ButtonToolTip({ title, icon, red, delete1 }: IButton1Props) {
   const dispatch = useDispatch();
-  const confirm = () => {
+  
+  const confirm = (delete1:any) => {
+    console.log(delete1);
+    
     message.success("Xóa thành công");
+
   };
+  const handleOnClick = (e:any) => {
+    console.log(e);
+    
+    dispatch(openModal())
+    
+  }
   return (
     <>
       {red ? (
@@ -25,8 +36,10 @@ export default function ButtonToolTip({ title, icon, red }: IButton1Props) {
             cancelText="No"
             okType="danger"
             showCancel={false}
+            
           >
             <Button
+              onClick={delete1}
               danger
               className="flex justify-center items-center"
               shape="circle"
@@ -37,7 +50,7 @@ export default function ButtonToolTip({ title, icon, red }: IButton1Props) {
       ) : (
         <Tooltip title={title}>
           <Button
-            onClick={() => dispatch(openModal())}
+            onClick={handleOnClick}
             className="flex justify-center items-center"
             shape="circle"
             icon={icon}
