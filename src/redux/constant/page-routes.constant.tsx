@@ -57,4 +57,12 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/page-admin/ncc-nsx/view",
         title: 'Phiếu nhập',
     },
+    redirectLogin: {
+        route: "/auth/redirect",
+        title: 'Chuyển hướng...',
+    },
+    confirmPass: {
+        route: "/auth/confirm-pass",
+        title: 'Đặt lại mật khẩu',
+    },
 };

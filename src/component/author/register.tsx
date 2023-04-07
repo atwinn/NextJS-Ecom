@@ -70,12 +70,6 @@ const Register: React.FC = () => {
           content: 'Đăng ký thành công',
         });
       }
-      // else if (res.error.status === 400) {
-      // messageApi.open({
-      //     type: 'error',
-      //     content: res.error.message,
-      //   });
-      // }
     })
   };
 

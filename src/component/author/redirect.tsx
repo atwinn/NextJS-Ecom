@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
 import { useRouter } from 'next/router';
