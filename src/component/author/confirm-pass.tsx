@@ -46,14 +46,12 @@ const CP: React.FC = () => {
         }
 
         axios.post('/api/auth/reset-password', data).then((res: any) => {
-            if (res.stats === 200) {
+            if (res.status === 200) {
                 messageApi.open({
                     type: 'success',
                     content: 'Đặt lại mật khẩu thành công',
                 });
-                setTimeout(() => {
-                    push("/auth/login")
-                }, 1000)
+                push("/auth/login")
             }
         }
         )
