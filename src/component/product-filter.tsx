@@ -22,6 +22,7 @@ const UserProdFilter: React.FC = () => {
                     defaultValue={[0, 100000000]}
                     max={100000000}
                     className='mr-7'
+                    trackStyle={{ backgroundColor: "#000" }}
                 />
                 <Checkbox.Group style={{ width: '100%' }}>
                     <Row>

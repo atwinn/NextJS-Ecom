@@ -14,9 +14,11 @@ import { deleteCookie } from "../../../cookies";
 import { useRouter } from "next/navigation";
 import { clearUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
+import { Category } from "./category";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
+const CartCss = "hover:bg-slate-300/50 py-3 px-4 rounded-full transition-all cursor-pointer"
 
 export const Left = () => {
     return (
@@ -25,10 +27,12 @@ export const Left = () => {
                 <div className="rounded-full cursor-pointer">
                     <Link href={"/"}><Image src={logo} alt="" height={70} /></Link>
                 </div>
-                <div className={buttonContainer}>
-                    <FaLayerGroup className="text-[17px]" />
-                    <p className={NavButtonCss}>Danh mục</p>
-                </div>
+                <Category>
+                    <div className={buttonContainer}>
+                        <FaLayerGroup className="text-[17px]" />
+                        <p className={NavButtonCss}>Danh mục</p>
+                    </div>
+                </Category>
                 <Link href={pageRoutes.sanPhamUser.route} className={buttonContainer}>
                     <BsLaptop className="text-[20px]" />
                     <p className={NavButtonCss}>Sản Phẩm</p>
@@ -56,15 +60,17 @@ export const Right = () => {
             <div className="flex items-center gap-x-2">
                 {userAuth != null ? (
                     <>
-                        <div className={buttonContainer}>
-                            <TfiPencilAlt className="text-[20px]" />
-                            <p className={NavButtonCss}>{userAuth}</p>
-                        </div>
+                        <Category>
+                            <div className={buttonContainer}>
+                                <TfiPencilAlt className="text-[20px]" />
+                                <p className={NavButtonCss}>{userAuth}</p>
+                            </div>
+                        </Category>
                         <div className={buttonContainer} onClick={handleLogout}>
                             <VscSignOut className="text-[21px]" />
                             <p className={NavButtonCss}>Đăng Xuất</p>
                         </div>
-                        <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
+                        <div className={CartCss}>
                             <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
                         </div>
                     </>
@@ -82,7 +88,7 @@ export const Right = () => {
                                 <p className={NavButtonCss}>Đăng nhập</p>
                             </div>
                         </Link>
-                        <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
+                        <div className={CartCss}>
                             <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
                         </div>
                     </>
