@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/logoL3M.png";
 import { FaLayerGroup } from "react-icons/fa";
-import { HiUserGroup } from "react-icons/hi";
+import { VscSignIn, VscSignOut } from "react-icons/vsc";
 import { GoSearch } from "react-icons/go";
-import { MdLogin, MdLogout } from "react-icons/md"
+import { TfiPencilAlt } from "react-icons/tfi"
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BsLaptop } from "react-icons/bs"
 import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +16,7 @@ import { clearUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
-const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-[#06529a] px-3 rounded-full transition-all cursor-pointer hover:text-white";
+const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
 
 export const Left = () => {
     return (
@@ -26,11 +27,11 @@ export const Left = () => {
                 </div>
                 <div className={buttonContainer}>
                     <FaLayerGroup className="text-[17px]" />
-                    <p className={NavButtonCss}>Sections</p>
+                    <p className={NavButtonCss}>Danh mục</p>
                 </div>
                 <Link href={pageRoutes.sanPhamUser.route} className={buttonContainer}>
-                    <HiUserGroup className="text-[20px]" />
-                    <p className={NavButtonCss}>Partners</p>
+                    <BsLaptop className="text-[20px]" />
+                    <p className={NavButtonCss}>Sản Phẩm</p>
                 </Link>
             </div>
         </>
@@ -38,11 +39,13 @@ export const Left = () => {
 };
 
 export const Right = () => {
-    const user = useSelector((state: any) => state.user)
+    // const user = useSelector((state: any) => state.user)
+    const userAuth = typeof window != 'undefined' ? localStorage.getItem("username") : null
     const dispatch = useDispatch()
     const { push } = useRouter()
     const handleLogout = () => {
         localStorage.removeItem("username")
+        localStorage.removeItem("id")
         deleteCookie("token")
         push("/sanpham")
         dispatch(clearUser())
@@ -51,15 +54,15 @@ export const Right = () => {
         <>
             {/* Right */}
             <div className="flex items-center gap-x-2">
-                {user.username != "" ? (
+                {userAuth != null ? (
                     <>
                         <div className={buttonContainer}>
-                            <MdLogin className="text-[21px] rotate-90" />
-                            <p className={NavButtonCss}>{user.username}</p>
+                            <TfiPencilAlt className="text-[20px]" />
+                            <p className={NavButtonCss}>{userAuth}</p>
                         </div>
                         <div className={buttonContainer} onClick={handleLogout}>
-                            <MdLogout className="text-[20px] -rotate-90" />
-                            <p className={NavButtonCss}>Sign out</p>
+                            <VscSignOut className="text-[21px]" />
+                            <p className={NavButtonCss}>Đăng Xuất</p>
                         </div>
                         <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
                             <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
@@ -67,14 +70,16 @@ export const Right = () => {
                     </>
                 ) : (
                     <>
-                        <div className={buttonContainer}>
-                            <MdLogin className="text-[21px] rotate-90" />
-                            <p className={NavButtonCss}>Register</p>
-                        </div>
+                        <Link href={"/auth/register"}>
+                            <div className={buttonContainer}>
+                                <TfiPencilAlt className="text-[20px]" />
+                                <p className={NavButtonCss}>Đăng ký</p>
+                            </div>
+                        </Link>
                         <Link href={"/auth/login"}>
                             <div className={buttonContainer}>
-                                <MdLogout className="text-[20px] -rotate-90" />
-                                <p className={NavButtonCss}>Sign in</p>
+                                <VscSignIn className="text-[21px]" />
+                                <p className={NavButtonCss}>Đăng nhập</p>
                             </div>
                         </Link>
                         <div className="hover:bg-[#06529a] py-3 px-4 rounded-full transition-all cursor-pointer">
@@ -113,8 +118,8 @@ export const Middle = () => {
                     />
                     <div className="rounded-r-full bg-white py-2.5 pr-5 pl-16 h-10"></div>
                 </div>
-                <div className="absolute bg-[#ffc220] hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer">
-                    <GoSearch className="text-black" />
+                <div className="absolute bg-black hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer transition-all">
+                    <GoSearch className="text-white" />
                 </div>
                 {show ?
                     <div className="absolute right-12 hover:bg-slate-300/50 rounded-full px-1.5 py-1 cursor-pointer" onClick={() => setOnSearch("")}>

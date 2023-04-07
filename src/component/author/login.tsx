@@ -45,6 +45,7 @@ const App: React.FC = () => {
     axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
       if (res.status === 200) {
         localStorage.setItem("username", res.data.user.username)
+        localStorage.setItem("id", res.data.user.id)
         setCookie("token", res.data.jwt)
         dispatch(setUser(res.data.user));
         push("/sanpham")
