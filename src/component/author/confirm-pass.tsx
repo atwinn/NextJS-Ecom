@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 
 const { Title } = Typography;
 
@@ -34,11 +35,12 @@ const tailFormItemLayout = {
 const CP: React.FC = () => {
     const [form] = Form.useForm();
     const [messageApi, contextHolder] = message.useMessage();
+    const searchParams = useSearchParams();
+    const resetCode = searchParams.get("code");
+    const { push } = useRouter()
 
     const onFinish = (values: any) => {
-        const { push } = useRouter()
-        const searchParams = new URLSearchParams(window.location.search);
-        const resetCode = searchParams.get("code");
+
         const data = {
             code: resetCode,
             password: values.password,
@@ -51,7 +53,9 @@ const CP: React.FC = () => {
                     type: 'success',
                     content: 'Đặt lại mật khẩu thành công',
                 });
-                push("/auth/login")
+                setTimeout(() => {
+                    push("/auth/login")
+                }, 1000)
             }
         }
         )
