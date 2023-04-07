@@ -63,7 +63,7 @@ const Register: React.FC = () => {
       password: values.password,
     }
 
-    axios.post('/api/register-with-customer', data).then((res: any) => {
+    axios.post('/api/auth/local/register', data).then((res: any) => {
       if (res.status === 200) {
         messageApi.open({
           type: 'success',
@@ -80,7 +80,7 @@ const Register: React.FC = () => {
 
       <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
         <Card bordered={false} >
-          <Title level={2} className='text-center'>Register</Title>
+          <Title level={2} className='text-center'>Đăng ký</Title>
           <Form
             {...formItemLayout}
             form={form}
@@ -126,7 +126,7 @@ const Register: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: 'Vui lòng nhập mật khẩu!',
                 },
               ]}
               hasFeedback
@@ -142,7 +142,7 @@ const Register: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: 'Vui lòng nhập lại mật khẩu!',
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
