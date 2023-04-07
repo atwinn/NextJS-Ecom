@@ -2,6 +2,7 @@ import { Button, Form, Input, Card, message } from 'antd';
 import React, { useState } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const { Title } = Typography;
 
@@ -35,6 +36,7 @@ const CP: React.FC = () => {
     const [messageApi, contextHolder] = message.useMessage();
 
     const onFinish = (values: any) => {
+        const { push } = useRouter()
         const searchParams = new URLSearchParams(window.location.search);
         const resetCode = searchParams.get("code");
         const data = {
@@ -44,10 +46,15 @@ const CP: React.FC = () => {
         }
 
         axios.post('/api/auth/reset-password', data).then((res: any) => {
-            messageApi.open({
-                type: 'success',
-                content: 'Đặt lại mật khẩu thành công',
-            });
+            if (res.stats === 200) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Đặt lại mật khẩu thành công',
+                });
+                setTimeout(() => {
+                    push("/auth/login")
+                }, 1000)
+            }
         }
         )
     };
