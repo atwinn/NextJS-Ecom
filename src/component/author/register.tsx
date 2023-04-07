@@ -70,12 +70,6 @@ const Register: React.FC = () => {
           content: 'Đăng ký thành công',
         });
       }
-      // else if (res.error.status === 400) {
-      // messageApi.open({
-      //     type: 'error',
-      //     content: res.error.message,
-      //   });
-      // }
     })
   };
 
@@ -86,7 +80,7 @@ const Register: React.FC = () => {
 
       <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
         <Card bordered={false} >
-          <Title level={2} className='text-center'>Register</Title>
+          <Title level={2} className='text-center'>Đăng ký</Title>
           <Form
             {...formItemLayout}
             form={form}
@@ -132,7 +126,7 @@ const Register: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: 'Vui lòng nhập mật khẩu!',
                 },
               ]}
               hasFeedback
@@ -148,7 +142,7 @@ const Register: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please confirm your password!',
+                  message: 'Vui lòng nhập lại mật khẩu!',
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {

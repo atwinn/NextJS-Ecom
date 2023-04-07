@@ -5,6 +5,7 @@ import ProdFilter from '../../../component/product/prodfilter';
 import TitleAndAction from '../../../component/product/title-action'
 import ProdTable from '../../../component/product/prodtable';
 import Divider1 from '@/component/devider';
+// import withAuth from '@/component/author/withAuth';
 
 export interface IQLSanPhamProps {
 }
@@ -21,4 +22,5 @@ export default function QLSanPham(props: IQLSanPhamProps) {
     </div>
   );
 }
+// export default withAuth(QLSanPham)
 QLSanPham.PageLayout = LayoutManager

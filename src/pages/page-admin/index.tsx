@@ -1,6 +1,7 @@
 import React from "react";
 import { LayoutManager } from "@/layout/layoutAdmin";
 import Dashboard from "@/local-page/admin/dashboard";
+// import withAuth from "@/component/author/withAuth";
 const PageAdmin = () => {
   return (
     <>
@@ -8,5 +9,6 @@ const PageAdmin = () => {
     </>
   );
 };
-PageAdmin.PageLayout = LayoutManager;
 export default PageAdmin;
+PageAdmin.PageLayout = LayoutManager;
+
