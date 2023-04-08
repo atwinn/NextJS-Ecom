@@ -55,6 +55,7 @@ export const Right = () => {
     const { push } = useRouter()
     const handleLogout = () => {
         localStorage.removeItem("username")
+        setUserAuth("")
         localStorage.removeItem("id")
         deleteCookie("token")
         push("/")
@@ -64,7 +65,7 @@ export const Right = () => {
         <>
             {/* Right */}
             <div className="flex items-center gap-x-2">
-                {userAuth != null ? (
+                {userAuth != "" ? (
                     <>
                         <Category>
                             <div className={buttonContainer}>
