@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCookie } from "../../../cookies";
 import { useRouter } from "next/navigation";
-import { clearUser } from "@/redux/userSlice";
+import { clearUser, setUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category } from "./category";
 
@@ -45,7 +45,12 @@ export const Left = () => {
 
 export const Right = () => {
     // const user = useSelector((state: any) => state.user)
-    const userAuth = typeof window != 'undefined' ? localStorage.getItem("username") : null
+    const [userAuth, setUserAuth] = useState("")
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("username");
+        setUserAuth(storedUsername || ""); // Set userAuth to an empty string if storedUsername is null or undefined
+    }, []);
+    // const userAuth = typeof window != 'undefined' ? localStorage.getItem("username") : null
     const dispatch = useDispatch()
     const { push } = useRouter()
     const handleLogout = () => {

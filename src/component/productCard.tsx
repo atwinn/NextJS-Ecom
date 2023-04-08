@@ -15,19 +15,41 @@ const ProdCard = (props: ProductData) => {
     const [messageApi, contextHolder] = message.useMessage();
     const prodId = props.id
     const userId = typeof window != 'undefined' ? localStorage.getItem("id") : null
-    const handleAddToCart = () => {
+
+    const handleAddToCart = async () => {
         const data = {
-            soLuongSP: 1,
-            product: prodId,
-            khach_hang: userId
+            data: {
+                soLuongSP: 2,
+                product: prodId,
+                khach_hang: userId,
+            }
         }
-        axios.post("/api/addtocart", data).then(res => {
-            messageApi.open({
-                type: 'success',
-                content: 'Thêm vào giỏ hàng thành công',
-            });
-        })
+        try {
+            const res = await axios.post("/api/addtocart", data)
+            if (res.status === 200) {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Thêm vào giỏ hàng thành công',
+                });
+            }
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
+                if (error.response.status === 500) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
+            }
+        }
     }
+
     return (
         <>
             {contextHolder}
