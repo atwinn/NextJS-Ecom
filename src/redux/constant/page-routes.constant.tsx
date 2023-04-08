@@ -65,4 +65,8 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/auth/confirm-pass",
         title: 'Đặt lại mật khẩu',
     },
+    cart: {
+        route: "/cart",
+        title: 'Giỏ hàng',
+    },
 };

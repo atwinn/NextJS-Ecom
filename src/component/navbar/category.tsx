@@ -20,7 +20,6 @@ export const Category = ({ children }: CategoryProps) => {
     const [categoryData, setCategoryData] = useState<Category[]>([])
     useEffect(() => {
         axios.get("/api/loaisps").then(res => {
-            console.log(res);
             setCategoryData(res.data.data)
         })
     }, [])

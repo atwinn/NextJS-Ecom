@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
-import { Col, Pagination, Row } from 'antd'
+import { Col, Pagination, Row, message } from 'antd'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
 
@@ -36,6 +36,7 @@ const UserProduct = () => {
                                     name={item.attributes.tenSP}
                                     price={item.attributes.gia}
                                     image="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                    id={item.id}
                                 />
                             </Col>
                         ))

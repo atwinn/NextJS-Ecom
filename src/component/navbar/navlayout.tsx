@@ -18,7 +18,7 @@ import { Category } from "./category";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
-const CartCss = "hover:bg-slate-300/50 py-3 px-4 rounded-full transition-all cursor-pointer"
+const CartCss = "hover:bg-slate-300/50 py-3 px-4 rounded-full transition-all cursor-pointer hover:text-white"
 
 export const Left = () => {
     return (
@@ -71,9 +71,11 @@ export const Right = () => {
                             <VscSignOut className="text-[21px]" />
                             <p className={NavButtonCss}>Đăng Xuất</p>
                         </div>
-                        <div className={CartCss}>
-                            <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
-                        </div>
+                        <Link href={"/cart"}>
+                            <div className={CartCss}>
+                                <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                            </div>
+                        </Link>
                     </>
                 ) : (
                     <>
@@ -89,9 +91,11 @@ export const Right = () => {
                                 <p className={NavButtonCss}>Đăng nhập</p>
                             </div>
                         </Link>
-                        <div className={CartCss}>
-                            <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
-                        </div>
+                        <Link href={"/cart"}>
+                            <div className={CartCss}>
+                                <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                            </div>
+                        </Link>
                     </>
                 )
                 }
