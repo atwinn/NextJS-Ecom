@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Divider1 from "@/component/devider";
@@ -61,25 +61,41 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Action",
     key: "action",
-    render: (_, record:any) => {
-      let id = record.id
-    const dispatch = useDispatch();
-
-      const confirm = async () => {
+    render: (_, record: any) => {
+      let id = record.id;
+      const dispatch = useDispatch<AppDispatch>();
+      const confirm =  () => {
         // console.log(record.id);
-          try {
-            const response = await axios.delete(`https://l3mshop.onrender.com/api/nhan-viens/${id}`);
+        // setConfirmLoading(true)
+         axios
+          .delete(`https://l3mshop.onrender.com/api/nhan-viens/${id}`)
+          .then(function (response) {
+            dispatch(fetchEmployees());
             message.success("Xóa thành công");
-            console.log(response.data);
-          } catch (error) {
-            console.log(error);
+            // console.log(response);
+          })
+          .catch(function (error) {
             message.error("Xóa không thành công");
-          }
+            // console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+        // try {
+        //   const response = await axios.delete(
+        //     `https://l3mshop.onrender.com/api/nhan-viens/${id}`
+        //   );
+         
+        //   // console.log(response);
+        // } catch (error) {
+        //   console.log(error);
+        //   message.error("Xóa không thành công");
+        // }
       };
       const handleChange = async () => {
         // console.log(record);
-        dispatch(openModal())
-        dispatch(addModalEmployee(record))
+        dispatch(openModal());
+        dispatch(addModalEmployee(record));
         // try {
         //   const response = await axios.put(`https://l3mshop.onrender.com/api/nhan-viens/${id}`);
         //   console.log(response.data);
@@ -87,52 +103,49 @@ const columns: ColumnsType<DataType> = [
         //   console.log(error);
         //   // message.error("Xóa không thành công");
         // }
-      }
+      };
       return (
-      <>
-        <Space wrap>
-        <Tooltip title={"Sửa"}>
-          <Button
-            onClick={handleChange}
-            className="flex justify-center items-center"
-            shape="circle"
-            icon={<EditOutlined/>}
-          />
-        </Tooltip>
-          <Tooltip title={"Xóa"}>
-          <Popconfirm
-            placement="top"
-            title={"Xóa"}
-            description={"bạn có chắc chắn không?"}
-            onConfirm={confirm}
-            okText="Yes"
-            cancelText="No"
-            okType="danger"
-            showCancel={false}
-            
-          >
-            <Button
-              danger
-              className="flex justify-center items-center"
-              shape="circle"
-              icon={<CloseOutlined/>}
-            />
-          </Popconfirm>
-        </Tooltip>
-        </Space>
-      </>
-      )
-      
-      },
+        <>
+          <Space wrap>
+            <Tooltip title={"Sửa"}>
+              <Button
+                onClick={handleChange}
+                className="flex justify-center items-center"
+                shape="circle"
+                icon={<EditOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title={"Xóa"}>
+              <Popconfirm
+                placement="top"
+                title={"Xóa"}
+                description={"bạn có chắc chắn không?"}
+                onConfirm={confirm}
+                okText="Yes"
+                okType="danger"
+                showCancel={false}
+              >
+                <Button
+                  danger
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<CloseOutlined />}
+                />
+              </Popconfirm>
+            </Tooltip>
+          </Space>
+        </>
+      );
+    },
   },
 ];
 const App: React.FC = () => {
+
   const { isOpen } = useSelector((store: any) => store.modal);
   const employees1 = useSelector(selectEmployees);
   const status = useSelector(selectEmployeesStatus);
   const error = useSelector(selectEmployeesError);
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
     dispatch(fetchEmployees());
   }, [dispatch]);
@@ -157,7 +170,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      {isOpen && <Modal1  title="Chỉnh sửa nhân viên"><UpdateEmployee/></Modal1>}
+      {isOpen && (
+        <Modal1 title="Chỉnh sửa nhân viên">
+          <UpdateEmployee />
+        </Modal1>
+      )}
       <Divider1 name={pageRoutes.nhanVien.title} />
       <InputInfor />
       <Divider1 name={"Danh sách nhân viên"} />

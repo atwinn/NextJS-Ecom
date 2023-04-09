@@ -14,13 +14,20 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
 import moment from "moment";
+import { AppDispatch } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { fetchEmployees } from "@/redux/employeeSlide";
+import { closeModal } from "@/redux/modalSlide";
 const { TextArea } = Input;
 type SizeType = Parameters<typeof Form>[0]["size"];
 
 const UpdateEmployee: React.FC = () => {
-    const { employeesId } = useSelector((store: any) => store.employees);
-  const [date1, setDate1] = useState(moment(employeesId.ngaySinh).format("YYYY-MM-DD"));
+  const { employeesId } = useSelector((store: any) => store.employees);
+  const [date1, setDate1] = useState(
+    moment(employeesId.ngaySinh).format("YYYY-MM-DD")
+  );
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [componentSize, setComponentSize] = useState<SizeType | "default">(
     "default"
@@ -34,30 +41,29 @@ const UpdateEmployee: React.FC = () => {
   const onFormLayoutChange = ({ size }: { size: SizeType }) => {
     setComponentSize(size);
   };
-  let ngaySinh = employeesId.ngaySinh;
-  //   console.log(ngaySinh);
-//   console.log(moment(ngaySinh).format("YYYY/MM/DD"));
+  let ngaySinh: string = employeesId.ngaySinh;
+  // console.log(ngaySinh);
+  // console.log(date1);
 
   const onFinish = (values: any) => {
     const key = "updatable";
     const id = employeesId.id;
     values.ngaySinh = date1;
     console.log(values);
-    
+
     axios
       .put(`/api/nhan-viens/${id}`, { data: values })
       .then(function (response) {
         console.log(response);
-        {
-          response.status == 200
-            ? messageApi.open({
-                key,
-                type: "success",
-                content: "Chỉnh sửa nhân viên thành công",
-                duration: 2,
-              })
-            : "lỗi";
-        }
+        dispatch(fetchEmployees());
+        response.status == 200
+          ? messageApi.open({
+              key,
+              type: "success",
+              content: "Chỉnh sửa nhân viên thành công",
+              duration: 2,
+            })
+          : null;
       })
       .catch(function (error) {
         messageApi.open({
@@ -116,12 +122,16 @@ const UpdateEmployee: React.FC = () => {
         </Form.Item>
 
         <Form.Item
-          // name={"ngaySinh"}
+          name={"ngaySinh"}
           label="Năm sinh"
           rules={[{ required: true, message: "Vui lòng chọn ngày sinh!" }]}
           labelAlign="left"
+          valuePropName={"date"}
         >
-          <DatePicker defaultValue={dayjs(ngaySinh)} onChange={handleChangedate} />
+          <DatePicker
+            defaultValue={dayjs(ngaySinh)}
+            onChange={handleChangedate}
+          />
         </Form.Item>
         <Form.Item
           name={"gioiTinh"}

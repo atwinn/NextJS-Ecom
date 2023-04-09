@@ -15,6 +15,8 @@ import type { DatePickerProps } from "antd";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
+import { fetchEmployees } from "@/redux/employeeSlide";
+import { AppDispatch } from "@/redux/store";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -39,6 +41,7 @@ const validateMessages = {
 const style: React.CSSProperties = { margin: "8px 16px" };
 const InputInfor: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useDispatch<AppDispatch>();
   const key = "updatable";
   const [form] = Form.useForm();
   const [date1, setDate1] = useState("");
@@ -48,22 +51,21 @@ const InputInfor: React.FC = () => {
       .post(API_EMPLOYEE, { data: values })
       .then(function (response) {
         console.log(response);
-        {
-          response.status == 200
-            ? messageApi.open({
-                key,
-                type: "success",
-                content: "Thêm nhân viên thành công",
-                duration: 2,
-              })
-            : "lỗi";
-        }
+        response.status == 200
+          ? messageApi.open({
+              key,
+              type: "success",
+              content: "Thêm nhân viên thành công",
+              duration: 2,
+            })
+          : "lỗi";
+       dispatch(fetchEmployees());
       })
       .catch(function (error) {
         messageApi.open({
           key,
-          type: 'error',
-          content: 'Thêm không thành công',
+          type: "error",
+          content: "Thêm không thành công",
           duration: 2,
         });
         console.log(error);
