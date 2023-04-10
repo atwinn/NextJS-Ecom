@@ -9,11 +9,7 @@ const AddAccount: React.FC = () => {
   const { employeesId } = useSelector((store: any) => store.employees);
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   const onFinish = (values: any) => {
-    // console.log("Success:", delete values.comfirm);
     const validateError = "This attribute must be unique";
     setLoading(true);
     delete values.confirm;
@@ -50,7 +46,6 @@ const AddAccount: React.FC = () => {
       initialValues={{ maNV: employeesId.id }}
       style={{ maxWidth: 600 }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item label="Mã nhân viên" name="maNV">
@@ -74,11 +69,11 @@ const AddAccount: React.FC = () => {
         rules={[
           {
             type: "email",
-            message: "The input is not valid E-mail!",
+            message: "Email không hợp lệ!",
           },
           {
             required: true,
-            message: "Please input your E-mail!",
+            message: "Hãy nhập E-mail!",
           },
         ]}
       >
@@ -87,7 +82,7 @@ const AddAccount: React.FC = () => {
       <Form.Item
         label="Password"
         name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
+        rules={[{ required: true, message: "Hãy nhập password!" }]}
         hasFeedback
       >
         <Input.Password />
@@ -101,7 +96,7 @@ const AddAccount: React.FC = () => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: "Hãy xác nhận lại password!",
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -109,7 +104,7 @@ const AddAccount: React.FC = () => {
                 return Promise.resolve();
               }
               return Promise.reject(
-                new Error("The two passwords that you entered do not match!")
+                new Error("Password không trùng khớp!")
               );
             },
           }),
@@ -121,7 +116,7 @@ const AddAccount: React.FC = () => {
         hasFeedback
         label="Role"
         name={["role", "id"]}
-        rules={[{ required: true, message: "Please input role',!" }]}
+        rules={[{ required: true, message: "Hãy nhập chức vụ!" }]}
       >
         <Select
           // defaultValue="3"

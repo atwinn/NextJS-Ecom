@@ -136,9 +136,10 @@ const InputInfor: React.FC = () => {
                 // name={"ngaySinh"}
                 label="Năm sinh"
                 rules={[
-                  { required: true, message: "Vui lòng chọn ngày sinh!" },
+                  { required: true, message: "Vui lòng chọn ngày sinh!" }
                 ]}
                 labelAlign="left"
+                required
               >
                 <DatePicker onChange={handleChangedate} />
               </Form.Item>
@@ -167,13 +168,13 @@ const InputInfor: React.FC = () => {
               >
                 <TextArea allowClear />
               </Form.Item>
-              <Space className="flex justify-end">
+              <Space className="flex justify-center">
                 <Button
                   type="primary"
                   style={{ backgroundColor: "#1890ff" }}
                   htmlType="submit"
                 >
-                  Thêm
+                  Thêm nhân viên
                 </Button>
               </Space>
             </Col>

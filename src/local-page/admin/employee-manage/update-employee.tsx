@@ -103,6 +103,7 @@ const UpdateEmployee: React.FC = () => {
             { min: 3, message: "Tên nhân viên phải có ít nhất 3 ký tự!" },
           ]}
           labelAlign="left"
+          hasFeedback
         >
           <Input />
         </Form.Item>
@@ -117,6 +118,7 @@ const UpdateEmployee: React.FC = () => {
               message: "Số điện thoại phải có 10 chữ số!",
             },
           ]}
+          hasFeedback
         >
           <Input />
         </Form.Item>
@@ -127,6 +129,7 @@ const UpdateEmployee: React.FC = () => {
           rules={[{ required: true, message: "Vui lòng chọn ngày sinh!" }]}
           labelAlign="left"
           valuePropName={"date"}
+          hasFeedback
         >
           <DatePicker
             defaultValue={dayjs(ngaySinh)}
@@ -138,6 +141,7 @@ const UpdateEmployee: React.FC = () => {
           label="Giới tính"
           labelAlign="left"
           rules={[{ required: true, message: "Vui lòng chọn giới tính!" }]}
+          hasFeedback
         >
           <Select
             style={{ width: 120 }}
@@ -160,6 +164,7 @@ const UpdateEmployee: React.FC = () => {
           label="Địa chỉ"
           labelAlign="left"
           rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
+          hasFeedback
         >
           <TextArea allowClear />
         </Form.Item>

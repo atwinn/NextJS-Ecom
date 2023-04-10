@@ -157,7 +157,6 @@ const App: React.FC = () => {
   };
   const array = employees1.data;
   // console.log(array);
-
   let result;
   array
     ? (result = array.map((item: any) => {
@@ -172,6 +171,7 @@ const App: React.FC = () => {
         };
       }))
     : null;
+
   return (
     <>
       {isOpen &&
