@@ -61,10 +61,14 @@ const CartTable = () => {
     })
 
     useEffect(() => {
-        axios.get(`/api/dscart?id_kh=${userId}`).then(res => {
-            setCartData(res.data)
-            console.log(res);
-        })
+        try {
+            axios.get(`/api/dscart?id_kh=${userId}`).then(res => {
+                setCartData(res.data)
+                console.log(res);
+            })
+        } catch (error) {
+
+        }
     }, [])
 
     return (

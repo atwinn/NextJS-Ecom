@@ -69,4 +69,8 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/cart",
         title: 'Giỏ hàng',
     },
+    detailProduct: {
+        route: "/detail-product",
+        title: 'Chi tiết sản phẩm',
+    },
 };

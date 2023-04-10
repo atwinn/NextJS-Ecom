@@ -2,6 +2,7 @@ import React from 'react';
 import { EditOutlined, ArrowRightOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Card, message } from 'antd';
 import axios from 'axios';
+import Link from 'next/link';
 
 const { Meta } = Card;
 interface ProductData {
@@ -63,7 +64,9 @@ const ProdCard = (props: ProductData) => {
                 }
                 actions={[
                     <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />,
-                    <ArrowRightOutlined key="arrow" />,
+                    <Link href={"/detail-product"}>
+                        <ArrowRightOutlined key="arrow" />,
+                    </Link>
                 ]}
             >
                 <Meta
