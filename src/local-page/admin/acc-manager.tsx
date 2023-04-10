@@ -9,112 +9,80 @@ import { useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { currModal, openModal } from '@/redux/modalSlide';
+import { AppDispatch } from '@/redux/store';
+import { fetchAccountEmployees } from '@/redux/accountSlide';
 interface DataType {
-    key: string;
-    name: string;
-    age: number;
-    address: string;
-    tags: string[];
+  username:string,
+  email:string,
+    blocked: boolean
   }
   
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      responsive: ['md'],
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      responsive: ['md'],
-
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      responsive: ['md'],
-
-    },
-    {
-      title: "Tags",
-      key: "tags",
-      dataIndex: "tags",
-      responsive: ['md'],
-
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      responsive: ['md'],
-
-      render: (_, record) => (
-        <>
-          <Space wrap>
-            <ButtonToolTip title="Sửa" icon={<EditOutlined />} />
-            <ButtonToolTip title="Xóa" icon={<CloseOutlined />} red={true} />
-          </Space>
-        </>
-      ),
-    },
-  ];
   
-const data: DataType[] = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
+  export default function AccountManager () {
+    
+    const { isOpen } = useSelector((store: any) => store.modal);
+    const { accEmployees } = useSelector((store: any) => store.accEmployees);
+    const dispatch = useDispatch<AppDispatch>() 
+    const addAcc = () => {
+      dispatch(openModal())
+    }
+    React.useEffect(() => {
+      dispatch(fetchAccountEmployees())
+    },[dispatch])
+    console.log(accEmployees[0].blocked);
+    const columns: ColumnsType<DataType> = [
+      {
+        title: "Usename",
+        dataIndex: "username",
+        key: "username",
+        responsive: ['md'],
+      },
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        responsive: ['md'],
+  
+      },
+      {
+        title: "Tình trạng",
+        dataIndex: "blocked",
+        key: "blocked",
+        responsive: ['md'],
+        render: (_, record) => {
+          // console.log(record.blocked);
+          const statusBlocked = record.blocked;
+          return(
+            <>
+              {statusBlocked ? <Tag color="red" >ĐÃ KHÓA</Tag>: <Tag color="blue">KHÔNG KHÓA</Tag>}
+            </>
+          )
+        }
+          
+          
+        
       
-      tags: ["cool", "teacher"],
-    },
-  ];
-export default function AccountManager () {
-  const { isOpen,curModal } = useSelector((store: any) => store.modal);
-  const dispatch = useDispatch() 
-  const addAcc = () => {
-    dispatch(currModal("2"))
-    dispatch(openModal())
-  }
-  return (
-    <>
-      {isOpen &&  <Modal1 title='Cập nhật tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>}
-      {isOpen && (curModal == "2" && <Modal1 title='thêm tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>) }
+      },
       
+      {
+        title: "Action",
+        key: "action",
+        responsive: ['md'],
+        render: (_, record) => (
+          <>
+            <Space wrap>
+              <ButtonToolTip title="Sửa" icon={<EditOutlined />} />
+              <ButtonToolTip title="Xóa" icon={<CloseOutlined />} red={true} />
+            </Space>
+          </>
+        ),
+      },
+    ];
+    return (
+      <>
+      {isOpen && <Modal1 title='Cập nhật tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>}
       <Divider1 name='Quản lý Tài khoản'/>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={accEmployees} />
 
     </>
   );

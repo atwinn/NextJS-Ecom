@@ -7,6 +7,7 @@ import modalSlice from './modalSlide'
 import userSlice from './userSlice'
 import tableSlice from './tableSlice'
 import employeeSlide from './employeeSlide'
+import accountSlide from './accountSlide'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -15,7 +16,8 @@ const store = configureStore({
     modal: modalSlice,
     user: userSlice,
     table: tableSlice,
-    employees: employeeSlide
+    employees: employeeSlide,
+    accEmployees: accountSlide
   },
 })
 
