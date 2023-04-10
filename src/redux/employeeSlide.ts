@@ -23,6 +23,7 @@ export const fetchEmployees = createAsyncThunk(
   "employees/fetchEmployees",
   async () => {
     const response = await axios.get(API_EMPLOYEE);
+    // console.log(response);
     return response.data;
   }
 );
@@ -32,7 +33,7 @@ const employeeSlice = createSlice({
   initialState,
   reducers: {
       addModalEmployee: (state,action) => {
-        console.log(action.payload);
+        // console.log(action.payload);
         state.employeesId = action.payload
       }
   },

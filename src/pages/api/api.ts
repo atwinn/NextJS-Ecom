@@ -1,1 +1,1 @@
-export const API_EMPLOYEE = "https://l3mshop.onrender.com/api/nhan-viens?sort=id:desc";
+export const API_EMPLOYEE = "https://l3mshop.onrender.com/api/nhan-viens?populate=*&sort=id:desc";

@@ -114,11 +114,6 @@ export default function AccountManager () {
       {isOpen && (curModal == "2" && <Modal1 title='thêm tài khoản'>cvzxciouzxcipzxcbcvb</Modal1>) }
       
       <Divider1 name='Quản lý Tài khoản'/>
-      <div className='m-4'>
-
-      <Button onClick={addAcc} type="primary">Cấp tài khoản</Button>
-
-      </div>
       <Table columns={columns} dataSource={data} />
 
     </>
