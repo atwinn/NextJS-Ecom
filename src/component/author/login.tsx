@@ -48,7 +48,7 @@ const App: React.FC = () => {
         localStorage.setItem("id", res.data.user.id)
         setCookie("token", res.data.jwt)
         dispatch(setUser(res.data.user));
-        // push("/sanpham")
+        push("/")
       }
     })
   };

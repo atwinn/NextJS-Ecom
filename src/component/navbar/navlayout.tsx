@@ -14,7 +14,7 @@ import { deleteCookie } from "../../../cookies";
 import { useRouter } from "next/navigation";
 import { clearUser, setUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
-import { Category } from "./category";
+import { Category, UserDropDown } from "./category";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
@@ -67,12 +67,12 @@ export const Right = () => {
             <div className="flex items-center gap-x-2">
                 {userAuth != "" ? (
                     <>
-                        <Category>
+                        <UserDropDown>
                             <div className={buttonContainer}>
                                 <TfiPencilAlt className="text-[20px]" />
                                 <p className={NavButtonCss}>{userAuth}</p>
                             </div>
-                        </Category>
+                        </UserDropDown>
                         <div className={buttonContainer} onClick={handleLogout}>
                             <VscSignOut className="text-[21px]" />
                             <p className={NavButtonCss}>Đăng Xuất</p>

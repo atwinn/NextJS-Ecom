@@ -43,3 +43,33 @@ export const Category = ({ children }: CategoryProps) => {
         </Dropdown>
     );
 }
+
+export const UserDropDown = ({ children }: CategoryProps) => {
+
+    const items: MenuProps['items'] = [
+        {
+            key: '1',
+            label: (
+                <Link href={pageRoutes.userInfo.route}>
+                    Cá Nhân
+                </Link>
+            ),
+        },
+        {
+            key: '2',
+            label: (
+                <Link href={pageRoutes.userInfo.route}>
+                    Gì đó
+                </Link>
+            ),
+        },
+    ]
+
+    return (
+        <Dropdown menu={{ items }}>
+            <a onClick={(e) => e.preventDefault()}>
+                {children}
+            </a>
+        </Dropdown>
+    );
+}

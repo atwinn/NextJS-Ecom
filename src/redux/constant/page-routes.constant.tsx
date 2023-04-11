@@ -73,4 +73,12 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/detail-product",
         title: 'Chi tiết sản phẩm',
     },
+    payment: {
+        route: "/payment",
+        title: 'Thanh toán',
+    },
+    userInfo: {
+        route: "/userinformation",
+        title: 'Thông tin cá nhân',
+    },
 };

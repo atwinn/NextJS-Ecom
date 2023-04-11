@@ -11,7 +11,7 @@ const UserProdFilter: React.FC = () => {
         100000000: '100000000'
     };
     return (
-        <div className='bg-white p-4 rounded-md border-2'>
+        <div className='bg-white p-4 rounded-md'>
             <Space direction="vertical" size="large" style={{ display: 'flex' }}>
                 <Title level={2}>
                     Bộ lọc sản phẩm
