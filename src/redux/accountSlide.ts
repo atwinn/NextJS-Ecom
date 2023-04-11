@@ -7,11 +7,13 @@ interface EmployeeState {
   accEmployees: any;
   status: "idle" | "loading" | "failed";
   error: string | null;
+  success: string
 }
 const initialState: EmployeeState = {
   accEmployees: [],
   status: "idle",
   error: null,
+  success: ""
 };
 
 export const fetchAccountEmployees = createAsyncThunk(
@@ -26,7 +28,11 @@ export const fetchAccountEmployees = createAsyncThunk(
 const accEmployeeSlice = createSlice({
   name: "accEmployees",
   initialState,
-  reducers: {},
+  reducers: {
+    checkSuccess: (state,action) => {
+      state.success = action.payload 
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAccountEmployees.pending, (state) => {
@@ -44,7 +50,7 @@ const accEmployeeSlice = createSlice({
       });
   },
 });
-export const {} = accEmployeeSlice.actions;
+export const {checkSuccess} = accEmployeeSlice.actions;
 
 export default accEmployeeSlice.reducer;
 export const selectAccEmployees = (state: RootState) =>
