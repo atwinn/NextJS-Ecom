@@ -1,89 +1,125 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import React, { useEffect } from "react";
+import { Space, Table, Tag, Tooltip, Button, Popconfirm, message } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import {
+  CloseOutlined,
+  EditOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { fetchNcc, updateNcc } from "@/redux/nccSlide";
+import Modal1 from "@/component/modal";
+import { useSelector } from "react-redux";
+import { openModal } from "@/redux/modalSlide";
+import UpdateNCCNSX from "./update-ncc-nsx";
 
 interface DataType {
+  title: string;
+  dataIndex: string;
   key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
+  render: any;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
+interface NCCType {
+  data: any;
+  loading: string;
+}
+const NCCTable = ({ data, loading }: NCCType) => {
+  const { isOpen } = useSelector((store: any) => store.modal);
+  const dispatch = useDispatch<AppDispatch>();
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Nhà cung cấp",
+      dataIndex: "tenNCC",
+      key: "tenNCC",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "sdt",
+      key: "sdt",
+    },
+    {
+      title: "Địa Chỉ",
+      dataIndex: "diaChi",
+      key: "diaChi",
+    },
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record: any) => {
+        // console.log(record);
+        const confirm = () => {
+          // console.log(record.id);
+          axios
+            .delete(`/api/nccs/${record.id}`)
+            .then((res) => {
+              res.status == 200 ? message.success("Thành công") : null;
+              dispatch(fetchNcc());
+            })
+            .catch((err) => {
+              message.error("lỗi " + err);
+            });
+        };
+        const handleChange = () => {
+          dispatch(openModal());
+          dispatch(updateNcc(record));
+        };
+        return (
+          <Space size="middle">
+            <Tooltip title={"Sửa"}>
+              <Button
+                onClick={handleChange}
+                className="flex justify-center items-center"
+                shape="circle"
+                icon={<EditOutlined />}
+              />
+            </Tooltip>
+            <Tooltip title={"Xóa"}>
+              <Popconfirm
+                placement="top"
+                title={"Xóa"}
+                description={"bạn có chắc chắn không?"}
+                onConfirm={confirm}
+                okText="Yes"
+                okType="danger"
+                showCancel={false}
+              >
+                <Button
+                  danger
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<CloseOutlined />}
+                />
+              </Popconfirm>
+            </Tooltip>
+          </Space>
+        );
+      },
+    },
+  ];
 
-const NCCTable: React.FC = () => <Table style={{ maxWidth: "100vw",minHeight: 100 }}
-scroll={{ x: true, y: 150 }}  columns={columns} dataSource={data} />;
+  // console.log(result.tenNCC);
+
+  return (
+    <>
+      {isOpen && (
+        <Modal1 title="Chỉnh sửa nhà cung cấp">
+          <UpdateNCCNSX />
+        </Modal1>
+      )}
+      <Table
+        style={{ maxWidth: "100vw", minHeight: 200 }}
+        scroll={{ x: true, y: 150 }}
+        columns={columns}
+        dataSource={data}
+        loading={loading == "loading" ? true : false}
+      />
+      ;
+    </>
+  );
+};
 
 export default NCCTable;
