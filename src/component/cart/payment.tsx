@@ -13,8 +13,8 @@ const Payment = () => {
         <div className='bg-white rounded-md p-5'>
             <div className='text-black font-bold text-xl mb-5'>Nhập thông tin mua hàng</div>
             <Form
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 14 }}
+                labelCol={{ xs: 4, lg: 8, xl: 6 }}
+                wrapperCol={{ xs: 20, lg: 19, xl: 16 }}
                 layout="horizontal"
                 style={{ maxWidth: 600 }}
             >

@@ -44,35 +44,35 @@ const App: React.FC = () => {
     }
     try {
       axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
-      if (res.status === 200) {
-        localStorage.setItem("username", res.data.user.username)
-        localStorage.setItem("id", res.data.user.id)
-        setCookie("token", res.data.jwt)
-        dispatch(setUser(res.data.user));
-        push("/")
-      }
-    })
+        if (res.status === 200) {
+          localStorage.setItem("username", res.data.user.username)
+          localStorage.setItem("id", res.data.user.id)
+          setCookie("token", res.data.jwt)
+          dispatch(setUser(res.data.user));
+          push("/")
+        }
+      })
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         if (error.response.status === 400) {
-            messageApi.open({
-                type: 'error',
-                content: error.response.data.error.message,
-            });
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
         }
         if (error.response.status === 404) {
           messageApi.open({
-              type: 'error',
-              content: error.response.data.error.message,
+            type: 'error',
+            content: error.response.data.error.message,
           });
-      }
-        if (error.response.status === 500) {
-            messageApi.open({
-                type: 'error',
-                content: error.response.data.error.message,
-            });
         }
-    }
+        if (error.response.status === 500) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
+      }
     }
   };
 
@@ -82,9 +82,9 @@ const App: React.FC = () => {
 
   return (
     <>
-    {contextHolder}
+      {contextHolder}
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
-        <Card bordered={false} className="sm:w-[35%] md:w-[30%] lg:w-[25%] xl:w-[20%]">
+        <Card bordered={false} className="max-w-[400px] w-full">
           <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
           <Form
             name="normal_login"
@@ -117,16 +117,11 @@ const App: React.FC = () => {
                 onChange={(e) => (pass.current = e.target.value)}
               />
             </Form.Item>
-            {/* <div className="flex justify-between">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Duy trì đăng nhập</Checkbox>
-              </Form.Item> */}
             <Form.Item>
               <Link className="login-form-forgot" href={pageRoutes.forgotPass.route}>
                 Quên mật khẩu
               </Link>
             </Form.Item>
-            {/* </div> */}
             <div className="flex justify-between">
               <Form.Item >
                 <Button
@@ -138,7 +133,7 @@ const App: React.FC = () => {
                   Đăng nhập
                 </Button>
               </Form.Item>
-              <p className="lg:block hidden mt-2">Hoặc</p>
+              <p className="sm:block hidden mt-2">Hoặc</p>
               <Link href={pageRoutes.register.route}>
                 <Button
                   type="primary"
@@ -146,9 +141,7 @@ const App: React.FC = () => {
                 >
                   Đăng ký
                 </Button></Link>
-
             </div>
-
           </Form>
           <Divider1 name="Cách khác" />
           <div
