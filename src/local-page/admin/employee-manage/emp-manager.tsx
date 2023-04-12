@@ -21,12 +21,12 @@ import {
   selectEmployees,
   selectEmployeesError,
   selectEmployeesStatus,
-} from "@/redux/employeeSlide";
+} from "@/redux/employeeSlice";
 import { AppDispatch } from "@/redux/store";
 import UpdateEmployee from "./update-employee";
 import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
-import { openModal } from "@/redux/modalSlide";
+import { openModal } from "@/redux/modalSlice";
 import AddAccount from "./add-account";
 interface DataType {
   key: string;

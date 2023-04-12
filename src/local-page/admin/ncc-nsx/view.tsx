@@ -7,18 +7,20 @@ import Divider1 from "@/component/devider";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch } from "@/redux/store";
-import { fetchEmployees } from "@/redux/employeeSlide";
-import { fetchNcc, selectNcc, selectNccError, selectNccStatus } from "@/redux/nccSlide";
+import { fetchEmployees } from "@/redux/employeeSlice";
+import { fetchNcc, fetchNsx, selectNcc, selectNccError, selectNccStatus, selectNsx, selectNsxStatus } from "@/redux/nccSlice";
 const { Title } = Typography;
 const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const ncc = useSelector(selectNcc);
+  const nsx = useSelector(selectNsx);
   const status = useSelector(selectNccStatus);
+  const statusNSX = useSelector(selectNsxStatus);
   const error = useSelector(selectNccError);
-
   
   useEffect(() => {
     dispatch(fetchNcc())
+    dispatch(fetchNsx())
   },[dispatch])
    
       let result;
@@ -32,6 +34,20 @@ const App: React.FC = () => {
             };
           }))
         : null;
+
+      let resultNSX;
+      ncc
+        ? (resultNSX = nsx.data?.map((item: any) => {
+            return {
+              id: item.id,
+              tenNSX: item.attributes.tenNSX,
+              quocGia: item.attributes.quocGia,
+            };
+          }))
+        : null;
+
+
+  // console.log(resultNSX);
   
   return (
     <>
@@ -41,7 +57,7 @@ const App: React.FC = () => {
       <Divider1 name="Thêm nhà cung cấp" />
       <NCCNSXLayout name="TênNCC" id={"tenNCC"} data={result} isloading={status}/>
       <Divider1 name="Thêm nhà sản xuất" />
-      <NCCNSXLayout name="TênNSX" id={"TenNSX"}/>
+      <NCCNSXLayout name="TênNSX" id={"tenNSX"} dataNSX={resultNSX} isloadingNSX={statusNSX}/>
     </>
   );
 };

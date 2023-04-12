@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { Button, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { openModal, closeModal, currModal } from "../redux/modalSlide";
+import { openModal, closeModal, currModal } from "../redux/modalSlice";
 type ModalProps = {
   title?: string,
   children?: React.ReactNode;

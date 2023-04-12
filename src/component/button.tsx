@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Tooltip, Popconfirm, message } from "antd";
 import { useDispatch } from "react-redux";
-import { modalSlice, openModal } from "../redux/modalSlide";
+import { modalSlice, openModal } from "../redux/modalSlice";
 export interface IButton1Props {
   title?: string;
   icon?: React.ReactNode;

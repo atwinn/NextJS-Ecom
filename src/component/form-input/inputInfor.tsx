@@ -15,7 +15,7 @@ import type { DatePickerProps } from "antd";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
-import { fetchEmployees } from "@/redux/employeeSlide";
+import { fetchEmployees } from "@/redux/employeeSlice";
 import { AppDispatch } from "@/redux/store";
 
 const { TextArea } = Input;

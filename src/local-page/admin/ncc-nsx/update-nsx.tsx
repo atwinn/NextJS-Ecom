@@ -4,21 +4,21 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchNcc } from "@/redux/nccSlide";
-import { closeModal } from "@/redux/modalSlide";
+import { fetchNcc, fetchNsx } from "@/redux/nccSlice";
+import { closeModal } from "@/redux/modalSlice";
 
 export interface IUpdateNCCNSXProps {}
 
-export default function UpdateNCCNSX(props: IUpdateNCCNSXProps) {
-  const { nccId } = useSelector((store: any) => store.ncc);
-//   console.log(nccId.id);
+export default function UpdateNSX(props: IUpdateNCCNSXProps) {
+  const { nsxId } = useSelector((store: any) => store.ncc);
+  console.log(nsxId);
 const dispatch = useDispatch<AppDispatch>();
 
   const onFinish = (value: any) => {
     // console.log(value);
-    axios.put(`/api/nccs/${nccId.id}`, {data: value}).then((res) => {
+    axios.put(`/api/nsxes/${nsxId.id}`, {data: value}).then((res) => {
         res.status == 200 ? message.success("thành công") : null
-        dispatch(fetchNcc())
+        dispatch(fetchNsx())
         dispatch(closeModal())
     }).catch((err) => {
         message.error(err)
@@ -30,15 +30,15 @@ const dispatch = useDispatch<AppDispatch>();
         onFinish={onFinish}
         labelCol={{ sm: 5 }}
         initialValues={{
-          tenNCC: nccId.tenNCC,
-          sdt: nccId.sdt,
-          diaChi: nccId.diaChi,
+          tenNSX: nsxId.tenNSX,
+          quocGia: nsxId.quocGia,
+          
         }}
         wrapperCol={{ sm: 20, offset: 2 }}
       >
         <Form.Item
           label={"Tên NCC"}
-          name={"tenNCC"}
+          name={"tenNSX"}
           rules={[
             { required: true, message: "Vui lòng nhập tên NCC!" },
             { min: 3, message: "Tên nhân viên phải có ít nhất 3 ký tự!" },
@@ -47,22 +47,9 @@ const dispatch = useDispatch<AppDispatch>();
           <Input />
         </Form.Item>
         <Form.Item
-          label={"Sđt"}
-          name={"sdt"}
-          rules={[
-            { required: true, message: "Vui lòng nhập số điện thoại!" },
-            {
-              pattern: /^\d{10}$/,
-              message: "Số điện thoại phải có 10 chữ số!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label={"Địa chỉ"}
-          name={"diaChi"}
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
+          label={"Quốc gia"}
+          name={"quocGia"}
+          rules={[{ required: true, message: "Vui lòng nhập quốc gia!" }]}
         >
           <Input.TextArea />
         </Form.Item>

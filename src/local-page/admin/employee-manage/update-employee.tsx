@@ -16,8 +16,8 @@ import { API_EMPLOYEE } from "@/pages/api/api";
 import moment from "moment";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { fetchEmployees } from "@/redux/employeeSlide";
-import { closeModal } from "@/redux/modalSlide";
+import { fetchEmployees } from "@/redux/employeeSlice";
+import { closeModal } from "@/redux/modalSlice";
 const { TextArea } = Input;
 type SizeType = Parameters<typeof Form>[0]["size"];
 

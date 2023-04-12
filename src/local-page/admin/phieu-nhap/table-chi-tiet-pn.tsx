@@ -1,97 +1,75 @@
 import React from "react";
-import { Space, Table, Tag } from "antd";
+import { Space, Table, Tag,Tooltip,Button,Popconfirm } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import Divider1 from "@/component/devider";
-
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import {
+  CloseOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 const TableChiTietPN: React.FC = () => {
+  const data1 = useSelector((state: RootState) => state.table.data);
+  const columns: ColumnsType<any> = [
+    {
+      title: "Sản phẩm",
+      dataIndex: "product",
+      key: "sanpham",
+      // render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giá",
+      dataIndex: "gia",
+      key: "gia",
+    },
+    {
+      title: "Số Lượng",
+      dataIndex: "soluong",
+      key: "soluong",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+           <Tooltip title={"Sửa"}>
+                <Button
+                  // onClick={handleChange}
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<EditOutlined />}
+                />
+              </Tooltip>
+              <Tooltip title={"Xóa"}>
+                <Popconfirm
+                  placement="top"
+                  title={"Xóa"}
+                  description={"bạn có chắc chắn không?"}
+                  // onConfirm={confirm}
+                  okText="Yes"
+                  okType="danger"
+                  showCancel={false}
+                >
+                  <Button
+                    danger
+                    className="flex justify-center items-center"
+                    shape="circle"
+                    icon={<CloseOutlined />}
+                  />
+                </Popconfirm>
+              </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
+
+  
   return (
     <>
       <Table
         columns={columns}
-        dataSource={data}
-        style={{ maxWidth: "100vw" }}
-        scroll={{ x: true }}
+        dataSource={data1}
+        // scroll={{ x: true }}
       >
       </Table>
       ;
