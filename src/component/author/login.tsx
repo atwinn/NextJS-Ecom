@@ -92,13 +92,13 @@ const App: React.FC = () => {
             <Form.Item
               name='username'
               rules={[
-                { required: true, message: "Vui lòng nhập username của bạn!" },
+                { required: true, message: "Vui lòng nhập Username hoặc E-mail!" },
               ]}
             >
               <Input
                 size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
+                placeholder="Username hoặc E-mail"
               />
             </Form.Item>
             <Form.Item
