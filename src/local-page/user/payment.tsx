@@ -7,12 +7,14 @@ const PaymentPage = () => {
     return (
         <div className='p-5'>
             <Row gutter={[16, 16]}>
-                <Col span={16}>
+                <Col xs={0} lg={4}></Col>
+                <Col xs={24} lg={8}>
                     <Payment />
                 </Col>
-                <Col span={8}>
+                <Col xs={24} lg={8}>
                     <Tamtinh />
                 </Col>
+                <Col xs={0} lg={4}></Col>
             </Row>
         </div>
     )

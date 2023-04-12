@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Form, Input, Space } from "antd";
+import { Button, Card, message, Form, Input, Space } from "antd";
 import { Typography } from "antd";
 import {
   GoogleOutlined,
@@ -35,14 +35,15 @@ const App: React.FC = () => {
   const { push } = useRouter();
   const router = useRouter();
   const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = () => {
     const data = {
       identifier: userName.current,
       password: pass.current,
     }
-
-    axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
+    try {
+      axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
       if (res.status === 200) {
         localStorage.setItem("username", res.data.user.username)
         localStorage.setItem("id", res.data.user.id)
@@ -51,6 +52,28 @@ const App: React.FC = () => {
         push("/")
       }
     })
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        if (error.response.status === 400) {
+            messageApi.open({
+                type: 'error',
+                content: error.response.data.error.message,
+            });
+        }
+        if (error.response.status === 404) {
+          messageApi.open({
+              type: 'error',
+              content: error.response.data.error.message,
+          });
+      }
+        if (error.response.status === 500) {
+            messageApi.open({
+                type: 'error',
+                content: error.response.data.error.message,
+            });
+        }
+    }
+    }
   };
 
   const loginGoogle = () => {
@@ -59,6 +82,7 @@ const App: React.FC = () => {
 
   return (
     <>
+    {contextHolder}
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
         <Card bordered={false} className="sm:w-[35%] md:w-[30%] lg:w-[25%] xl:w-[20%]">
           <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>

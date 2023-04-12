@@ -17,6 +17,7 @@ import React, { useState } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
+import { useRouter } from 'next/router';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -54,6 +55,7 @@ const tailFormItemLayout = {
 
 const Register: React.FC = () => {
   const [form] = Form.useForm();
+  const { push } = useRouter()
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values: any) => {
@@ -62,22 +64,42 @@ const Register: React.FC = () => {
       email: values.email,
       password: values.password,
     }
-
-    axios.post('/api/auth/local/register', data).then((res: any) => {
-      if (res.status === 200) {
-        messageApi.open({
-          type: 'success',
-          content: 'Đăng ký thành công',
-        });
+    try {
+      axios.post('/api/auth/local/register', data).then((res: any) => {
+        if (res.status === 200) {
+          messageApi.open({
+            type: 'success',
+            content: 'Đăng ký thành công vui lòng xác nhận email',
+          });
+        }
+      })
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        if (error.response.status === 400) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
+        if (error.response.status === 404) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
+        if (error.response.status === 500) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
       }
-    })
+    }
   };
 
   return (
     <>
       {contextHolder}
-
-
       <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
         <Card bordered={false} >
           <Title level={2} className='text-center'>Đăng ký</Title>

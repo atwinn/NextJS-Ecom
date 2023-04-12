@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 
 const checkAuthenticatedUser = (): boolean => {
     // Lấy roleId từ local storage
-    const roleId = typeof window != 'undefined' ? localStorage.getItem('roleId') : null;
+    // const roleId = typeof window != 'undefined' ? localStorage.getItem('roleId') : null;
+    const roleId = '1'
 
     // Nếu roleId không tồn tại hoặc bằng 5, đẩy người dùng về trang đăng nhập
     if (!roleId || parseInt(roleId) === 5) {

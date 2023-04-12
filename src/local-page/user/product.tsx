@@ -24,7 +24,7 @@ const UserProduct = () => {
 
     return (
         <div className='p-5'>
-            <Row gutter={32}>
+            <Row gutter={[16, 16]}>
                 <Col xs={0} lg={6}>
                     <UserProdFilter />
                 </Col>
