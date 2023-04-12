@@ -8,10 +8,12 @@ export interface TableData {
 
 interface TableState {
   data: TableData[];
+  idNCC: string
 }
 
 const initialState: TableState = {
   data: [],
+  idNCC: ""
 };
 
 const tableSlice = createSlice({
@@ -21,9 +23,12 @@ const tableSlice = createSlice({
     addRow(state, action: PayloadAction<TableData>) {
       state.data.push(action.payload);
     },
+    getNccId: (state,action) => {
+      state.idNCC = action.payload
+    }
   },
 });
 
-export const { addRow } = tableSlice.actions;
+export const { addRow,getNccId } = tableSlice.actions;
 
 export default tableSlice.reducer;

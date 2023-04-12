@@ -3,12 +3,13 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
 // Import các reducers của bạn
 import counterReducer from './counterSlice'
-import modalSlice from './modalSlide'
+import modalSlice from './modalSlice'
 import userSlice from './userSlice'
 import tableSlice from './tableSlice'
-import employeeSlide from './employeeSlide'
-import accountSlide from './accountSlide'
-import nccSlide from './nccSlide'
+import employeeSlide from './employeeSlice'
+import accountSlide from './accountSlice'
+import nccSlide from './nccSlice'
+import productSlide from './productSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -19,7 +20,8 @@ const store = configureStore({
     table: tableSlice,
     employees: employeeSlide,
     accEmployees: accountSlide,
-    ncc: nccSlide
+    ncc: nccSlide,
+    product:productSlide
   },
 })
 

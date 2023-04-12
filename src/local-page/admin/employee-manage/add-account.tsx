@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchEmployees } from "@/redux/employeeSlide";
+import { fetchEmployees } from "@/redux/employeeSlice";
 const AddAccount: React.FC = () => {
   const { employeesId } = useSelector((store: any) => store.employees);
   const dispatch = useDispatch<AppDispatch>();

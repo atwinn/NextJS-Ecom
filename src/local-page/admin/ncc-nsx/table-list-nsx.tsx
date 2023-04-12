@@ -9,11 +9,12 @@ import {
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { fetchNcc, updateNcc } from "@/redux/nccSlice";
+import { fetchNcc, fetchNsx, updateNcc, updateNsx } from "@/redux/nccSlice";
 import Modal1 from "@/component/modal";
 import { useSelector } from "react-redux";
 import { currModal, openModal } from "@/redux/modalSlice";
 import UpdateNCCNSX from "./update-ncc";
+import UpdateNSX from "./update-nsx";
 
 interface DataType {
   title: string;
@@ -24,28 +25,22 @@ interface DataType {
 
 interface NCCType {
   data: any;
-  loading: string;
+  loadingNSX?: string;
 }
-const NCCTable = ({ data, loading }: NCCType) => {
+const NSXTable = ({ data,loadingNSX }: NCCType) => {
   const { isOpen,curModal } = useSelector((store: any) => store.modal);
   const dispatch = useDispatch<AppDispatch>();
   const columns: ColumnsType<DataType> = [
     {
-      title: "Nhà cung cấp",
-      dataIndex: "tenNCC",
-      key: "tenNCC",
+      title: "Nhà sản xuất",
+      dataIndex: "tenNSX",
+      key: "tenNSX",
     },
     {
-      title: "Số điện thoại",
-      dataIndex: "sdt",
-      key: "sdt",
+      title: "Quốc gia",
+      dataIndex: "quocGia",
+      key: "quocGia",
     },
-    {
-      title: "Địa Chỉ",
-      dataIndex: "diaChi",
-      key: "diaChi",
-    },
-
     {
       title: "Action",
       key: "action",
@@ -54,19 +49,19 @@ const NCCTable = ({ data, loading }: NCCType) => {
         const confirm = () => {
           // console.log(record.id);
           axios
-            .delete(`/api/nccs/${record.id}`)
+            .delete(`/api/nsxes/${record.id}`)
             .then((res) => {
               res.status == 200 ? message.success("Thành công") : null;
-              dispatch(fetchNcc());
+              dispatch(fetchNsx());
             })
             .catch((err) => {
               message.error("lỗi " + err);
             });
         };
         const handleChange = () => {
-          dispatch(currModal("2"))
+          dispatch(currModal("1"))
           dispatch(openModal());
-          dispatch(updateNcc(record));
+          dispatch(updateNsx(record));
         };
         return (
           <Space size="middle">
@@ -106,9 +101,9 @@ const NCCTable = ({ data, loading }: NCCType) => {
 
   return (
     <>
-      {(isOpen && curModal == "2") && (
-        <Modal1 title="Chỉnh sửa nhà cung cấp">
-          <UpdateNCCNSX />
+      {(isOpen && curModal == "1") && (
+        <Modal1 title="Chỉnh sửa nhà sản xuất">
+          <UpdateNSX/>
         </Modal1>
       )}
       <Table
@@ -116,11 +111,11 @@ const NCCTable = ({ data, loading }: NCCType) => {
         scroll={{ x: true, y: 150 }}
         columns={columns}
         dataSource={data}
-        loading={loading == "loading" ? true : false}
+        loading={loadingNSX == "loading" ? true : false }
       />
       ;
     </>
   );
 };
 
-export default NCCTable;
+export default NSXTable;
