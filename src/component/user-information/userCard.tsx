@@ -26,17 +26,16 @@ const UserCard = ({ data }: any) => {
     return (
         <div>
             {data && data.map((item: any) => (
-                <Row gutter={[16, 16]} className='flex items-center' key={item.id}>
-                    <Col xs={0} sm={3} lg={6}></Col>
-                    <Col xs={24} sm={9} lg={6}>
+                <Row gutter={[16, 16]} key={item.id}>
+                    <Col xs={24} sm={10} lg={9}>
                         <img
                             src={"https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
                             alt=""
                             style={{ maxWidth: '100%' }}
-                            className='rounded-md object-contain'
+                            className='rounded-md object-fit'
                         />
                     </Col>
-                    <Col xs={24} sm={9} lg={6}>
+                    <Col xs={24} sm={14} lg={15}>
                         <Space direction="vertical" size="middle">
                             <Title level={3}>{item.attributes.ten}</Title>
                             <div className='text-black text-md'>SĐT: {item.attributes.sdt === null ? "Chưa thêm" : item.attributes.sdt}</div>
@@ -49,7 +48,6 @@ const UserCard = ({ data }: any) => {
                             </div>
                         </Space>
                     </Col>
-                    <Col xs={0} sm={3} lg={6}></Col>
                 </Row>
             ))}
             <Modal title="Thay đổi thông tin" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered footer={false}>

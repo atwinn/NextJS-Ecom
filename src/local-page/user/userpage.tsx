@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import UserCard from '@/component/user-information/userCard'
 import UserOrder from '@/component/user-information/userOrder'
 import axios from 'axios'
-import { message } from 'antd'
+import { message, Row, Col } from 'antd'
 
 const UserPage = () => {
     const [userData, setUserData] = useState()
@@ -40,9 +40,15 @@ const UserPage = () => {
     return (
         <>
             {contextHolder}
-            <div className='p-5 space-y-2 flex flex-col items-center'>
-                <UserCard data={userData} />
-                <UserOrder />
+            <div className='p-5'>
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} md={10} lg={8}>
+                        <UserCard data={userData} />
+                    </Col>
+                    <Col xs={24} md={14} lg={16}>
+                        <UserOrder />
+                    </Col>
+                </Row>
             </div>
         </>
     )

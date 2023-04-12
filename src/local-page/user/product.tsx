@@ -28,10 +28,10 @@ const UserProduct = () => {
                 <Col xs={0} lg={6}>
                     <UserProdFilter />
                 </Col>
-                <Col lg={18} className='p-5 bg-white rounded-md'>
+                <Col lg={18} className='p-4 bg-white rounded-md'>
                     <Row gutter={[16, 16]}>
                         {prodData && prodData.map((item: any) => (
-                            <Col xs={12} lg={8} xl={6} key={item.id}>
+                            <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                 <ProdCard
                                     name={item.attributes.tenSP}
                                     price={item.attributes.gia}
