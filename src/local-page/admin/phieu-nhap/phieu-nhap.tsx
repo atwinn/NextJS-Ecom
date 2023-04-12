@@ -30,7 +30,7 @@ const items: TabsProps['items'] = [
 const PhieuNhap: React.FC = () => {
     return (
         <>
-             <Title level={3} className='m-3'>Quản lý phiếu nhập</Title>
+            <Title level={3} className='m-3'>Quản lý phiếu nhập</Title>
             <Tabs
                 onChange={onChange}
                 type="card"
