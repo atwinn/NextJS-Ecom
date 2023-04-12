@@ -24,10 +24,10 @@ export const Left = () => {
     return (
         <>
             <div className="flex items-center gap-x-3 shrink-0">
-                <div className="md:flex items-center rounded-full cursor-pointer">
-                    <Link href={"/"}><Image src={logo} alt="" height={70} /></Link>
+                <Link href={"/"} className="md:flex items-center rounded-full cursor-pointer">
+                    <Image src={logo} alt="" height={70} />
                     <div className="hidden md:block text-white text-4xl font-bold mt-1.5">SHOP</div>
-                </div>
+                </Link>
                 <Category>
                     <div className={buttonContainer}>
                         <FaLayerGroup className="text-[17px]" />
