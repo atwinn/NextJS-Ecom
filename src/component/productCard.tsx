@@ -39,6 +39,12 @@ const ProdCard = (props: ProductData) => {
                         content: error.response.data.error.message,
                     });
                 }
+                if (error.response.status === 404) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
                 if (error.response.status === 500) {
                     messageApi.open({
                         type: 'error',
