@@ -37,21 +37,18 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const onFinish = () => {
+  const onFinish = async (values: any) => {
     const data = {
-      identifier: userName.current,
-      password: pass.current,
+      identifier: values.username,
+      password: values.password,
     }
     try {
-      axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
-        if (res.status === 200) {
-          localStorage.setItem("username", res.data.user.username)
-          localStorage.setItem("id", res.data.user.id)
-          setCookie("token", res.data.jwt)
-          dispatch(setUser(res.data.user));
-          push("/")
-        }
-      })
+      const res = await axios.post("https://l3mshop.onrender.com/api/auth/local", data)
+      localStorage.setItem("username", res.data.user.username)
+      localStorage.setItem("id", res.data.user.id)
+      setCookie("token", res.data.jwt)
+      dispatch(setUser(res.data.user));
+      push("/")
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         if (error.response.status === 400) {
@@ -93,6 +90,7 @@ const App: React.FC = () => {
             onFinish={onFinish}
           >
             <Form.Item
+              name='username'
               rules={[
                 { required: true, message: "Vui lòng nhập username của bạn!" },
               ]}
@@ -101,20 +99,18 @@ const App: React.FC = () => {
                 size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Username"
-                onChange={(e) => (userName.current = e.target.value)}
               />
             </Form.Item>
             <Form.Item
+              name='password'
               rules={[
                 { required: true, message: "Vui lòng nhập mật khẩu của bạn!" },
               ]}
             >
-              <Input
+              <Input.Password
                 size="large"
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
                 placeholder="Mật khẩu"
-                onChange={(e) => (pass.current = e.target.value)}
               />
             </Form.Item>
             <Form.Item>
@@ -136,7 +132,7 @@ const App: React.FC = () => {
               <p className="sm:block hidden mt-2">Hoặc</p>
               <Link href={pageRoutes.register.route}>
                 <Button
-                  type="primary"
+                  danger
                   size="large"
                 >
                   Đăng ký

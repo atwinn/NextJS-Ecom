@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { clearUser, setUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category, UserDropDown } from "./category";
+import { message } from 'antd'
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
@@ -45,6 +46,7 @@ export const Left = () => {
 
 export const Right = () => {
     // const user = useSelector((state: any) => state.user)
+    const [messageApi, contextHolder] = message.useMessage();
     const [userAuth, setUserAuth] = useState("")
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -54,6 +56,10 @@ export const Right = () => {
     const dispatch = useDispatch()
     const { push } = useRouter()
     const handleLogout = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Đăng xuất thành công'
+        })
         localStorage.removeItem("username")
         setUserAuth("")
         localStorage.removeItem("id")
@@ -64,6 +70,7 @@ export const Right = () => {
     return (
         <>
             {/* Right */}
+            {contextHolder}
             <div className="flex items-center gap-x-2">
                 {userAuth != "" ? (
                     <>
