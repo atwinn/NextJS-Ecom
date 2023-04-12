@@ -4,7 +4,7 @@ import UserUpdateForm from './userInfoUpdate';
 
 const { Title, Text } = Typography;
 
-const UserCard = () => {
+const UserCard = ({ data }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {

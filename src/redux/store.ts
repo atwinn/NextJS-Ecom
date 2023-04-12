@@ -19,7 +19,7 @@ const store = configureStore({
     table: tableSlice,
     employees: employeeSlide,
     accEmployees: accountSlide,
-    ncc: nccSlide
+    ncc: nccSlide,
   },
 })
 

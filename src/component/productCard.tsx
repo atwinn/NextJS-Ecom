@@ -19,11 +19,9 @@ const ProdCard = (props: ProductData) => {
 
     const handleAddToCart = async () => {
         const data = {
-            data: {
-                soLuongSP: 2,
-                product: prodId,
-                khach_hang: userId,
-            }
+            soLuongSP: 1,
+            product: prodId,
+            user_id: userId,
         }
         try {
             const res = await axios.post("/api/addtocart", data)
