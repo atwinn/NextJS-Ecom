@@ -60,6 +60,18 @@ const items: MenuItem[] = [
 ];
 
 export default function Menu1(props: IMenuProps) {
+  // const roleId: string = "3"
+  // const filteredItems = items.filter(item => {
+  //   if (roleId === "1") {
+  //     return ["1", "2"].includes(item?.key?.toString() ?? '');
+  //   } else if (roleId === "2") {
+  //     return ["1", "3", "5"].includes(item?.key?.toString() ?? '');
+  //   } else if (roleId === "3") {
+  //     return ["1", "4", "6", "7"].includes(item?.key?.toString() ?? '');
+  //   }
+  //   return true;
+  // });
+
   return (
     <div>
       <Menu
