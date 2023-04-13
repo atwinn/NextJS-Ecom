@@ -5,6 +5,7 @@ import Menu1 from "@/component/menu"
 import logo from '../assets/logoL3M.png'
 import Image from 'next/image'
 import PrivateRoute from "@/redux/constant/privateroute";
+import Link from "next/link";
 
 const { Sider, Content, Footer } = Layout;
 
@@ -23,7 +24,9 @@ export function LayoutManager({ children }: IProps) {
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
         >
-          <Image src={logo} alt='' width={50} height={50} />
+          <Link href="/" className="flex justify-center">
+            <Image src={logo} alt='' width={75} height={75} />
+          </Link>
           <Menu1 />
         </Sider>
         <Layout style={{ minHeight: "100vh" }}>

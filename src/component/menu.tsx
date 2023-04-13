@@ -53,7 +53,7 @@ const items: MenuItem[] = [
     <ContainerOutlined />
   ),
   getItem(
-    <Link href={pageRoutes.ncc_nsx.route}>NCC/NSX</Link>,
+    <Link href={pageRoutes.ncc_nsx.route}>Đối tác</Link>,
     "7",
     <ContainerOutlined />
   ),

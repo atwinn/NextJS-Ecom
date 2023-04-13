@@ -1,36 +1,37 @@
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { getCookie } from "../../../cookies";
+import { Spin } from 'antd';
 
-const checkAuthenticatedUser = (): boolean => {
-    // Lấy roleId từ local storage
-    // const roleId = typeof window != 'undefined' ? localStorage.getItem('roleId') : null;
-    const roleId = '1'
+interface IProps {
+    children: React.ReactNode,
+}
 
-    // Nếu roleId không tồn tại hoặc bằng 5, đẩy người dùng về trang đăng nhập
-    if (!roleId || parseInt(roleId) === 5) {
-        return false;
-    }
-
-    // Nếu roleId bằng 1 hoặc 2, cho phép truy cập
-    if (parseInt(roleId) === 1 || parseInt(roleId) === 2) {
-        return true;
-    }
-
-    // Các trường hợp còn lại không được phép truy cập
-    return false;
-};
-
-const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
-    const router = useRouter();
+const PrivateRoute = ({ children }: IProps) => {
+    const { push } = useRouter();
+    const [role, setRole] = useState<number | undefined>(undefined);
 
     useEffect(() => {
-        if (!checkAuthenticatedUser()) {
-            // Nếu không xác thực, chuyển hướng người dùng đến trang đăng nhập
-            router.push('/auth/login');
-        }
-    }, [router]);
+        const fetchRole = async () => {
+            const roleFromCookie = Number(await getCookie("role"));
+            setRole(roleFromCookie);
+        };
+        fetchRole();
+    }, []);
 
-    return checkAuthenticatedUser() ? <>{children}</> : null;
+    if (role === undefined) {
+        return <div className="flex justify-center items-center h-screen bg-white">
+            <Spin size="large" style={{ fontSize: "48px" }} />
+        </div>;
+    }
+
+    const allowedRoles = [1, 2, 3];
+    if (!allowedRoles.includes(role)) {
+        push("/auth/login");
+        return null;
+    }
+
+    return <>{children}</>;
 };
 
 export default PrivateRoute;

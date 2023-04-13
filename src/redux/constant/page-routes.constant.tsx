@@ -55,7 +55,7 @@ export const pageRoutes: { [key: string]: title } = {
     },
     ncc_nsx: {
         route: "/page-admin/ncc-nsx/view",
-        title: 'NCC/NSX',
+        title: 'Đối tác',
     },
     redirectLogin: {
         route: "/auth/redirect",

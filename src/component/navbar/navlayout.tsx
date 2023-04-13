@@ -64,6 +64,7 @@ export const Right = () => {
         setUserAuth("")
         localStorage.removeItem("id")
         deleteCookie("token")
+        deleteCookie("role")
         push("/")
         dispatch(clearUser())
     }

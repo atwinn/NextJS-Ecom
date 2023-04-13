@@ -48,6 +48,9 @@ const App: React.FC = () => {
       localStorage.setItem("id", res.data.user.id)
       setCookie("token", res.data.jwt)
       dispatch(setUser(res.data.user));
+      const userId = res.data.user.id
+      const res2 = await axios.get(`/api/users/${userId}?populate=*`)
+      setCookie("role", res2.data.role.id)
       push("/")
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
