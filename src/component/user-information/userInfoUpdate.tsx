@@ -26,7 +26,12 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}
                 style={{ maxWidth: 600 }}
-                initialValues={{ remember: true }}
+                initialValues={{
+                    ten: userUpdateData.attributes.ten,
+                    sdt: userUpdateData.attributes.sdt,
+                    diachi: userUpdateData.attributes.diaChi,
+                    gioiTinh: userUpdateData.attributes.gioiTinh ? true : false
+                }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
@@ -35,27 +40,28 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
                     label="Họ và tên"
                     name="ten"
                     rules={[{ required: true, message: 'Vui lòng nhập họ và tên của bạn!' }]}
-                    initialValue={userUpdateData.attributes.ten}
                 >
-                    <Input placeholder='Họ và tên' value={userUpdateData.attributes.ten} />
+                    <Input placeholder='Họ và tên' />
                 </Form.Item>
 
                 <Form.Item
                     label="Điện thoại"
                     name="sdt"
-                    rules={[{ required: true, message: 'Vui lòng nhập số điện thoại của bạn!' }]}
-                    initialValue={userUpdateData.attributes.sdt}
+                    rules={[{ required: true, message: 'Vui lòng nhập số điện thoại của bạn!' },
+                    {
+                        pattern: /^\d{10}$/,
+                        message: "Phải là số và có 10 chữ số!",
+                    }]}
                 >
-                    <Input placeholder='Số điện thoại' value={userUpdateData.attributes.sdt} />
+                    <Input placeholder='Số điện thoại' />
                 </Form.Item>
 
                 <Form.Item
                     label="Địa chỉ"
                     name="diachi"
                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ của bạn!' }]}
-                    initialValue={userUpdateData.attributes.diaChi}
                 >
-                    <TextArea rows={4} placeholder='Địa chỉ' value={userUpdateData.attributes.diaChi} />
+                    <TextArea rows={4} placeholder='Địa chỉ' />
                 </Form.Item>
 
                 <Form.Item
@@ -63,7 +69,10 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
                     name="gioiTinh"
                     rules={[{ required: true, message: 'Vui lòng chọn giới tính của bạn' }]}
                 >
-                    <Select placeholder="Chọn giới tính" >
+                    <Select
+                        placeholder="Chọn giới tính"
+                        defaultValue={userUpdateData.attributes.gioiTinh ? true : false}
+                    >
                         <Option value={true}>Nam</Option>
                         <Option value={false}>Nữ</Option>
                     </Select>
