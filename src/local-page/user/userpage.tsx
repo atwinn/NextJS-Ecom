@@ -6,6 +6,7 @@ import { message, Row, Col } from 'antd'
 
 const UserPage = () => {
     const [userData, setUserData] = useState()
+    const [donHang, setDonHang] = useState<any[]>()
     const [messageApi, contextHolder] = message.useMessage();
 
     const fetchData = async () => {
@@ -33,8 +34,30 @@ const UserPage = () => {
         }
     };
 
+    const fetchDonHang = async () => {
+        try {
+            const userId = localStorage.getItem("id")
+            if (userId) {
+                const res = await axios.get(`/api/dsdonhang?user_id=${userId}`)
+                setDonHang(res.data)
+                console.log(res);
+
+            }
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
+            }
+        }
+    }
+
     useEffect(() => {
         fetchData()
+        fetchDonHang()
     }, [])
 
     return (
@@ -43,10 +66,14 @@ const UserPage = () => {
             <div className='p-5'>
                 <Row gutter={[16, 16]}>
                     <Col xs={24} md={10} lg={8}>
-                        <UserCard data={userData} />
+                        <UserCard data={userData} fectchData={fetchData} />
                     </Col>
                     <Col xs={24} md={14} lg={16}>
-                        <UserOrder />
+                        <div className='space-y-2'>
+                            {donHang && donHang.map((item: any) => (
+                                <UserOrder data={item} fetchData={fetchDonHang} />
+                            ))}
+                        </div>
                     </Col>
                 </Row>
             </div>

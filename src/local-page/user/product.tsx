@@ -16,6 +16,8 @@ const UserProduct = () => {
     useEffect(() => {
         axios.get("https://l3mshop.onrender.com/api/products?populate=*").then((res) => {
             if (res.status === 200) {
+                console.log(res.data.data);
+
                 setProdData(res.data.data)
                 setPaginate(res.data.meta)
             }
@@ -31,11 +33,14 @@ const UserProduct = () => {
                 <Col lg={18} className='p-4 bg-white rounded-md'>
                     <Row gutter={[16, 16]}>
                         {prodData && prodData.map((item: any) => (
-                            <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
+                            <Col xs={24} sm={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                 <ProdCard
                                     name={item.attributes.tenSP}
                                     price={item.attributes.gia}
-                                    image="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                    // image="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                    image={item.attributes.hinh.data?.attributes.url
+                                        ? item.attributes.hinh.data.attributes.url
+                                        : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                     id={item.id}
                                 />
                             </Col>

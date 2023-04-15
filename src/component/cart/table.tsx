@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Space, Table, message, InputNumber } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
+import formatMoney from '../formatMoney';
 
 interface Table {
     id?: number,
@@ -65,7 +66,7 @@ const CartTable = () => {
             id: item.product.id !== undefined ? item.product.id : 0,
             tenSP: item.product.tenSP,
             soLuong: item.soLuongSP,
-            price: item.product.gia,
+            price: formatMoney(item.product.gia),
         };
     })
 

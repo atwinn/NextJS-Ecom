@@ -3,6 +3,7 @@ import { EditOutlined, ArrowRightOutlined, ShoppingCartOutlined } from '@ant-des
 import { Card, message } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
+import formatMoney from './formatMoney';
 
 const { Meta } = Card;
 interface ProductData {
@@ -64,6 +65,7 @@ const ProdCard = (props: ProductData) => {
                     <img
                         alt="example"
                         src={props.image}
+                        className='object-cover h-48'
                     />
                 }
                 actions={[
@@ -75,7 +77,7 @@ const ProdCard = (props: ProductData) => {
             >
                 <Meta
                     title={props.name}
-                    description={props.price}
+                    description={formatMoney(props.price)}
                 />
             </Card>
         </>

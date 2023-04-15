@@ -1,18 +1,49 @@
 import React, { useState } from 'react'
 import moment from 'moment';
-import { Form, Input, Button, Select, DatePicker } from 'antd'
+import { Form, Input, Button, Select, DatePicker, message } from 'antd'
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import axios from 'axios';
 
 const { TextArea } = Input;
 const { Option } = Select;
 dayjs.extend(customParseFormat);
 
-const UserUpdateForm = ({ userUpdateData }: any) => {
+const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const dateFormat = 'DD/MM/YYYY';
-    const onFinish = (values: any) => {
+    // const [form] = Form.useForm();
+
+    const onFinish = async (values: any) => {
         const ngaySinhFormatted = moment(values.ngaySinh.toString()).format('YYYY-MM-DD');
-        console.log('Success:', values);
+        const data = {
+            data: {
+                ten: values.ten,
+                sdt: values.sdt,
+                diaChi: values.diachi,
+                gioiTinh: values.gioiTinh,
+                ngaySinh: ngaySinhFormatted,
+            }
+        }
+        try {
+            const res = await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
+            messageApi.open({
+                type: 'success',
+                content: "Thay đổi thành công",
+            });
+            close();
+            fetch();
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
+            }
+        }
+
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -21,7 +52,9 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
 
     return (
         <div>
+            {contextHolder}
             <Form
+                form={form}
                 name="updateUserForm"
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}
@@ -30,7 +63,8 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
                     ten: userUpdateData.attributes.ten,
                     sdt: userUpdateData.attributes.sdt,
                     diachi: userUpdateData.attributes.diaChi,
-                    gioiTinh: userUpdateData.attributes.gioiTinh ? true : false
+                    gioiTinh: userUpdateData.attributes.gioiTinh ? true : false,
+                    ngaySinh: dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : null
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -78,9 +112,10 @@ const UserUpdateForm = ({ userUpdateData }: any) => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label="Ngày Sinh" name="ngaySinh" initialValue={dayjs('01/10/2001', dateFormat)}>
+                <Form.Item label="Ngày Sinh" name="ngaySinh" >
                     <DatePicker placeholder='Chọn ngày' format={dateFormat}
-                        value={dayjs('01/10/2001', dateFormat)}
+                        // value={dayjs(userUpdateData.attributes.ngaySinh)}
+                        value={dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : null}
                     />
                 </Form.Item>
 
