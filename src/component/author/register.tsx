@@ -17,6 +17,8 @@ import React, { useState } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -30,12 +32,12 @@ interface DataNodeType {
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 8 },
+    sm: { span: 10 },
 
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 16 },
+    sm: { span: 14 },
   },
 };
 
@@ -47,13 +49,14 @@ const tailFormItemLayout = {
     },
     sm: {
       span: 16,
-      offset: 8,
+      offset: 5,
     },
   },
 };
 
 const Register: React.FC = () => {
   const [form] = Form.useForm();
+  const { push } = useRouter()
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values: any) => {
@@ -62,22 +65,42 @@ const Register: React.FC = () => {
       email: values.email,
       password: values.password,
     }
-
-    axios.post('/api/auth/local/register', data).then((res: any) => {
-      if (res.status === 200) {
-        messageApi.open({
-          type: 'success',
-          content: 'Đăng ký thành công',
-        });
+    try {
+      axios.post('/api/auth/local/register', data).then((res: any) => {
+        if (res.status === 200) {
+          messageApi.open({
+            type: 'success',
+            content: 'Đăng ký thành công vui lòng xác nhận email',
+          });
+        }
+      })
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        if (error.response.status === 400) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
+        if (error.response.status === 404) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
+        if (error.response.status === 500) {
+          messageApi.open({
+            type: 'error',
+            content: error.response.data.error.message,
+          });
+        }
       }
-    })
+    }
   };
 
   return (
     <>
       {contextHolder}
-
-
       <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
         <Card bordered={false} >
           <Title level={2} className='text-center'>Đăng ký</Title>
@@ -87,21 +110,22 @@ const Register: React.FC = () => {
             name="register"
             onFinish={onFinish}
             // initialValues={{ residence: ['zhejiang', 'hangzhou', 'xihu'], prefix: '86' }}
-            style={{ maxWidth: 800, width: "400px" }}
+            style={{ maxWidth: 800, width: "100%" }}
             scrollToFirstError
           >
             <Form.Item
               name="username"
               label="Username"
-              className=''
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập Username!',
+                  message: 'Nhập Username từ 8-16 ký tự',
+                  min: 8,
+                  max: 16
                 },
               ]}
             >
-              <Input />
+              <Input placeholder='Nhập username' />
             </Form.Item>
             <Form.Item
               name="email"
@@ -118,7 +142,7 @@ const Register: React.FC = () => {
                 },
               ]}
             >
-              <Input />
+              <Input placeholder='Nhập email' />
             </Form.Item>
             <Form.Item
               name="password"
@@ -126,12 +150,13 @@ const Register: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập mật khẩu!',
+                  message: 'Nhập mật khẩu tối thiểu 6 ký tự',
+                  min: 6
                 },
               ]}
               hasFeedback
             >
-              <Input.Password />
+              <Input.Password placeholder='Nhập mật khẩu' />
             </Form.Item>
 
             <Form.Item
@@ -154,45 +179,17 @@ const Register: React.FC = () => {
                 }),
               ]}
             >
-              <Input.Password />
+              <Input.Password placeholder='Nhập lại mật khẩu' />
             </Form.Item>
-            {/* <Form.Item
-        name="phone"
-        label="Phone Number"
-        rules={[{ required: true, message: 'Please input your phone number!' }]}
-      >
-        <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-      </Form.Item> */}
-            {/* <Form.Item
-            name="gender"
-            label="Gender"
-            rules={[{ required: true, message: 'Please select gender!' }]}
-          >
-            <Select placeholder="select your gender">
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-              <Option value="other">Other</Option>
-            </Select>
-          </Form.Item> */}
-            {/* <Form.Item
-            name="agreement"
-            valuePropName="checked"
-            rules={[
-              {
-                validator: (_, value) =>
-                  value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-              },
-            ]}
-            {...tailFormItemLayout}
-          >
-            <Checkbox>
-              I have read the <a href="">agreement</a>
-            </Checkbox>
-          </Form.Item> */}
             <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 Đăng ký
               </Button>
+              <Link href='/' className='ml-2'>
+                <Button danger>
+                  Về trang chủ
+                </Button>
+              </Link>
             </Form.Item>
           </Form>
 

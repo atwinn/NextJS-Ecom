@@ -15,6 +15,9 @@ const Redirect = () => {
                     localStorage.setItem("username", res.data.user.username)
                     localStorage.setItem("id", res.data.user.id)
                     setCookie("token", res.data.jwt)
+                    const userId = res.data.user.id
+                    const res2 = await axios.get(`/api/users/${userId}?populate=*`)
+                    setCookie("role", res2.data.role.id)
                     router.push("/")
                 }
             } catch (error) {

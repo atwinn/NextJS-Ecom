@@ -4,6 +4,7 @@ import { Dropdown } from 'antd';
 import Link from 'next/link';
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
 import axios from 'axios';
+import { getCookie } from '../../../cookies';
 
 interface CategoryProps {
     children: ReactNode;
@@ -45,25 +46,41 @@ export const Category = ({ children }: CategoryProps) => {
 }
 
 export const UserDropDown = ({ children }: CategoryProps) => {
+    const [role, setRole] = useState<number | undefined>(undefined);
 
-    const items: MenuProps['items'] = [
-        {
-            key: '1',
-            label: (
-                <Link href={pageRoutes.userInfo.route}>
-                    Cá Nhân
-                </Link>
-            ),
-        },
-        {
-            key: '2',
-            label: (
-                <Link href={pageRoutes.userInfo.route}>
-                    Gì đó
-                </Link>
-            ),
-        },
-    ]
+    useEffect(() => {
+        const roleFromCookie = Number(getCookie("role"));
+        setRole(roleFromCookie);
+    }, []);
+
+    const items: MenuProps['items'] = role === 1 || role === 2 || role === 3 ?
+        [
+            {
+                key: '5',
+                label: (
+                    <Link href={pageRoutes.home.route}>
+                        Đến Trang Quản Trị
+                    </Link>
+                ),
+            },
+        ] : [
+            {
+                key: '1',
+                label: (
+                    <Link href={pageRoutes.userInfo.route}>
+                        Cá Nhân
+                    </Link>
+                ),
+            },
+            {
+                key: '2',
+                label: (
+                    <Link href={pageRoutes.userInfo.route}>
+                        Gì đó
+                    </Link>
+                ),
+            },
+        ]
 
     return (
         <Dropdown menu={{ items }}>

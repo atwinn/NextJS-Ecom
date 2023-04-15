@@ -3,7 +3,7 @@ import { Button } from 'antd'
 
 const Tamtinh = () => {
     return (
-        <div className='w-full rounded-md bg-white p-5'>
+        <div className='rounded-md bg-white p-5'>
             <div className='text-black text-xl font-semibold'>
                 Thông tin giỏ hàng
             </div>

@@ -4,6 +4,8 @@ import { Layout } from "antd";
 import Menu1 from "@/component/menu"
 import logo from '../assets/logoL3M.png'
 import Image from 'next/image'
+import PrivateRoute from "@/redux/constant/privateroute";
+import Link from "next/link";
 
 const { Sider, Content, Footer } = Layout;
 
@@ -14,25 +16,29 @@ interface IProps {
 export function LayoutManager({ children }: IProps) {
   const [collapsed, setCollapsed] = useState(false);
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <Image src={logo} alt='' width={50} height={50} />
-        <Menu1 />
-      </Sider>
+    <PrivateRoute>
       <Layout style={{ minHeight: "100vh" }}>
-        <Layout className="site-layout">
-          <Content style={{ margin: "0 16px" }}>
-            {children}
-          </Content>
-          <Footer style={{ textAlign: "center" }}>L3M Manager</Footer>
+        <Sider
+          breakpoint="lg"
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+        >
+          <Link href="/" className="flex justify-center">
+            <Image src={logo} alt='' width={75} height={75} />
+          </Link>
+          <Menu1 />
+        </Sider>
+        <Layout style={{ minHeight: "100vh" }}>
+          <Layout className="site-layout">
+            <Content style={{ margin: "0 16px" }}>
+              {children}
+            </Content>
+            <Footer style={{ textAlign: "center" }}>L3M Manager</Footer>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </PrivateRoute>
   );
 
 }

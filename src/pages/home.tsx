@@ -10,6 +10,7 @@ export default function Home(props: IAppProps) {
         <div>
             <TrangChu />
         </div>
+
     );
 }
 Home.PageLayout = UserLayoutManager;

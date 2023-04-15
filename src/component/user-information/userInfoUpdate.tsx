@@ -1,9 +1,49 @@
-import React from 'react'
-import { Form, Input, Button } from 'antd'
+import React, { useState } from 'react'
+import moment from 'moment';
+import { Form, Input, Button, Select, DatePicker, message } from 'antd'
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import axios from 'axios';
 
-const UserUpdateForm = () => {
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
+const { TextArea } = Input;
+const { Option } = Select;
+dayjs.extend(customParseFormat);
+
+const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const dateFormat = 'DD/MM/YYYY';
+    // const [form] = Form.useForm();
+
+    const onFinish = async (values: any) => {
+        const ngaySinhFormatted = moment(values.ngaySinh.toString()).format('YYYY-MM-DD');
+        const data = {
+            data: {
+                ten: values.ten,
+                sdt: values.sdt,
+                diaChi: values.diachi,
+                gioiTinh: values.gioiTinh,
+                ngaySinh: ngaySinhFormatted,
+            }
+        }
+        try {
+            const res = await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
+            messageApi.open({
+                type: 'success',
+                content: "Thay đổi thành công",
+            });
+            close();
+            fetch();
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+                    messageApi.open({
+                        type: 'error',
+                        content: error.response.data.error.message,
+                    });
+                }
+            }
+        }
+
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -12,35 +52,76 @@ const UserUpdateForm = () => {
 
     return (
         <div>
+            {contextHolder}
             <Form
-                name="basic"
+                form={form}
+                name="updateUserForm"
                 labelCol={{ span: 5 }}
                 wrapperCol={{ span: 16 }}
                 style={{ maxWidth: 600 }}
-                initialValues={{ remember: true }}
+                initialValues={{
+                    ten: userUpdateData.attributes.ten,
+                    sdt: userUpdateData.attributes.sdt,
+                    diachi: userUpdateData.attributes.diaChi,
+                    gioiTinh: userUpdateData.attributes.gioiTinh ? true : false,
+                    ngaySinh: dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : null
+                }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    label="Họ và tên"
+                    name="ten"
+                    rules={[{ required: true, message: 'Vui lòng nhập họ và tên của bạn!' }]}
                 >
-                    <Input />
+                    <Input placeholder='Họ và tên' />
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    label="Điện thoại"
+                    name="sdt"
+                    rules={[{ required: true, message: 'Vui lòng nhập số điện thoại của bạn!' },
+                    {
+                        pattern: /^\d{10}$/,
+                        message: "Phải là số và có 10 chữ số!",
+                    }]}
                 >
-                    <Input.Password />
+                    <Input placeholder='Số điện thoại' />
+                </Form.Item>
+
+                <Form.Item
+                    label="Địa chỉ"
+                    name="diachi"
+                    rules={[{ required: true, message: 'Vui lòng nhập địa chỉ của bạn!' }]}
+                >
+                    <TextArea rows={4} placeholder='Địa chỉ' />
+                </Form.Item>
+
+                <Form.Item
+                    label="Giới tính"
+                    name="gioiTinh"
+                    rules={[{ required: true, message: 'Vui lòng chọn giới tính của bạn' }]}
+                >
+                    <Select
+                        placeholder="Chọn giới tính"
+                        defaultValue={userUpdateData.attributes.gioiTinh ? true : false}
+                    >
+                        <Option value={true}>Nam</Option>
+                        <Option value={false}>Nữ</Option>
+                    </Select>
+                </Form.Item>
+
+                <Form.Item label="Ngày Sinh" name="ngaySinh" >
+                    <DatePicker placeholder='Chọn ngày' format={dateFormat}
+                        // value={dayjs(userUpdateData.attributes.ngaySinh)}
+                        value={dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : null}
+                    />
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        Submit
+                        Lưu thay đổi
                     </Button>
                 </Form.Item>
             </Form>
