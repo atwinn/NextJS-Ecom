@@ -33,7 +33,7 @@ interface FormData {
   phieu_nhap: string;
 }
 
-const renderTitle = (title: string) => (
+export const renderTitle = (title: string) => (
   <span>
     {title}
     <a
@@ -89,7 +89,7 @@ const PhieuNhapTable: React.FC = () => {
   const onSelect = (option: any) => {
     const spId = TenSP.find((item:any) => item.value === option);
     dispatch(getSpId(spId.id))
-    console.log(spId.id);
+    // console.log(spId.id);
     
   }
   const onFinish = (values: FormData) => {
@@ -98,15 +98,15 @@ const PhieuNhapTable: React.FC = () => {
     values.product = idSp
     console.log(values);
     axios.post("/api/addCtPn",values).then((res) => {
-      console.log(res);
-      // res.status == 200 ? message.success("Thêm chi tiết PN thành công"): null
-      dispatch(
-        addRow({ product, soluong: parseInt(soluong), gia: parseInt(gia) })
-      );
+      console.log(res.data);
+      res.status == 200 ? message.success("Thêm chi tiết PN thành công"): null
+      res.status == 200 ? dispatch(
+        addRow({product, soluong: parseInt(soluong), gia: parseInt(gia),idgetSP:idSp })
+      ):null;
       form.resetFields();
     }).catch((err) => {
-      console.log(err);
-      message.error(err)
+      // console.log(err.response.data.error.message);
+      message.error(err.response.data.error.message)
     })
 
   };
@@ -124,7 +124,7 @@ const PhieuNhapTable: React.FC = () => {
         <Column
           title="Sản phẩm"
           dataIndex="product"
-          render={(text: number, record: TableData, index: number) => {
+          render={() => {
             return (
               <>
                 <Form.Item name={"product"}>

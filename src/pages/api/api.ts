@@ -8,3 +8,5 @@ export const API_NSX =
   "https://l3mshop.onrender.com/api/nsxes?sort=id:desc";
 export const API_PRODUCT =
   "https://l3mshop.onrender.com/api/products";
+  export const API_PN =
+  "https://l3mshop.onrender.com/api/phieu-nhaps?sort=id:desc";
