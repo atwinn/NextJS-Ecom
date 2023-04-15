@@ -1,7 +1,17 @@
 import React, { useEffect } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
-import { Badge, Dropdown, Space, Table, Popconfirm, Button, Tag,message } from "antd";
+import {
+  Badge,
+  Dropdown,
+  Space,
+  Table,
+  Popconfirm,
+  Button,
+  Tag,
+  message,
+  Tooltip,
+} from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { fetchPN, selectPnStatus } from "@/redux/listPnSlice";
@@ -20,9 +30,9 @@ interface DataType {
 
 interface ExpandedDataType {
   key: React.Key;
-  date: string;
-  name: string;
-  upgradeNum: string;
+  tenSP: string;
+  gia: string |number;
+  soluong: string |number;
 }
 
 const ListPN = () => {
@@ -32,12 +42,27 @@ const ListPN = () => {
   useEffect(() => {
     dispatch(fetchPN());
   }, [dispatch]);
-
-  console.log(pn.data);
+  // const confirm = () => {
+  //   console.log("a");
+  //  }
+  // console.log(pn.data);
   let result;
   pn
     ? (result = pn.data?.map((item: any) => {
-        // console.log(item.attributes.tenNCC);
+        const confirm = () => {
+          const idpn = { idpn: item.id };
+          console.log(idpn);
+          axios
+            .post("/api/change-status-pn", idpn)
+            .then((res) => {
+              console.log(res);
+              message.success(res.data.message);
+              dispatch(fetchPN());
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        };
         return {
           id: item.id,
           status:
@@ -46,8 +71,8 @@ const ListPN = () => {
                 <Popconfirm
                   placement="top"
                   title={"Thanh toán"}
-                  description={"bạn có chắc chắn không?"}
-                  //  onConfirm={confirm}
+                  description={"Khi thanh toán sẽ không thể hoàn tác?"}
+                  onConfirm={confirm}
                   okText="Yes"
                   okType="danger"
                   showCancel={false}
@@ -69,36 +94,55 @@ const ListPN = () => {
 
   const expandedRowRender = () => {
     const columns: TableColumnsType<ExpandedDataType> = [
-      { title: "Date", dataIndex: "date", key: "date" },
-      { title: "Name", dataIndex: "name", key: "name" },
-      {
-        title: "Status",
-        key: "state",
-        render: () => <Badge status="success" text="Finished" />,
-      },
-      { title: "Upgrade Status", dataIndex: "upgradeNum", key: "upgradeNum" },
+      { title: "Tên Sản Phẩm", dataIndex: "tenSP", key: "status" },
+      { title: "Giá", dataIndex: "gia", key: "status" },
+      { title: "Số lượng", dataIndex: "soluong", key: "status" },
       {
         title: "Action",
         dataIndex: "operation",
         key: "operation",
-        render: () => (
-          <Space size="middle">
-            <a>Pause</a>
-            <a>Stop</a>
-          </Space>
-        ),
+        render: () => {
+          return (
+            <Space size="middle">
+              <Tooltip title={"Sửa"}>
+                <Button
+                  // onClick={handleChange}
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<EditOutlined />}
+                />
+              </Tooltip>
+              <Tooltip title={"Xóa"}>
+                <Popconfirm
+                  placement="top"
+                  title={"Xóa"}
+                  description={"bạn có chắc chắn không?"}
+                  // onConfirm={confirm}
+                  okText="Yes"
+                  okType="danger"
+                  showCancel={false}
+                >
+                  <Button
+                    danger
+                    className="flex justify-center items-center"
+                    shape="circle"
+                    icon={<CloseOutlined />}
+                  />
+                </Popconfirm>
+              </Tooltip>
+            </Space>
+          );
+        },
       },
     ];
 
-    const data = [];
-    for (let i = 0; i < 3; ++i) {
-      data.push({
-        key: i.toString(),
-        date: "2014-12-24 23:12:00",
-        name: "This is production name",
-        upgradeNum: "Upgraded: 56",
-      });
-    }
+    const data = [{
+      key: '11',
+      tenSP: 'John Brown Jr.',
+      gia: 16,
+      soluong: 'New York No. 2 Lake Park',
+    },];
+    
     return <Table columns={columns} dataSource={data} pagination={false} />;
   };
 
@@ -109,8 +153,7 @@ const ListPN = () => {
     {
       title: "Thao tác",
       key: "action",
-      render: (_, record:any) => {
-
+      render: (_, record: any) => {
         const confirm = () => {
           // console.log(record);
           axios
@@ -122,7 +165,7 @@ const ListPN = () => {
             })
             .catch(function (error) {
               message.error(error.response.data.error.message);
-              // console.log(error.response.data.error.message); 
+              // console.log(error.response.data.error.message);
             })
             .finally(function () {
               // always executed
@@ -134,7 +177,7 @@ const ListPN = () => {
               placement="top"
               title={"Xóa"}
               description={"bạn có chắc chắn không?"}
-               onConfirm={confirm}
+              onConfirm={confirm}
               okText="Yes"
               okType="danger"
               showCancel={false}
@@ -158,7 +201,7 @@ const ListPN = () => {
     <>
       <Table
         columns={columns}
-        expandable={{ expandedRowRender, defaultExpandedRowKeys: ["0"] }}
+        expandable={{expandedRowRender: (record) => <p style={{ margin: 0 }}>tesst</p>,}}
         dataSource={result}
         style={{ maxWidth: "100vw" }}
         scroll={{ x: true }}
