@@ -3,14 +3,14 @@ import { Button, Checkbox, Form, Input, AutoComplete, message } from "antd";
 import { useSelector } from "react-redux";
 import store, { AppDispatch, RootState } from "@/redux/store";
 import { renderTitle } from "./table-pn";
-import { addRow, fetchCtPn, getSpId } from "@/redux/tableSlice";
+import { addRow, fetchCtPn, fetchCtPnInView, getSpId } from "@/redux/tableSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
 const UpdateCTPN: React.FC = () => {
-  const { dataCTPn, idPn, idSp } = useSelector((store: any) => store.table);
+  const { dataCTPn, idPn, idSp,tab } = useSelector((store: any) => store.table);
   const { product } = useSelector((state: RootState) => state.product);
-  const data1 = useSelector((state: RootState) => state.table.data);
+  // const data1 = useSelector((state: RootState) => state.table.data);
   // console.log(data1);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -44,11 +44,6 @@ const UpdateCTPN: React.FC = () => {
   ];
   //   console.log(dataCTPn);
   const { soluong, gia } = dataCTPn;
-  const onSelect = (option: any) => {
-    const spId = TenSP.find((item: any) => item.value === option);
-    dispatch(getSpId(spId.id));
-    console.log(spId.id);
-  };
   const onFinish = (values: any) => {
     const { product, soluong, gia } = values;
     values.phieu_nhap = idPn;
@@ -56,15 +51,13 @@ const UpdateCTPN: React.FC = () => {
     console.log("Success:", values)
     axios.put("/api/updateCtPn",values).then((res) => {
         // console.log("in success: " , values);
-        
         console.log(res);
         res.status == 200 ? message.success(res.data.message): null
         // dispatch(fetchCtPn(values))
-        fetchCTPN()
-      
+        tab == 1 ? fetchCTPN() : fetchCTPNViewTab2()
       }).catch((err) => {
-        console.log(err);
-        message.error(err)
+        // console.log(err);
+        message.error(err.response.data.error.message)
       })
   };
   // console.log(idPn);
@@ -85,7 +78,27 @@ const fetchCTPN = () => {
           });
           // console.log(result);
         dispatch(fetchCtPn(result))
-
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+   }
+const fetchCTPNViewTab2 = () => { 
+    axios
+        .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
+        .then((res) => {
+          console.log(res.data);
+          const data = res.data
+          const result = data.map((item:any) => {
+            return {
+              product: item.product.tenSP,
+              soluong: item.soluong,
+              gia: parseInt(item.gia),
+              key: item.product.id,
+            };
+          });
+          // console.log(result);
+        dispatch(fetchCtPnInView(result))
         })
         .catch((err) => {
           console.log(err);

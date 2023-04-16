@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
 import {
@@ -15,13 +15,24 @@ import {
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { fetchPN, selectPnStatus } from "@/redux/listPnSlice";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import {
   CloseOutlined,
   EditOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
+import {
+  deleteRow,
+  fetchCtPn,
+  fetchCtPnInView,
+  getIdPN,
+  getInforModalCtPN,
+  getSpId,
+} from "@/redux/tableSlice";
+import Modal1 from "@/component/modal";
+import UpdateCTPN from "./update-CtPn";
+import { openModal } from "@/redux/modalSlice";
 interface DataType {
   status: boolean;
   tongTien: string;
@@ -29,23 +40,25 @@ interface DataType {
 }
 
 interface ExpandedDataType {
-  key: React.Key;
-  tenSP: string;
-  gia: string |number;
-  soluong: string |number;
+  key?: React.Key;
+  tenSP?: string;
+  gia?: string | number;
+  soluong?: string | number;
 }
 
 const ListPN = () => {
   const status = useSelector(selectPnStatus);
+  const { isOpen } = useSelector((store: any) => store.modal);
+  const { idPn } = useSelector((store: any) => store.table);
+  // console.log(idPn);
+
   const dispatch = useDispatch<AppDispatch>();
+  const dataInView = useSelector((state: RootState) => state.table.dataInView);
+  const [loading, setloading] = useState(false);
   const { pn } = useSelector((store: any) => store.pn);
   useEffect(() => {
     dispatch(fetchPN());
   }, [dispatch]);
-  // const confirm = () => {
-  //   console.log("a");
-  //  }
-  // console.log(pn.data);
   let result;
   pn
     ? (result = pn.data?.map((item: any) => {
@@ -55,7 +68,7 @@ const ListPN = () => {
           axios
             .post("/api/change-status-pn", idpn)
             .then((res) => {
-              console.log(res);
+              // console.log(res);
               message.success(res.data.message);
               dispatch(fetchPN());
             })
@@ -64,7 +77,7 @@ const ListPN = () => {
             });
         };
         return {
-          id: item.id,
+          key: item.id,
           status:
             item.attributes.status == false ? (
               <>
@@ -74,15 +87,16 @@ const ListPN = () => {
                   description={"Khi thanh toán sẽ không thể hoàn tác?"}
                   onConfirm={confirm}
                   okText="Yes"
+                  
                   okType="danger"
                   showCancel={false}
                 >
-                  <Tag color="red">Chưa thanh toán</Tag>
+                  <Tag style={{cursor:"pointer"}} color="red">Chưa thanh toán</Tag>
                 </Popconfirm>
               </>
             ) : (
               <>
-                <Tag color="green">Thanh toán</Tag>
+                <Tag style={{cursor:"pointer"}} color="green">Thanh toán</Tag>
               </>
             ),
           tongTien: item.attributes.tongTien,
@@ -90,23 +104,85 @@ const ListPN = () => {
         };
       }))
     : null;
-  // console.log(result);
+  const fetchCTPN = () => {
+    axios
+      .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
+      .then((res) => {
+        console.log(res.data);
+        const data = res.data;
+        const result = data.map((item: any) => {
+          return {
+            product: item.product.tenSP,
+            soluong: item.soluong,
+            gia: parseInt(item.gia),
+            key: item.product.id,
+          };
+        });
+        // console.log(result);
+        dispatch(fetchCtPnInView(result));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleDataRow = (props: any) => {
+    setloading(true);
+    dispatch(getIdPN(props.key));
+    const idPn = props.key;
+    axios
+      .get(`/api/getCtPn?id_pn=${idPn}`)
+      .then((res) => {
+        setloading(false);
 
+        // console.log(res.data);
+        const data = res.data;
+        const result = data.map((item: any) => {
+          return {
+            key: item.product.id,
+            product: item.product.tenSP,
+            gia: parseInt(item.gia),
+            soluong: item.soluong,
+          };
+        });
+        // console.log(result);
+        dispatch(fetchCtPnInView(result));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const expandedRowRender = () => {
-    const columns: TableColumnsType<ExpandedDataType> = [
-      { title: "Tên Sản Phẩm", dataIndex: "tenSP", key: "status" },
-      { title: "Giá", dataIndex: "gia", key: "status" },
-      { title: "Số lượng", dataIndex: "soluong", key: "status" },
+    const columns: any = [
+      { title: "Tên Sản Phẩm", dataIndex: "product", key: "product" },
+      { title: "Giá", dataIndex: "gia", key: "gia" },
+      { title: "Số lượng", dataIndex: "soluong", key: "soluong" },
       {
         title: "Action",
         dataIndex: "operation",
         key: "operation",
-        render: () => {
+        render: (_: any, record: any) => {
+          const handleChange = () => {
+            // console.log(record);
+            dispatch(openModal());
+            dispatch(getInforModalCtPN(record));
+            dispatch(getSpId(record.key));
+          };
+          const confirm1 = () => {
+            // console.log(record);
+            axios.delete(`/api/delCtPn?phieu_nhap=${idPn}&product=${record.key}`).then((res) => {
+              console.log(res.data);
+              res.status == 200 ? message.success(res.data.message) : null
+              fetchCTPN()
+            }).catch((err) => {
+              // console.log(err.response.data.error.message);
+              message.error(err.response.data.error.message)
+            })
+          };
           return (
             <Space size="middle">
               <Tooltip title={"Sửa"}>
                 <Button
-                  // onClick={handleChange}
+                  onClick={handleChange}
                   className="flex justify-center items-center"
                   shape="circle"
                   icon={<EditOutlined />}
@@ -117,7 +193,7 @@ const ListPN = () => {
                   placement="top"
                   title={"Xóa"}
                   description={"bạn có chắc chắn không?"}
-                  // onConfirm={confirm}
+                  onConfirm={confirm1}
                   okText="Yes"
                   okType="danger"
                   showCancel={false}
@@ -136,14 +212,14 @@ const ListPN = () => {
       },
     ];
 
-    const data = [{
-      key: '11',
-      tenSP: 'John Brown Jr.',
-      gia: 16,
-      soluong: 'New York No. 2 Lake Park',
-    },];
-    
-    return <Table columns={columns} dataSource={data} pagination={false} />;
+    return (
+      <Table
+        columns={columns}
+        dataSource={dataInView}
+        pagination={false}
+        loading={loading}
+      />
+    );
   };
 
   const columns: TableColumnsType<DataType> = [
@@ -154,10 +230,10 @@ const ListPN = () => {
       title: "Thao tác",
       key: "action",
       render: (_, record: any) => {
+        // console.log(record.key);
         const confirm = () => {
-          // console.log(record);
           axios
-            .delete(`/api/deletePN?idpn=${record.id}`)
+            .delete(`/api/deletePN?idpn=${record.key}`)
             .then(function (response) {
               dispatch(fetchPN());
               message.success("Xóa thành công");
@@ -166,9 +242,6 @@ const ListPN = () => {
             .catch(function (error) {
               message.error(error.response.data.error.message);
               // console.log(error.response.data.error.message);
-            })
-            .finally(function () {
-              // always executed
             });
         };
         return (
@@ -197,12 +270,30 @@ const ListPN = () => {
 
   // const data: DataType[] = [];
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   return (
     <>
+      {isOpen && (
+        <Modal1 title="Sửa chi tiết phiếu nhập">
+          <UpdateCTPN />
+        </Modal1>
+      )}
       <Table
         columns={columns}
-        expandable={{expandedRowRender: (record) => <p style={{ margin: 0 }}>tesst</p>,}}
         dataSource={result}
+        expandedRowKeys={expandedRowKeys}
+        expandable={{
+          expandedRowRender,
+          rowExpandable: (record) => true,
+          onExpand(expanded, record: any) {
+            if (expanded) {
+              setExpandedRowKeys([record.key]);
+            } else {
+              setExpandedRowKeys([]);
+            }
+            handleDataRow(record);
+          },
+        }}
         style={{ maxWidth: "100vw" }}
         scroll={{ x: true }}
         loading={status === "loading" ? true : false}

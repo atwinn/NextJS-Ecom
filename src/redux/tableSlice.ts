@@ -10,16 +10,20 @@ export interface TableData {
 
 export interface TableState {
   data: TableData[];
+  dataInView: TableData[];
   idNCC: string;
   idSp: string;
   idPn: string;
+  tab: string;
   dataCTPn: TableData[];
 }
 export const initialState: TableState = {
   data: [],
+  dataInView: [],
   idNCC: "",
   idSp: "",
   idPn: "",
+  tab: "",
   dataCTPn: [],
 };
 
@@ -49,6 +53,14 @@ const tableSlice = createSlice({
      state.data = action.payload
       
     },
+    fetchCtPnInView: (state, action) => {
+     state.dataInView = action.payload
+      
+    },
+    setTab: (state, action) => {
+     state.tab = action.payload
+      
+    },
   },
 });
 
@@ -60,6 +72,8 @@ export const {
   deleteRow,
   getInforModalCtPN,
   fetchCtPn,
+  fetchCtPnInView,
+  setTab
 } = tableSlice.actions;
 
 export default tableSlice.reducer;
