@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Button, Card, Col, Input, Row } from "antd";
@@ -7,7 +7,14 @@ import type { DatePickerProps } from "antd";
 import { DatePicker } from "antd";
 import Divider1 from "@/component/devider";
 import { ExportOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { error } from "console";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getDataHistory } from "@/redux/listPnSlice";
+import formatMoney from "@/component/formatMoney";
 
+const { RangePicker } = DatePicker;
 interface DataType {
   key: string;
   name: string;
@@ -15,106 +22,107 @@ interface DataType {
   address: string;
   tags: string[];
 }
+interface Order {
+  id: number;
+  attributes: {
+    createdAt: string;
+    updatedAt: string;
+    status: boolean;
+    tongTien: string;
+  };
+}
+
+interface OrderAttributes {
+  createdAt: string;
+  updatedAt: string;
+  status: boolean;
+  tongTien: string;
+}
 
 const columns: ColumnsType<DataType> = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a>{text}</a>,
+    title: "Trạng thái",
+    dataIndex: "status",
+    key: "status",
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
+    title: "Tổng tiền",
+    dataIndex: "tongTien",
+    key: "tongTien",
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
+    title: "createdAt",
+    dataIndex: "createdAt",
+    key: "createdAt",
   },
 ];
 
 const HistoryPN: React.FC = () => {
-  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+  const dispatch = useDispatch();
+  const { historyPn } = useSelector((store: any) => store.pn);
+  const handleRangePickerChange = (
+    dates: any,
+    dateStrings: [string, string]
+  ) => {
+    console.log(dateStrings);
+    // setDateRange(dateStrings);
+    axios
+      .get(
+        `/api/phieu-nhaps?filters[createdAt][$gte]=${dateStrings[0]}&filters[createdAt][$lte]=${dateStrings[1]}`
+      )
+      .then((res) => {
+        console.log(res);
+        const data = res.data.data;
+        console.log(data);
+        const attributes = extractAttributes(data);
+        dispatch(getDataHistory(attributes));
+        // console.log(attributes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+  function extractAttributes(arr: any) {
+    return arr.map((obj: any) => {
+      return {
+        createdAt: obj.attributes.createdAt.toString().slice(0, 10),
+        updatedAt: obj.attributes.updatedAt,
+        status:
+          obj.attributes.status == false ? (
+            <>
+              <Tag style={{ cursor: "pointer" }} color="red">
+                Chưa thanh toán
+              </Tag>
+            </>
+          ) : (
+            <>
+              <Tag style={{ cursor: "pointer" }} color="green">
+                Thanh toán
+              </Tag>
+            </>
+          ),
+        tongTien: formatMoney(obj.attributes.tongTien) ,
+      };
+    });
+  }
+  // console.log(historyPn);
+
   return (
     <>
       <Card>
         <Row gutter={16}>
-          <Col md={3}>
-            <DatePicker onChange={onChange} />
-          </Col>
-          <p className="my-auto">➡️</p>
-          <Col md={3}>
-            <DatePicker onChange={onChange} />
-          </Col>
+          <RangePicker onChange={handleRangePickerChange} />
           <Col md={6}>
             <Button className="mx-3">Xem</Button>
           </Col>
-          <Col md={11} className="flex justify-end">
+          {/* <Col md={11} className="flex justify-end">
             <Button icon={<ExportOutlined />}>Xuất file excel</Button>
-          </Col>
+          </Col> */}
         </Row>
         <Divider1 name="Lịch sử" />
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={historyPn}
           style={{ maxWidth: "100vw" }}
           scroll={{ x: true }}
         />

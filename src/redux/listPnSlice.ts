@@ -5,13 +5,14 @@ import { API_EMPLOYEE, API_NCC, API_NSX, API_PN } from "@/pages/api/api";
 
 interface NCCState {
   pn: any;
- 
+  historyPn:any
   status: "idle" | "loading" | "failed";
   statusNSX: "idle" | "loading" | "failed";
   error: string | null;
 }
 const initialState: NCCState = {
     pn: [],
+    historyPn: [],
   status: "idle",
   statusNSX: "idle",
   error: null,
@@ -31,7 +32,9 @@ const nccSlice = createSlice({
   name: "ncc",
   initialState,
   reducers: {
-      
+      getDataHistory: (state,action) => { 
+        state.historyPn = action.payload
+       }
   },
   extraReducers: (builder) => {
     builder
@@ -51,7 +54,7 @@ const nccSlice = createSlice({
      
   },
 });
-export const { } = nccSlice.actions;
+export const { getDataHistory} = nccSlice.actions;
 
 export default nccSlice.reducer;
 export const selectPn = (state: RootState) => state.pn.pn;

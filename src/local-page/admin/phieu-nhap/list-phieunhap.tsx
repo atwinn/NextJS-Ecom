@@ -33,6 +33,8 @@ import {
 import Modal1 from "@/component/modal";
 import UpdateCTPN from "./update-CtPn";
 import { openModal } from "@/redux/modalSlice";
+import formatMoney from "@/component/formatMoney";
+
 interface DataType {
   status: boolean;
   tongTien: string;
@@ -73,7 +75,8 @@ const ListPN = () => {
               dispatch(fetchPN());
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
+              message.error(err.response.data.error.message)
             });
         };
         return {
@@ -99,7 +102,7 @@ const ListPN = () => {
                 <Tag style={{cursor:"pointer"}} color="green">Thanh toán</Tag>
               </>
             ),
-          tongTien: item.attributes.tongTien,
+          tongTien: formatMoney(item.attributes.tongTien) ,
           createdAt: item.attributes.createdAt.toString().slice(0, 10),
         };
       }))
