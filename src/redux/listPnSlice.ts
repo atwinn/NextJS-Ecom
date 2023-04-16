@@ -3,14 +3,14 @@ import axios from "axios";
 import { RootState } from "./store";
 import { API_EMPLOYEE, API_NCC, API_NSX, API_PN } from "@/pages/api/api";
 
-interface NCCState {
+interface PNState {
   pn: any;
   historyPn:any
   status: "idle" | "loading" | "failed";
   statusNSX: "idle" | "loading" | "failed";
   error: string | null;
 }
-const initialState: NCCState = {
+const initialState: PNState = {
     pn: [],
     historyPn: [],
   status: "idle",

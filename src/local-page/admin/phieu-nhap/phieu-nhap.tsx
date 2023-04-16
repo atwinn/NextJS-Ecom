@@ -8,6 +8,7 @@ import { Typography } from "antd";
 import { useDispatch } from "react-redux";
 import { setTab } from "@/redux/tableSlice";
 import { AppDispatch } from "@/redux/store";
+import { fetchPN } from "@/redux/listPnSlice";
 
 const { Title } = Typography;
 const items: TabsProps["items"] = [
@@ -31,7 +32,8 @@ const items: TabsProps["items"] = [
 const PhieuNhap: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const onChange = (key: string) => {
-    // console.log(key);
+    console.log(key);
+    key == "2" ? dispatch(fetchPN()) :null
     dispatch(setTab(key))
   };
   return (

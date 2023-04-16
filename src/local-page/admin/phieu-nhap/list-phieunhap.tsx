@@ -53,7 +53,7 @@ const ListPN = () => {
   const { isOpen } = useSelector((store: any) => store.modal);
   const { idPn } = useSelector((store: any) => store.table);
   // console.log(idPn);
-
+  
   const dispatch = useDispatch<AppDispatch>();
   const dataInView = useSelector((state: RootState) => state.table.dataInView);
   const [loading, setloading] = useState(false);
