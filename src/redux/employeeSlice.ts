@@ -18,11 +18,13 @@ const initialState: EmployeeState = {
   error: null,
 
 };
+// console.log(`${API_EMPLOYEE}/?pagination[page]=1&pagination[pageSize]=2`);
 
 export const fetchEmployees = createAsyncThunk(
   "employees/fetchEmployees",
-  async () => {
-    const response = await axios.get(API_EMPLOYEE);
+  async (page: any) => {
+    // console.log(`${API_EMPLOYEE}&pagination[page]=${page}&pagination[pageSize]=10`);
+    const response = await axios.get(`${API_EMPLOYEE}&pagination[page]=${page? page : 1}&pagination[pageSize]=10`);
     // console.log(response);
     return response.data;
   }

@@ -13,7 +13,7 @@ import InputInfor from "@/component/form-input/inputInfor";
 import Modal1 from "@/component/modal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { Button, Tooltip, Popconfirm, message } from "antd";
+import { Button, Tooltip, Popconfirm, message,Pagination } from "antd";
 
 import {
   addModalEmployee,
@@ -28,6 +28,7 @@ import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
 import { openModal } from "@/redux/modalSlice";
 import AddAccount from "./add-account";
+import { setPage, setPageSide, setPageTotal } from "@/redux/pagimationSlice";
 interface DataType {
   key: string;
   name: string;
@@ -37,8 +38,10 @@ interface DataType {
 }
 const App: React.FC = () => {
   const { isOpen } = useSelector((store: any) => store.modal);
+  const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
   const employees1 = useSelector(selectEmployees);
   const [pos, setPos] = useState("");
+
 
   const status = useSelector(selectEmployeesStatus);
   const error = useSelector(selectEmployeesError);
@@ -80,7 +83,7 @@ const App: React.FC = () => {
           axios
             .delete(`https://l3mshop.onrender.com/api/nhan-viens/${id}`)
             .then(function (response) {
-              dispatch(fetchEmployees());
+              dispatch(fetchEmployees(page));
               message.success("Xóa thành công");
               // console.log(response);
             })
@@ -149,13 +152,14 @@ const App: React.FC = () => {
     },
   ];
   useEffect(() => {
-    dispatch(fetchEmployees());
-  }, [dispatch]);
+    dispatch(fetchEmployees(page));
+  }, [dispatch,page]);
   const formatDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split("-");
     return `${day}/${month}/${year}`;
   };
   const array = employees1.data;
+  const paginate = employees1.meta;
   // console.log(array);
   let result;
   array
@@ -172,6 +176,17 @@ const App: React.FC = () => {
       }))
     : null;
 
+ 
+  // console.log(paginate.pagination)
+  
+  paginate ? dispatch(setPageTotal(paginate.pagination.total)): null
+  paginate ? dispatch(setPageSide(paginate.pagination.pageSize)): null
+ 
+  
+
+const onchange = (page:any,pageSize:any) => {
+  dispatch(setPage(page))
+}
   return (
     <>
       {isOpen &&
@@ -191,7 +206,11 @@ const App: React.FC = () => {
         loading={status === "loading" ? true : false}
         columns={columns}
         dataSource={result}
+        pagination={false}
       />
+      <div className="flex justify-end m-3">
+      <Pagination defaultCurrent={1} onChange={onchange} total={totalPage} pageSize={pageSize} responsive/>
+      </div>
       {status === "failed" && message.error(error)}
     </>
   );
