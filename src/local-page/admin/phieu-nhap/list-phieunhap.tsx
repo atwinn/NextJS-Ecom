@@ -11,7 +11,6 @@ import {
   Tag,
   message,
   Tooltip,
-  Pagination
 } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -35,27 +34,33 @@ import Modal1 from "@/component/modal";
 import UpdateCTPN from "./update-CtPn";
 import { openModal } from "@/redux/modalSlice";
 import formatMoney from "@/component/formatMoney";
-import { setPage, setPageSide, setPageTotal } from "@/redux/pagimationSlice";
 
 interface DataType {
   status: boolean;
   tongTien: string;
   createdAt: string;
 }
+
+interface ExpandedDataType {
+  key?: React.Key;
+  tenSP?: string;
+  gia?: string | number;
+  soluong?: string | number;
+}
+
 const ListPN = () => {
   const status = useSelector(selectPnStatus);
   const { isOpen } = useSelector((store: any) => store.modal);
   const { idPn } = useSelector((store: any) => store.table);
   // console.log(idPn);
-  const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
   
   const dispatch = useDispatch<AppDispatch>();
   const dataInView = useSelector((state: RootState) => state.table.dataInView);
   const [loading, setloading] = useState(false);
   const { pn } = useSelector((store: any) => store.pn);
   useEffect(() => {
-    dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize ? pageSize :10 }));
-  }, [dispatch,page,pageSize]);
+    dispatch(fetchPN());
+  }, [dispatch]);
   let result;
   pn
     ? (result = pn.data?.map((item: any) => {
@@ -67,7 +72,7 @@ const ListPN = () => {
             .then((res) => {
               // console.log(res);
               message.success(res.data.message);
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 }));
+              dispatch(fetchPN());
             })
             .catch((err) => {
               // console.log(err);
@@ -102,11 +107,6 @@ const ListPN = () => {
         };
       }))
     : null;
-      // console.log(pn.meta);
-     let paginate = pn.meta
-      paginate ? dispatch(setPageTotal(paginate.pagination.total)): null
-      // console.log(totalPage);
-      
   const fetchCTPN = () => {
     axios
       .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
@@ -238,7 +238,7 @@ const ListPN = () => {
           axios
             .delete(`/api/deletePN?idpn=${record.key}`)
             .then(function (response) {
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 }));
+              dispatch(fetchPN());
               message.success("Xóa thành công");
               // console.log(response);
             })
@@ -270,15 +270,9 @@ const ListPN = () => {
       },
     },
   ];
-  const onchange = (page:any,pageSize:any) => {
-    dispatch(setPage(page))
-    dispatch(setPageSide(pageSize));
-    // console.log(page,pageSize);
-    
-  }
+
   // const data: DataType[] = [];
-  // console.log(pageSize);
-  
+
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   return (
     <>
@@ -303,14 +297,10 @@ const ListPN = () => {
             handleDataRow(record);
           },
         }}
-        pagination={false}
         style={{ maxWidth: "100vw" }}
         scroll={{ x: true }}
         loading={status === "loading" ? true : false}
       />
-      <div className="flex justify-end m-3">
-      <Pagination defaultCurrent={1} onChange={onchange} total={totalPage} pageSize={pageSize? pageSize : 10} responsive/>
-      </div>
     </>
   );
 };

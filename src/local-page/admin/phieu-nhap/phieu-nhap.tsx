@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { setTab } from "@/redux/tableSlice";
 import { AppDispatch } from "@/redux/store";
 import { fetchPN } from "@/redux/listPnSlice";
-import { useSelector } from "react-redux";
 
 const { Title } = Typography;
 const items: TabsProps["items"] = [
@@ -32,11 +31,9 @@ const items: TabsProps["items"] = [
 
 const PhieuNhap: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { page,pageSize } = useSelector((store: any) => store.pagination);
-
   const onChange = (key: string) => {
     console.log(key);
-    key == "2" ? dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 })) :null
+    key == "2" ? dispatch(fetchPN()) :null
     dispatch(setTab(key))
   };
   return (
