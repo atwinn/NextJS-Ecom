@@ -112,9 +112,9 @@ const HistoryPN: React.FC = () => {
       <Card>
         <Row gutter={16}>
           <RangePicker onChange={handleRangePickerChange} />
-          <Col md={6}>
+          {/* <Col md={6}>
             <Button className="mx-3">Xem</Button>
-          </Col>
+          </Col> */}
           {/* <Col md={11} className="flex justify-end">
             <Button icon={<ExportOutlined />}>Xuất file excel</Button>
           </Col> */}
