@@ -21,8 +21,11 @@ const initialState: PNState = {
 
 export const fetchPN = createAsyncThunk(
   "employees/fetchPN",
-  async () => {
-    const response = await axios.get(API_PN);
+  async (data:any, thunkAPI) => {
+    // console.log(data.page);
+    const {page,pageSize} = data
+    // console.log(`https://l3mshop.onrender.com/api/phieu-nhaps?sort=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`);
+    const response = await axios.get(`${API_PN}&pagination[page]=${page}&pagination[pageSize]=${pageSize}`);
     // console.log(response);
     return response.data;
   }

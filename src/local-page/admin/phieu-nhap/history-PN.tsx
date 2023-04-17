@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { Button, Card, Col, Input, Row } from "antd";
+import { Button, Card, Col, Input, Row, Pagination } from "antd";
 import { Typography } from "antd";
 import type { DatePickerProps } from "antd";
 import { DatePicker } from "antd";
@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getDataHistory } from "@/redux/listPnSlice";
 import formatMoney from "@/component/formatMoney";
+import { API_PN } from "@/pages/api/api";
+import { setPage, setPageSide, setPageTotal } from "@/redux/pagimationSlice";
 
 const { RangePicker } = DatePicker;
 interface DataType {
@@ -30,13 +32,6 @@ interface Order {
     status: boolean;
     tongTien: string;
   };
-}
-
-interface OrderAttributes {
-  createdAt: string;
-  updatedAt: string;
-  status: boolean;
-  tongTien: string;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -60,27 +55,44 @@ const columns: ColumnsType<DataType> = [
 const HistoryPN: React.FC = () => {
   const dispatch = useDispatch();
   const { historyPn } = useSelector((store: any) => store.pn);
+  const { page, totalPage, pageSize } = useSelector(
+    (store: any) => store.pagination
+  );
+  const [date, setDate] = useState<any>();
+
+  useEffect(() => {
+    date
+      ? axios
+          .get(
+            `${API_PN}&filters[createdAt][$gte]=${
+              date[0]
+            }&filters[createdAt][$lte]=${
+              date[1]
+            }&pagination[page]=${page}&pagination[pageSize]=${
+              pageSize ? pageSize : 10
+            }`
+          )
+          .then((res) => {
+            console.log(res.data.meta);
+            const data = res.data.data;
+            // console.log(data);
+            dispatch(setPageTotal(res.data.meta.pagination.total));
+            const attributes = extractAttributes(data);
+            dispatch(getDataHistory(attributes));
+            // console.log(attributes);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : null;
+  }, [page, date, pageSize]);
   const handleRangePickerChange = (
     dates: any,
     dateStrings: [string, string]
   ) => {
     console.log(dateStrings);
     // setDateRange(dateStrings);
-    axios
-      .get(
-        `/api/phieu-nhaps?filters[createdAt][$gte]=${dateStrings[0]}&filters[createdAt][$lte]=${dateStrings[1]}`
-      )
-      .then((res) => {
-        console.log(res);
-        const data = res.data.data;
-        console.log(data);
-        const attributes = extractAttributes(data);
-        dispatch(getDataHistory(attributes));
-        // console.log(attributes);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setDate(dateStrings);
   };
   function extractAttributes(arr: any) {
     return arr.map((obj: any) => {
@@ -101,12 +113,16 @@ const HistoryPN: React.FC = () => {
               </Tag>
             </>
           ),
-        tongTien: formatMoney(obj.attributes.tongTien) ,
+        tongTien: formatMoney(obj.attributes.tongTien),
       };
     });
   }
   // console.log(historyPn);
-
+  const onchange = (page: any, pageSize: any) => {
+    // console.log(pageSize);
+    dispatch(setPageSide(pageSize));
+    dispatch(setPage(page));
+  };
   return (
     <>
       <Card>
@@ -125,8 +141,20 @@ const HistoryPN: React.FC = () => {
           dataSource={historyPn}
           style={{ maxWidth: "100vw" }}
           scroll={{ x: true }}
+          pagination={false}
         />
-        ;
+        {date ?<> 
+          <div className="flex justify-end m-3">
+          <Pagination
+            defaultCurrent={1}
+            onChange={onchange}
+            total={totalPage}
+            pageSize={pageSize ? pageSize : 10}
+            responsive
+          />
+        </div>
+        </> : null}
+       
       </Card>
     </>
   );
