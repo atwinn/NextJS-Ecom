@@ -63,11 +63,6 @@ const ProdForm = ({ close }: any) => {
         // }
     };
 
-    const beforeUpload = (file: any) => {
-        setFile(file)
-        return false
-    }
-
     useEffect(() => {
         dispatch(fetchCategory())
         dispatch(fetchNcc())
@@ -89,13 +84,22 @@ const ProdForm = ({ close }: any) => {
                 name="anhSP"
                 rules={[{
                     required: true, message: 'Vui lòng chọn ảnh sản phẩm!'
-                }]}
+                },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                        if (file === null) {
+                            return Promise.reject('Vui lòng chọn ảnh sản phẩm!');
+                        }
+                        return Promise.resolve();
+                    },
+                })]}
             >
                 <Upload
                     accept=".jpg,.png"
                     maxCount={1}
                     listType="picture"
-                    beforeUpload={beforeUpload}
+                    beforeUpload={(file) => setFile(file)}
+                    onRemove={() => setFile(null)}
                 >
                     <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
