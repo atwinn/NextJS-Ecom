@@ -12,6 +12,7 @@ import nccSlide from './nccSlice'
 import productSlice from './productSlice'
 import listPnSlice from './listPnSlice'
 import categorySlice from './categorySlice'
+import PaginationSlice from './pagimationSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({

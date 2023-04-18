@@ -7,6 +7,7 @@ import { AppDispatch } from "@/redux/store";
 import { fetchEmployees } from "@/redux/employeeSlice";
 const AddAccount: React.FC = () => {
   const { employeesId } = useSelector((store: any) => store.employees);
+  const { page } = useSelector((store: any) => store.pagination);
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
@@ -20,7 +21,7 @@ const AddAccount: React.FC = () => {
         console.log(response);
         setLoading(false);
 
-        dispatch(fetchEmployees());
+        dispatch(fetchEmployees(page));
         response.status == 200
           ? message.success("Cấp tài khoản thành công")
           : null;
