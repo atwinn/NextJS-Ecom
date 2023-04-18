@@ -91,6 +91,7 @@ const ProdForm = ({ close }: any) => {
                     accept=".jpg,.png"
                     maxCount={1}
                     listType="picture"
+                    beforeUpload={() => false}
                 >
                     <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
