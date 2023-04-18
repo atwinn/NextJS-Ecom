@@ -26,14 +26,13 @@ const ProdForm = ({ close }: any) => {
     const category = useSelector(selectCategory)
     const ncc = useSelector(selectNcc)
     const nsx = useSelector(selectNsx)
+    const [file, setFile] = useState<any>()
     const editor = useRef<SunEditorCore>();
     const getSunEditorInstance = (sunEditor: SunEditorCore) => {
         editor.current = sunEditor;
     };
 
     const onFinish = async (values: any) => {
-        const file = values.anhSP.file.originFileObj;
-
         const formData = new FormData();
 
         formData.append("data.tenSP", values.tenSP);
@@ -64,6 +63,11 @@ const ProdForm = ({ close }: any) => {
         // }
     };
 
+    const beforeUpload = (file: any) => {
+        setFile(file)
+        return false
+    }
+
     useEffect(() => {
         dispatch(fetchCategory())
         dispatch(fetchNcc())
@@ -91,7 +95,7 @@ const ProdForm = ({ close }: any) => {
                     accept=".jpg,.png"
                     maxCount={1}
                     listType="picture"
-                    action={"https://l3mshop.vercel.app/"}
+                    beforeUpload={beforeUpload}
                 >
                     <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
