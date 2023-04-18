@@ -9,8 +9,9 @@ import tableSlice from './tableSlice'
 import employeeSlide from './employeeSlice'
 import accountSlide from './accountSlice'
 import nccSlide from './nccSlice'
-import productSlide from './productSlice'
+import productSlice from './productSlice'
 import listPnSlice from './listPnSlice'
+import categorySlice from './categorySlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -22,8 +23,9 @@ const store = configureStore({
     employees: employeeSlide,
     accEmployees: accountSlide,
     ncc: nccSlide,
-    product:productSlide,
-    pn:listPnSlice
+    product: productSlice,
+    pn: listPnSlice,
+    category: categorySlice
   },
 })
 

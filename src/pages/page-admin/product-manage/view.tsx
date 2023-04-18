@@ -1,11 +1,7 @@
 import { LayoutManager } from '@/layout/layoutAdmin';
+import ProdManage from '@/local-page/admin/product-manage/main';
 import * as React from 'react';
 import { useState } from 'react';
-import ProdFilter from '../../../component/product/prodfilter';
-import TitleAndAction from '../../../component/product/title-action'
-import ProdTable from '../../../component/product/prodtable';
-import Divider1 from '@/component/devider';
-// import withAuth from '@/component/author/withAuth';
 
 export interface IQLSanPhamProps {
 }
@@ -13,14 +9,7 @@ export interface IQLSanPhamProps {
 export default function QLSanPham(props: IQLSanPhamProps) {
 
   return (
-    <div className='md:px-5 xs:px-0 xs:py-2'>
-      <Divider1 name="Quản lý sản phẩm" />
-      <ProdFilter />
-      <TitleAndAction />
-      <Divider1 name="Danh sách sản phẩm" />
-      <ProdTable />
-    </div>
+    <ProdManage />
   );
 }
-// export default withAuth(QLSanPham)
 QLSanPham.PageLayout = LayoutManager

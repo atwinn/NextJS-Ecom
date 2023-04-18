@@ -3,7 +3,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "./store";
-import { API_EMPLOYEE, API_PRODUCT } from "@/pages/api/api";
+import { API_PRODUCT } from "@/pages/api/api";
 
 interface ProductState {
   product: any;
@@ -28,13 +28,12 @@ export const fetchProduct = createAsyncThunk(
 );
 
 const productSlice = createSlice({
-  name: "employees",
+  name: "products",
   initialState,
   reducers: {
-    //   addModalEmployee: (state,action) => {
-    //     // console.log(action.payload);
-    //     state.employeesId = action.payload
-    //   }
+    updateProd: (state, action) => {
+      state.productId = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -53,7 +52,7 @@ const productSlice = createSlice({
       });
   },
 });
-export const {} = productSlice.actions;
+export const { updateProd } = productSlice.actions;
 
 export default productSlice.reducer;
 export const selectProduct = (state: RootState) => state.product.product;

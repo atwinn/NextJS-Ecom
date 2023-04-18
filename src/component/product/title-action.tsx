@@ -7,6 +7,7 @@ import ProdForm from '../form-input/ProdForm';
 export default function TitleAndAction() {
 
     const [modalOpen, setModalOpen] = useState(false);
+    const handleClose = () => setModalOpen(false)
 
     return (
         <div className='bg-white mt-5 pt-9 border-b-2 rounded-md'>
@@ -45,11 +46,13 @@ export default function TitleAndAction() {
                     <Modal
                         title="Thêm sản phẩm mới"
                         centered
+                        width={850}
                         open={modalOpen}
+                        footer={false}
                         onOk={() => setModalOpen(false)}
                         onCancel={() => setModalOpen(false)}
                     >
-                        <ProdForm />
+                        <ProdForm close={handleClose} />
                     </Modal>
                 </Col>
             </Row>

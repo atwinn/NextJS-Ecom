@@ -69,7 +69,6 @@ const App: React.FC = () => {
       dataIndex: "ngaySinh",
       key: "birth",
     },
-
     {
       title: "Action",
       key: "action",
@@ -160,16 +159,16 @@ const App: React.FC = () => {
   let result;
   array
     ? (result = array.map((item: any) => {
-        return {
-          id: item.id,
-          ten: item.attributes.ten,
-          diaChi: item.attributes.diaChi,
-          sdt: item.attributes.sdt,
-          ngaySinh: formatDate(item.attributes.ngaySinh),
-          gioiTinh: item.attributes.gioiTinh == true ? "Nam" : "Nữ",
-          account: item.attributes.users_permissions_user.data,
-        };
-      }))
+      return {
+        id: item.id,
+        ten: item.attributes.ten,
+        diaChi: item.attributes.diaChi,
+        sdt: item.attributes.sdt,
+        ngaySinh: formatDate(item.attributes.ngaySinh),
+        gioiTinh: item.attributes.gioiTinh == true ? "Nam" : "Nữ",
+        account: item.attributes.users_permissions_user.data,
+      };
+    }))
     : null;
 
   return (
