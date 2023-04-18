@@ -17,6 +17,7 @@ import axios from "axios";
 import { API_EMPLOYEE } from "@/pages/api/api";
 import { fetchEmployees } from "@/redux/employeeSlice";
 import { AppDispatch } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -41,6 +42,7 @@ const validateMessages = {
 const style: React.CSSProperties = { margin: "8px 16px" };
 const InputInfor: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
+  const {page} = useSelector((store:any) => store.pagination)
   const dispatch = useDispatch<AppDispatch>();
   const key = "updatable";
   const [form] = Form.useForm();
@@ -59,7 +61,7 @@ const InputInfor: React.FC = () => {
               duration: 2,
             })
           : "lỗi";
-       dispatch(fetchEmployees());
+       dispatch(fetchEmployees(page));
       })
       .catch(function (error) {
         messageApi.open({
