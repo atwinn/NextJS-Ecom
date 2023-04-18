@@ -23,6 +23,7 @@ type SizeType = Parameters<typeof Form>[0]["size"];
 
 const UpdateEmployee: React.FC = () => {
   const { employeesId } = useSelector((store: any) => store.employees);
+  const { page } = useSelector((store: any) => store.pagination);
   const [date1, setDate1] = useState(
     moment(employeesId.ngaySinh).format("YYYY-MM-DD")
   );
@@ -55,7 +56,7 @@ const UpdateEmployee: React.FC = () => {
       .put(`/api/nhan-viens/${id}`, { data: values })
       .then(function (response) {
         console.log(response);
-        dispatch(fetchEmployees());
+        dispatch(fetchEmployees(page));
         response.status == 200
           ? messageApi.open({
               key,
