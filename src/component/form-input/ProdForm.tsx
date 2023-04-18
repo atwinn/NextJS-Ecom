@@ -49,19 +49,19 @@ const ProdForm = ({ close }: any) => {
         const formDataObject = Object.fromEntries(formData);
         console.log(formDataObject);
 
-        try {
-            const res = await axios.post("/api/products", formData)
-            // form.resetFields()
-            close()
-            dispatch(fetchProduct())
-            message.success("Thêm sản phẩm thành công")
-        } catch (error: any) {
-            if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
-                    message.error(error.response.data.error.message)
-                }
-            }
-        }
+        // try {
+        //     const res = await axios.post("/api/products", formData)
+        //     // form.resetFields()
+        //     close()
+        //     dispatch(fetchProduct())
+        //     message.success("Thêm sản phẩm thành công")
+        // } catch (error: any) {
+        //     if (typeof error.response !== 'undefined') {
+        //         if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+        //             message.error(error.response.data.error.message)
+        //         }
+        //     }
+        // }
     };
 
     useEffect(() => {
@@ -91,7 +91,7 @@ const ProdForm = ({ close }: any) => {
                     accept=".jpg,.png"
                     maxCount={1}
                     listType="picture"
-                    beforeUpload={() => false}
+                    action={"https://l3mshop.vercel.app/"}
                 >
                     <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                 </Upload>
