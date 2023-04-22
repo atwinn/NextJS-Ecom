@@ -6,22 +6,10 @@ const Pie = dynamic(() => import("@ant-design/plots").then(({ Pie }) => Pie), {
   ssr: false,
 });
 
-const DemoPie = () => {
-  const [dataPercent, setDataPercent] = useState([]);
-  useEffect(() => {
-    axios
-      .get("/api/thongKeLoai")
-      .then((res) => {
-        console.log(res.data);
-        setDataPercent(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-  // console.log(dataPercent);
+const DemoPie = (props:any) => {
+  // console.log(props.data);
   let data = [];
-  data = dataPercent?.map((item: any) => {
+  data = props.data?.map((item: any) => {
     return {
       type: item.tenLoai,
       value: Math.round(item.phanTram * 100),
