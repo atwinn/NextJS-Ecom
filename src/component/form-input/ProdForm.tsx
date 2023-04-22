@@ -22,6 +22,7 @@ const { TextArea } = Input;
 
 const ProdForm = ({ close }: any) => {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
     const category = useSelector(selectCategory)
     const ncc = useSelector(selectNcc)
@@ -35,7 +36,7 @@ const ProdForm = ({ close }: any) => {
 
     const onFinish = async (values: any) => {
         const formData = new FormData();
-
+        setLoading(true)
         if (file) {
             const data = {
                 tenSP: values.tenSP,
@@ -57,6 +58,7 @@ const ProdForm = ({ close }: any) => {
                         'Content-Type': 'multipart/form-data'
                     },
                 })
+                setLoading(false)
                 form.resetFields()
                 close()
                 dispatch(fetchProduct())
@@ -67,6 +69,7 @@ const ProdForm = ({ close }: any) => {
                         message.error(error.response.data.error.message)
                     }
                 }
+                setLoading(false)
             }
         }
     };
@@ -230,7 +233,7 @@ const ProdForm = ({ close }: any) => {
                 />
             </Form.Item>
             <Form.Item wrapperCol={{ span: 24 }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                     Thêm mới
                 </Button>
             </Form.Item>

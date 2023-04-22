@@ -29,15 +29,13 @@ import Image from "next/image";
 import logo from "../../assets/logoL3M.png";
 
 const App: React.FC = () => {
-  const userName = useRef("");
-  const pass = useRef("");
-  const [loginGG, setLoginGG] = useState("")
+  const [loading, setLoading] = useState(false)
   const { push } = useRouter();
-  const router = useRouter();
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = async (values: any) => {
+    setLoading(true)
     const data = {
       identifier: values.username,
       password: values.password,
@@ -50,29 +48,25 @@ const App: React.FC = () => {
       dispatch(setUser(res.data.user));
       const userId = res.data.user.id
       const res2 = await axios.get(`/api/users/${userId}?populate=*`)
-      setCookie("role", res2.data.role.id)
-      push("/")
+      const role = res2.data.role.id
+      setCookie("role", role)
+      setLoading(false)
+      role === 3 || role === 4 || role === 6 ? push("/page-admin") : push("/")
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
-        if (error.response.status === 400) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
-        if (error.response.status === 404) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
-        if (error.response.status === 500) {
+        if (error.response.status === 400
+          || error.response.status === 402
+          || error.response.status === 403
+          || error.response.status === 404
+          || error.response.status === 405
+          || error.response.status === 500) {
           messageApi.open({
             type: 'error',
             content: error.response.data.error.message,
           });
         }
       }
+      setLoading(false)
     }
   };
 
@@ -128,6 +122,7 @@ const App: React.FC = () => {
                   htmlType="submit"
                   className="login-form-button"
                   size="large"
+                  loading={loading}
                 >
                   Đăng nhập
                 </Button>

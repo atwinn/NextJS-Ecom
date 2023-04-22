@@ -21,6 +21,7 @@ const { TextArea } = Input;
 
 const UpdateProdForm = ({ close }: any) => {
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
     const [imageFile, setImageFile] = useState<File | null>(null);
     const editor = useRef<SunEditorCore>();
@@ -36,6 +37,7 @@ const UpdateProdForm = ({ close }: any) => {
     const prodId = productId.id
 
     const onFinish = async (values: any) => {
+        setLoading(true)
         const formData = new FormData();
 
         const data = {
@@ -58,6 +60,7 @@ const UpdateProdForm = ({ close }: any) => {
                     'Content-Type': 'multipart/form-data'
                 },
             })
+            setLoading(false)
             form.resetFields()
             close()
             dispatch(fetchProduct())
@@ -73,6 +76,7 @@ const UpdateProdForm = ({ close }: any) => {
                     message.error(error.response.data.error.message)
                 }
             }
+            setLoading(false)
         }
     }
 
@@ -245,7 +249,7 @@ const UpdateProdForm = ({ close }: any) => {
                     />
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24 }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={loading}>
                         Lưu thay đổi
                     </Button>
                 </Form.Item>
