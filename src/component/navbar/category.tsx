@@ -53,7 +53,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
         setRole(roleFromCookie);
     }, []);
 
-    const items: MenuProps['items'] = role === 1 || role === 2 || role === 3 ?
+    const items: MenuProps['items'] = role === 3 || role === 4 || role === 6 ?
         [
             {
                 key: '5',
