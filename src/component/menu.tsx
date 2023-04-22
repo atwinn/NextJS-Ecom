@@ -1,10 +1,11 @@
 "use client";
-import * as React from "react";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import { FileOutlined, PieChartOutlined, ContainerOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Link from "next/link";
+import { getCookie } from "../../cookies";
+import React, { useState, useEffect } from "react";
 export interface IMenuProps { }
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -60,17 +61,21 @@ const items: MenuItem[] = [
 ];
 
 export default function Menu1(props: IMenuProps) {
-  // const roleId: string = "3"
-  // const filteredItems = items.filter(item => {
-  //   if (roleId === "1") {
-  //     return ["1", "2"].includes(item?.key?.toString() ?? '');
-  //   } else if (roleId === "2") {
-  //     return ["1", "3", "5"].includes(item?.key?.toString() ?? '');
-  //   } else if (roleId === "3") {
-  //     return ["1", "4", "6", "7"].includes(item?.key?.toString() ?? '');
-  //   }
-  //   return true;
-  // });
+  const [roleId, setRoleId] = useState<string>()
+  useEffect(() => {
+    setRoleId(getCookie("role"))
+  }, [])
+
+  const filteredItems = items.filter(item => {
+    if (roleId === "3") {
+      return ["1", "3", "4"].includes(item?.key?.toString() ?? '');
+    } else if (roleId === "4") {
+      return ["1", "3", "4", "6", "7"].includes(item?.key?.toString() ?? '');
+    } else if (roleId === "6") {
+      return ["1", "2", "5"].includes(item?.key?.toString() ?? '');
+    }
+    return true;
+  });
 
   return (
     <div>
@@ -78,7 +83,7 @@ export default function Menu1(props: IMenuProps) {
         theme="dark"
         defaultSelectedKeys={["1"]}
         mode="inline"
-        items={items}
+        items={filteredItems}
       />
     </div>
   );

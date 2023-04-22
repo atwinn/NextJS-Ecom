@@ -28,23 +28,58 @@ const UpdateProdForm = ({ close }: any) => {
         editor.current = sunEditor;
     };
 
-    const onFinish = async (values: any) => {
-        console.log(values);
-    }
     const category = useSelector(selectCategory)
     const ncc = useSelector(selectNcc)
     const nsx = useSelector(selectNsx)
     const { productId } = useSelector((store: any) => store.product)
     const image = productId.hinh
+    const prodId = productId.id
 
+    const onFinish = async (values: any) => {
+        const formData = new FormData();
+
+        const data = {
+            tenSP: values.tenSP,
+            gia: values.gia,
+            baoHanh: values.baoHanh,
+            ctSanPham: values.ctSP,
+            moTa: values.mota,
+            maLoai: values.loai,
+            maNCC: values.ncc,
+            maNSX: values.nsx,
+        }
+
+        formData.append("data", JSON.stringify(data))
+        imageFile ? formData.append("files.hinh", imageFile) : null
+
+        try {
+            const res = await axios.put(`/api/products/${prodId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            })
+            form.resetFields()
+            close()
+            dispatch(fetchProduct())
+            setImageFile(null)
+            message.success("Sửa sản phẩm thành công")
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400
+                    || error.response.status === 403
+                    || error.response.status === 404
+                    || error.response.status === 404
+                    || error.response.status === 500) {
+                    message.error(error.response.data.error.message)
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         dispatch(fetchCategory())
         dispatch(fetchNcc())
         dispatch(fetchNsx())
-    }, [dispatch])
-
-    useEffect(() => {
         if (productId) {
             form.setFieldsValue({
                 tenSP: productId.ten,
@@ -57,7 +92,7 @@ const UpdateProdForm = ({ close }: any) => {
                 ctSP: productId.ctSanPham
             });
         }
-    }, [productId, form])
+    }, [dispatch, productId, form])
 
     return (
         <div>
@@ -73,9 +108,6 @@ const UpdateProdForm = ({ close }: any) => {
                 <Form.Item
                     label="Ảnh sản phẩm"
                     name="anhSP"
-                    rules={[{
-                        required: true, message: 'Vui lòng chọn ảnh sản phẩm!'
-                    }]}
                 >
                     {!imageFile
                         ? <div className='mb-2'>
@@ -84,7 +116,7 @@ const UpdateProdForm = ({ close }: any) => {
                         : null
                     }
                     <Upload
-                        accept=".jpg,.png"
+                        accept=".png, .jpg, .jpeg"
                         maxCount={1}
                         listType="picture"
                         beforeUpload={(file) => {
@@ -214,7 +246,7 @@ const UpdateProdForm = ({ close }: any) => {
                 </Form.Item>
                 <Form.Item wrapperCol={{ span: 24 }}>
                     <Button type="primary" htmlType="submit">
-                        Thêm mới
+                        Lưu thay đổi
                     </Button>
                 </Form.Item>
             </Form>

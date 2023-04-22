@@ -26,7 +26,8 @@ const ProdForm = ({ close }: any) => {
     const category = useSelector(selectCategory)
     const ncc = useSelector(selectNcc)
     const nsx = useSelector(selectNsx)
-    const [file, setFile] = useState<any>()
+    const [file, setFile] = useState<File | null>(null)
+
     const editor = useRef<SunEditorCore>();
     const getSunEditorInstance = (sunEditor: SunEditorCore) => {
         editor.current = sunEditor;
@@ -35,32 +36,39 @@ const ProdForm = ({ close }: any) => {
     const onFinish = async (values: any) => {
         const formData = new FormData();
 
-        formData.append("data.tenSP", values.tenSP);
-        formData.append("data.gia", values.gia);
-        formData.append("data.baoHanh", values.baoHanh);
-        formData.append("data.ctSanPham", values.ctSP);
-        formData.append("data.moTa", values.mota);
-        formData.append("data.maLoai", values.loai);
-        formData.append("data.maNCC", values.ncc);
-        formData.append("data.maNSX", values.nsx);
-        formData.append("files.hinh", file);
+        if (file) {
+            const data = {
+                tenSP: values.tenSP,
+                gia: values.gia,
+                baoHanh: values.baoHanh,
+                ctSanPham: values.ctSP,
+                moTa: values.mota,
+                maLoai: values.loai,
+                maNCC: values.ncc,
+                maNSX: values.nsx,
+            }
 
-        const formDataObject = Object.fromEntries(formData);
-        console.log(formDataObject);
+            formData.append("data", JSON.stringify(data))
+            formData.append("files.hinh", file);
 
-        // try {
-        //     const res = await axios.post("/api/products", formData)
-        //     // form.resetFields()
-        //     close()
-        //     dispatch(fetchProduct())
-        //     message.success("Thêm sản phẩm thành công")
-        // } catch (error: any) {
-        //     if (typeof error.response !== 'undefined') {
-        //         if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
-        //             message.error(error.response.data.error.message)
-        //         }
-        //     }
-        // }
+            try {
+                const res = await axios.post("/api/products", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                })
+                form.resetFields()
+                close()
+                dispatch(fetchProduct())
+                message.success("Thêm sản phẩm thành công")
+            } catch (error: any) {
+                if (typeof error.response !== 'undefined') {
+                    if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+                        message.error(error.response.data.error.message)
+                    }
+                }
+            }
+        }
     };
 
     useEffect(() => {

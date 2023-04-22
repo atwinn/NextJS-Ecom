@@ -25,7 +25,7 @@ const PrivateRoute = ({ children }: IProps) => {
         </div>;
     }
 
-    const allowedRoles = [1, 2, 3];
+    const allowedRoles = [3, 4, 6];
     if (!allowedRoles.includes(role)) {
         push("/auth/login");
         return null;
