@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCookie, getCookie } from "../../../cookies";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { clearUser, setUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category, UserDropDown } from "./category";
@@ -125,6 +125,8 @@ export const Right = () => {
 export const Middle = () => {
     const [show, setShow] = useState(false);
     const [onSearch, setOnSearch] = useState("");
+    const router = useRouter()
+    const params = new URLSearchParams()
 
     useEffect(() => {
         if (onSearch != "")
@@ -132,6 +134,19 @@ export const Middle = () => {
         else
             setShow(false);
     }, [onSearch])
+
+    const handleSearch = () => {
+        if (params.has("search")) {
+            router.replace(`/sanpham?search=${onSearch}`)
+        }
+        router.push(`/sanpham?search=${onSearch}`)
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
+    }
 
     return (
         <>
@@ -144,10 +159,11 @@ export const Middle = () => {
                             placeholder="Tìm kiếm sản phẩm"
                             onChange={(e) => setOnSearch(e.target.value)}
                             value={onSearch}
+                            onKeyDown={handleKeyDown}
                         />
                     </div>
                 </div>
-                <div className="absolute bg-black hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer transition-all">
+                <div className="absolute bg-black hover:bg-slate-300 px-2 py-1.5 rounded-full right-1.5 cursor-pointer transition-all" onClick={handleSearch}>
                     <GoSearch className="text-white" />
                 </div>
                 {show ?

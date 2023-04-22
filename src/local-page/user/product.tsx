@@ -4,6 +4,7 @@ import { Col, Pagination, Row, message, Skeleton } from 'antd'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
 import type { PaginationProps } from 'antd';
+import { useSearchParams } from 'next/navigation'
 
 const UserProduct = () => {
     const [prodData, setProdData] = useState([])
@@ -14,13 +15,22 @@ const UserProduct = () => {
         pageSize: 0,
         total: 0
     })
+    const searchParams = useSearchParams()
 
     const fetchProd = async () => {
         try {
-            const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=10&populate=*")
-            setProdData(res.data.data)
-            setPaginate(res.data.meta.pagination)
-            setLoading(false)
+            if (searchParams.has("search")) {
+                const searchQuery = searchParams.get("search")
+                const res = await axios.get(`/api/products/tim-kiem?key=${searchQuery}`)
+                setProdData(res.data.data)
+                setPaginate(res.data.meta.pagination)
+                setLoading(false)
+            } else {
+                const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=10&populate=*")
+                setProdData(res.data.data)
+                setPaginate(res.data.meta.pagination)
+                setLoading(false)
+            }
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
                 if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 405 || error.response.status === 500) {
@@ -36,7 +46,7 @@ const UserProduct = () => {
 
     useEffect(() => {
         fetchProd()
-    }, [])
+    }, [searchParams])
 
     const pageChange: PaginationProps['onChange'] = async (page) => {
         setLoading(true)
