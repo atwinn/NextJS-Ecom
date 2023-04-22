@@ -3,6 +3,7 @@ import ProdCard from '@/component/productCard'
 import { Col, Pagination, Row, message } from 'antd'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
+import type { PaginationProps } from 'antd';
 
 const UserProduct = () => {
     const [prodData, setProdData] = useState([])
@@ -14,15 +15,22 @@ const UserProduct = () => {
     })
 
     useEffect(() => {
-        axios.get("https://l3mshop.onrender.com/api/products?populate=*").then((res) => {
+        axios.get("/api/products?pagination[page]=1&pagination[pageSize]=10&populate=*").then((res) => {
             if (res.status === 200) {
-                console.log(res.data.data);
-
                 setProdData(res.data.data)
-                setPaginate(res.data.meta)
+                setPaginate(res.data.meta.pagination)
             }
         })
     }, [])
+
+    const pageChange: PaginationProps['onChange'] = (page) => {
+        axios.get(`/api/products?pagination[page]=${page}&pagination[pageSize]=10&populate=*`).then((res) => {
+            if (res.status === 200) {
+                setProdData(res.data.data)
+                setPaginate(res.data.meta.pagination)
+            }
+        })
+    };
 
     return (
         <div className='p-5'>
@@ -49,11 +57,13 @@ const UserProduct = () => {
                     </Row>
                     <Pagination
                         total={paginate.total}
-                        pageSize={10}
+                        pageSize={paginate.pageSize}
+                        current={paginate.page}
                         showTotal={(total) => `${total} sản phẩm`}
                         hideOnSinglePage
                         showSizeChanger={false}
                         className='mt-10 text-center'
+                        onChange={pageChange}
                     />
                 </Col>
             </Row>

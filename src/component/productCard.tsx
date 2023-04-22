@@ -60,12 +60,12 @@ const ProdCard = (props: ProductData) => {
         <>
             {contextHolder}
             <Card
-                style={{ maxWidth: 300 }}
+                style={{ width: 300 }}
                 cover={
                     <img
                         alt="example"
                         src={props.image}
-                        className='object-cover h-48'
+                        className='h-48 object-cover'
                     />
                 }
                 actions={[
