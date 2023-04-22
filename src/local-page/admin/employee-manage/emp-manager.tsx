@@ -38,14 +38,13 @@ interface DataType {
 }
 const App: React.FC = () => {
   const { isOpen } = useSelector((store: any) => store.modal);
-  const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
   const employees1 = useSelector(selectEmployees);
   const [pos, setPos] = useState("");
-
-
   const status = useSelector(selectEmployeesStatus);
   const error = useSelector(selectEmployeesError);
   const dispatch = useDispatch<AppDispatch>();
+  
+  const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
   const columns: ColumnsType<DataType> = [
     {
       title: "Tên",

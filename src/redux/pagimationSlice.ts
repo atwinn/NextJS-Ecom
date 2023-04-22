@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface PaginationState {
-    page: number
+    page: number | string
     pageSize: number | string
     totalPage: number | string
 }
