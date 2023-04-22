@@ -13,7 +13,7 @@ import {
   Card,
   message
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
@@ -58,6 +58,13 @@ const Register: React.FC = () => {
   const [form] = Form.useForm();
   const { push } = useRouter()
   const [messageApi, contextHolder] = message.useMessage();
+
+  useEffect(() => {
+    const user = localStorage.getItem("id")
+    if (user) {
+      push("/")
+    }
+  })
 
   const onFinish = (values: any) => {
     const data = {

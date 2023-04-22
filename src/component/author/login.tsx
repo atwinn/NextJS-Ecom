@@ -34,6 +34,13 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
+  useEffect(() => {
+    const user = localStorage.getItem("id")
+    if (user) {
+      push("/")
+    }
+  })
+
   const onFinish = async (values: any) => {
     setLoading(true)
     const data = {

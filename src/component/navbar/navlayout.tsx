@@ -10,7 +10,7 @@ import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteCookie } from "../../../cookies";
+import { deleteCookie, getCookie } from "../../../cookies";
 import { useRouter } from "next/navigation";
 import { clearUser, setUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
@@ -48,11 +48,12 @@ export const Right = () => {
     // const user = useSelector((state: any) => state.user)
     const [messageApi, contextHolder] = message.useMessage();
     const [userAuth, setUserAuth] = useState("")
+    const [role, setRole] = useState<string | null>(null)
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
-        setUserAuth(storedUsername || ""); // Set userAuth to an empty string if storedUsername is null or undefined
+        setUserAuth(storedUsername || "")
+        setRole(getCookie("role") || null)
     }, []);
-    // const userAuth = typeof window != 'undefined' ? localStorage.getItem("username") : null
     const dispatch = useDispatch()
     const { push } = useRouter()
     const handleLogout = () => {
@@ -85,11 +86,14 @@ export const Right = () => {
                             <VscSignOut className="text-[21px]" />
                             <p className={NavButtonCss}>Đăng Xuất</p>
                         </div>
-                        <Link href={"/cart"}>
-                            <div className={CartCss}>
-                                <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
-                            </div>
-                        </Link>
+                        {role === "3" || role === "4" || role === "6"
+                            ? null
+                            : <Link href={"/cart"}>
+                                <div className={CartCss}>
+                                    <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                                </div>
+                            </Link>
+                        }
                     </>
                 ) : (
                     <>

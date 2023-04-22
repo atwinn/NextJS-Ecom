@@ -3,6 +3,7 @@ import UserCard from '@/component/user-information/userCard'
 import UserOrder from '@/component/user-information/userOrder'
 import axios from 'axios'
 import { message, Row, Col } from 'antd'
+import PrivatePage from '@/redux/constant/privatepage'
 
 const UserPage = () => {
     const [userData, setUserData] = useState()
@@ -61,7 +62,7 @@ const UserPage = () => {
     }, [])
 
     return (
-        <>
+        <PrivatePage>
             {contextHolder}
             <div className='p-5'>
                 <Row gutter={[16, 16]}>
@@ -77,7 +78,7 @@ const UserPage = () => {
                     </Col>
                 </Row>
             </div>
-        </>
+        </PrivatePage>
     )
 }
 
