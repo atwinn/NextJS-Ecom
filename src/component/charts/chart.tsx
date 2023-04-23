@@ -13,7 +13,6 @@ const DemoColumn = () => {
     axios
       .get("/api/thongKe12ThangGanNhat")
       .then((res) => {
-        // console.log(res.data.result);
         setDataCol(res.data.result)
       })
       .catch((err) => {
@@ -27,7 +26,6 @@ const DemoColumn = () => {
       type: "Tổng Bán",
       value: item.total_ban,
     });
-  
     data.push({
       thang: item.month,
       type: "Doanh thu (triệu đồng)",

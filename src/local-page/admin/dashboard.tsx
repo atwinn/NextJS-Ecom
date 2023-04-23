@@ -8,8 +8,8 @@ import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import axios from "axios";
 export default function Dashboard() {
   const [dataPercent, setDataPercent] = React.useState([]);
-  const [chitieu, setChiTieu] = React.useState();
-  const [doanhThu, setDoanhThu] = React.useState();
+  const [chitieu, setChiTieu] = React.useState(0);
+  const [doanhThu, setDoanhThu] = React.useState(0);
   const [donHuy, setdonHuy] = React.useState();
   // const [dataPercent, setDataPercent] = React.useState([]);
   React.useEffect(() => {
