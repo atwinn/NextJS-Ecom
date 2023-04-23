@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Table, Space, Tooltip, Tag, Modal } from 'antd';
+import { Button, Table, Space, Tooltip, Tag, Modal, Image } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
@@ -32,7 +32,7 @@ const ProdTable: React.FC = () => {
     const columns: ColumnsType<DataType> = [
         {
             dataIndex: 'hinh',
-            render: (record) => <img src={record} alt="" className='w-12 h-12 object-cover' />,
+            render: (record) => <Image src={record} alt="" className='object-cover' width={48} height={48} />,
         },
         {
             title: 'Tên sản phẩm',
