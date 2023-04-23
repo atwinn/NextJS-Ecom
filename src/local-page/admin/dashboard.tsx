@@ -8,8 +8,9 @@ import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import axios from "axios";
 export default function Dashboard() {
   const [dataPercent, setDataPercent] = React.useState([]);
-  // const [chitieu, setChiTieu] = React.useState([]);
-  // const [dan, setDataPercent] = React.useState([]);
+  const [chitieu, setChiTieu] = React.useState(0);
+  const [doanhThu, setDoanhThu] = React.useState(0);
+  const [donHuy, setdonHuy] = React.useState();
   // const [dataPercent, setDataPercent] = React.useState([]);
   React.useEffect(() => {
     axios
@@ -17,6 +18,9 @@ export default function Dashboard() {
       .then((res) => {
         console.log(res.data);
         setDataPercent(res.data.loai);
+        setChiTieu(res.data.chiTieu)
+        setDoanhThu(res.data.doanhThu)
+        setdonHuy(res.data.donHuy)
       })
       .catch((err) => {
         console.log(err);
@@ -25,7 +29,7 @@ export default function Dashboard() {
   return (
     <>
       <Divider1 name={pageRoutes.home.title} />
-      <Statistic1 />
+      <Statistic1 chitieu={chitieu} doanhThu={doanhThu} donHuy={donHuy}/>
       <Row gutter={16}>
         <Col md={8} xs={24}>
           <DemoPie data={dataPercent}/>

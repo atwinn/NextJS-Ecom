@@ -1,42 +1,43 @@
 import React from 'react';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, ArrowUpOutlined,CloseSquareOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic } from 'antd';
+import formatMoney from '../formatMoney';
 
-const App: React.FC = () => (
+const App = (props:any) => (
   <Row gutter={16} style={{marginBottom:"3rem"}}>
     <Col md={6}>
       <Card bordered={false}>
         <Statistic
-          title="Active"
-          value={11.28}
+          title="Doanh thu"
+          value={formatMoney(props.doanhThu)}
           precision={2}
           valueStyle={{ color: '#3f8600' }}
           prefix={<ArrowUpOutlined />}
-          suffix="%"
+          // suffix="%"
         />
       </Card>
     </Col>
     <Col md={6} >
       <Card bordered={false}>
         <Statistic
-          title="Idle"
-          value={9.3}
+          title="Chi tiêu"
+          value={formatMoney(props.chitieu)}
           precision={2}
           valueStyle={{ color: '#cf1322' }}
           prefix={<ArrowDownOutlined />}
-          suffix="%"
+          // suffix="$"
         />
       </Card>
     </Col>
     <Col md={6} >
       <Card bordered={false}>
         <Statistic
-          title="Idle"
-          value={9.3}
-          precision={2}
+          title="Đơn hủy"
+          value={props.donHuy}
+          // precision={2}
           valueStyle={{ color: '#cf1322' }}
-          prefix={<ArrowDownOutlined />}
-          suffix="%"
+          prefix={<CloseSquareOutlined /> }
+          // suffix=""
         />
       </Card>
     </Col>
