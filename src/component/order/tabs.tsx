@@ -1,8 +1,8 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
-import ProdFilter from '../product/prodfilter';
-import ProdTable from '../product/prodtable';
+import ListPhieuXuat from '@/local-page/admin/phieu-xuat/list-px';
+import AddPX from '@/local-page/admin/phieu-xuat/add-px';
 
 const onChange = (key: string) => {
     console.log(key);
@@ -11,27 +11,21 @@ const onChange = (key: string) => {
 const items: TabsProps['items'] = [
     {
         key: '1',
-        label: `Tab 1`,
+        label: `Phiếu Xuất`,
         children: <>
-            <ProdFilter />
-            <ProdTable />
+            <ListPhieuXuat />
         </>,
     },
     {
         key: '2',
-        label: `Tab 2`,
-        children: `Content of Tab Pane 2`,
-    },
-    {
-        key: '3',
-        label: `Tab 3`,
-        children: `Content of Tab Pane 3`,
+        label: `Lịch Sử Xuất Hàng`,
+        children: `Chưa làm`,
     },
 ];
 
 const OrderTab: React.FC = () => {
     return (
-        <div className='pt-24'>
+        <div className=''>
             <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </div>
     )

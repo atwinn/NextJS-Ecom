@@ -12,3 +12,5 @@ export const API_PN =
   "https://l3mshop.onrender.com/api/phieu-nhaps?sort=id:desc";
 export const API_CATEGORY =
   "/api/loaisps";
+export const API_PX =
+  "/api/phieu-xuats";

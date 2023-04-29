@@ -23,7 +23,7 @@ const iconStyles: CSSProperties = {
   verticalAlign: "middle",
   cursor: "pointer",
 };
-import axios from "axios"
+import axios, { CancelToken } from "axios"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../assets/logoL3M.png";
@@ -42,23 +42,32 @@ const App: React.FC = () => {
   })
 
   const onFinish = async (values: any) => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       identifier: values.username,
       password: values.password,
-    }
+    };
     try {
-      const res = await axios.post("https://l3mshop.onrender.com/api/auth/local", data)
-      localStorage.setItem("username", res.data.user.username)
-      localStorage.setItem("id", res.data.user.id)
-      setCookie("token", res.data.jwt)
+      const source = axios.CancelToken.source()
+      const timeout = setTimeout(() => {
+        source.cancel("Request timeout")
+        message.warning("Hết thời gian vui lòng đăng nhập lại!")
+        setLoading(false);
+      }, 5000);
+      const res = await axios.post("https://l3mshop.onrender.com/api/auth/local", data, {
+        cancelToken: source.token
+      });
+      clearTimeout(timeout)
+      localStorage.setItem("username", res.data.user.username);
+      localStorage.setItem("id", res.data.user.id);
+      setCookie("token", res.data.jwt);
       dispatch(setUser(res.data.user));
-      const userId = res.data.user.id
-      const res2 = await axios.get(`/api/users/${userId}?populate=*`)
-      const role = res2.data.role.id
-      setCookie("role", role)
-      setLoading(false)
-      role === 3 || role === 4 || role === 6 ? push("/page-admin") : push("/")
+      const userId = res.data.user.id;
+      const res2 = await axios.get(`/api/users/${userId}?populate=*`);
+      const role = res2.data.role.id;
+      setCookie("role", role);
+      setLoading(false);
+      role === 3 || role === 4 || role === 6 ? push("/page-admin") : push("/");
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         if (error.response.status === 400
@@ -73,9 +82,9 @@ const App: React.FC = () => {
           });
         }
       }
-      setLoading(false)
+      setLoading(false);
     }
-  };
+  }
 
   const loginGoogle = () => {
     push("https://l3mshop.onrender.com/api/connect/google")
