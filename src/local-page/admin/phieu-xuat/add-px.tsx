@@ -10,8 +10,10 @@ import axios from 'axios';
 export default function AddPX() {
     const [form1] = Form.useForm();
     const [form2] = Form.useForm();
-    const [loadings, setLoadings] = useState<boolean[]>([]);
+    const [loading, setLoading] = useState<boolean[]>([]);
+    const [pxId, setPxId] = useState<string | null>("")
     const [nvId, setNvId] = useState<string | null>("")
+    const [prodId, setProdId] = useState<number | null>()
     const [disabled, setDisabled] = useState<boolean>(false)
     const [disabled1, setDisabled1] = useState<boolean>(true)
     const dispatch = useDispatch<AppDispatch>()
@@ -26,29 +28,57 @@ export default function AddPX() {
     const productOptions = product?.data?.map((item: any) => ({
         value: item.attributes.tenSP,
         id: item.id,
-        label: `${item.attributes.tenSP} - ${formatMoney(item.attributes.gia)}`,
+        label: `${item.attributes.tenSP} - Số Lượng: ${item.attributes.soLuongSP}`,
     }))
 
     const onSelect = (id: number) => {
-        console.log(id);
+        setProdId(id)
     };
 
     const onFinish = async (values: any) => {
         try {
             const data = { tenKH: values.tenKH, sdt: values.sdt, diaChi: values.diaChi, pt_ThanhToan: "COD", user_id_nv: nvId, status: "0" }
             const res = await axios.post("/api/addpx", data)
+            setPxId(res.data.phieuxuat.id)
             setDisabled(true)
             setDisabled1(false)
+            message.success("Thêm phiếu xuất thành công")
             form1.resetFields()
-        } catch (error) {
-            message.error("Lỗi rồi ba")
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400
+                    || error.response.status === 402
+                    || error.response.status === 403
+                    || error.response.status === 404
+                    || error.response.status === 405
+                    || error.response.status === 500) {
+                    message.error(error.response.data.error.message,);
+                }
+            }
         }
     }
 
-    const submitCtPx = (values: any) => {
-        setDisabled(false)
-        setDisabled1(true)
-        form2.resetFields()
+    const submitCtPx = async (values: any) => {
+        try {
+            const data = { id_px: pxId, product: prodId, soLuongSP: values.sl }
+            await axios.post("/api/addctpx", data)
+            setDisabled(false)
+            setDisabled1(true)
+            form2.resetFields()
+            message.success("Thêm chi tiết phiếu xuất thành công")
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400
+                    || error.response.status === 402
+                    || error.response.status === 403
+                    || error.response.status === 404
+                    || error.response.status === 405
+                    || error.response.status === 500) {
+                    message.error(error.response.data.error.message,);
+                }
+            }
+        }
+
     }
 
     return (

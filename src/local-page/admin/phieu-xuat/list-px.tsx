@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Input, TableColumnsType } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Tag, Space, Table, Button, Tooltip, Popconfirm, message } from 'antd';
+import { Tag, Space, Table, Button, Tooltip, Popconfirm, message, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { addCtPx, fetchPx, selectPX, selectPXError, selectPXStatus } from '@/redux/phieuXuatSlice';
 import formatMoney from '@/component/formatMoney';
-import { CloseOutlined } from '@ant-design/icons'
+import { CloseOutlined, CheckOutlined, PushpinOutlined, DeleteOutlined } from '@ant-design/icons'
 import axios from 'axios';
 
 interface DataType {
@@ -19,6 +19,7 @@ interface DataType {
     upgradeNum: number;
     creator: string;
     createdAt: string;
+    status: number;
 }
 
 interface ExpandedDataType {
@@ -76,6 +77,17 @@ const ListPhieuXuat: React.FC = () => {
         }
     }
 
+    const deleteProd = async (prodId: any) => {
+        try {
+            await axios.delete(`/api/deletectpx?id_px=${pxId}&product=${prodId}`)
+            message.success("Xóa sản phẩm thành công")
+            const res = await axios.get(`/api/ctpxs?id_px=${pxId}`)
+            dispatch(addCtPx(res.data))
+        } catch (error) {
+
+        }
+    }
+
     const expandedRowRender = () => {
         const columns: TableColumnsType<ExpandedDataType> = [
             { title: 'Tên Sản Phẩm', dataIndex: 'tenSP', key: 'tenSP' },
@@ -99,8 +111,20 @@ const ListPhieuXuat: React.FC = () => {
                 title: 'Hành Động',
                 dataIndex: 'operation',
                 key: 'operation',
-                render: () =>
-                    <a>Stop</a>
+                render: (_, record) =>
+                    <Tooltip title={"Xóa sản phẩm"}>
+                        <Popconfirm
+                            placement="top"
+                            title={"Xóa sản phẩm khỏi phiếu xuất"}
+                            description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
+                            onConfirm={() => deleteProd(record.key)}
+                            okText="Xóa"
+                            cancelText="Hủy"
+                            okType="danger"
+                        >
+                            <DeleteOutlined className='cursor-pointer text-red-500' />
+                        </Popconfirm>
+                    </Tooltip>
             },
         ];
 
@@ -121,22 +145,25 @@ const ListPhieuXuat: React.FC = () => {
         )
     };
 
-    const checkStatus = (status: number) => {
-        var statusName
-        switch (status) {
-            case 0:
-                statusName = "Chưa xác nhận"
-                break;
-            case 1:
-                statusName = "Đã xác nhận"
-                break;
-            case 2:
-                statusName = "Đã hủy đơn"
-                break;
-            default:
-                break;
+    const updatePxStatus = async (pxid: any, status: any) => {
+        const nvId = localStorage.getItem("id")
+        try {
+            const data = { user_id_nv: nvId, status: status, id_px: pxid }
+            await axios.put("/api/update_status", data)
+            message.success("Cập nhật trạng thái thành công")
+            dispatch(fetchPx())
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400
+                    || error.response.status === 402
+                    || error.response.status === 403
+                    || error.response.status === 404
+                    || error.response.status === 405
+                    || error.response.status === 500) {
+                    message.error(error.response.data.error.message,);
+                }
+            }
         }
-        return statusName
     }
 
     const columns: ColumnsType<DataType> = [
@@ -144,7 +171,20 @@ const ListPhieuXuat: React.FC = () => {
         { title: 'Số Điện Thoại', dataIndex: 'sdt', render: (text) => <Tag color="geekblue" >0{text}</Tag> },
         { title: 'Địa Chi', dataIndex: 'diaChi' },
         { title: 'Thanh Toán', dataIndex: 'pttt', render: (text) => <Tag color="green" >{text}</Tag> },
-        { title: 'Trạng Thái', dataIndex: 'status', render: (text) => `${checkStatus(text)}` },
+        {
+            title: 'Trạng Thái', dataIndex: 'status', render: (_, record) =>
+                <Radio.Group value={record.status.toString()} buttonStyle="solid" size='small' style={{ minWidth: 90 }} onChange={e => updatePxStatus(record.key, +e.target.value)}>
+                    <Tooltip title="Chưa xác nhận">
+                        <Radio.Button value="0"><PushpinOutlined /></Radio.Button>
+                    </Tooltip>
+                    <Tooltip title="Đã xác nhận">
+                        <Radio.Button value="1"><CheckOutlined /></Radio.Button>
+                    </Tooltip>
+                    <Tooltip title="Hủy đơn hàng">
+                        <Radio.Button value="2"><DeleteOutlined /></Radio.Button>
+                    </Tooltip>
+                </Radio.Group>
+        },
         { title: 'Tổng Tiền', dataIndex: 'tongTien', render: (text) => <div>{formatMoney(text)}</div>, },
         {
             title: 'Hành Động',

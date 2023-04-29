@@ -13,4 +13,4 @@ export const API_PN =
 export const API_CATEGORY =
   "/api/loaisps";
 export const API_PX =
-  "/api/phieu-xuats";
+  "/api/phieu-xuats?sort=id:desc";
