@@ -56,6 +56,7 @@ const ListPhieuXuat: React.FC = () => {
                 console.log(data);
                 await axios.put("/api/updatectpx", data)
                 message.success("Cập nhật số lượng sản phẩm thành công")
+                dispatch(fetchPx())
             } catch (error) {
                 message.error("Có lỗi xảy ra khi cập nhật số lượng sản phẩm")
                 setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: data.find((item: any) => item.key === recordKey)?.sl }));
