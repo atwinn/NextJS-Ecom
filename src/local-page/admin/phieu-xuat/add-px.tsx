@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Col, Row, Select, Button, AutoComplete, Form } from 'antd';
+import { Input, Col, Row, Select, Button, AutoComplete, Form, message } from 'antd';
 import type { SelectProps } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProduct, selectProduct } from '@/redux/productSlice';
@@ -12,7 +12,8 @@ export default function AddPX() {
     const [form2] = Form.useForm();
     const [loadings, setLoadings] = useState<boolean[]>([]);
     const [nvId, setNvId] = useState<string | null>("")
-    const [disabled, setDisabled] = useState<boolean>(true)
+    const [disabled, setDisabled] = useState<boolean>(false)
+    const [disabled1, setDisabled1] = useState<boolean>(true)
     const dispatch = useDispatch<AppDispatch>()
     const product = useSelector(selectProduct)
 
@@ -34,17 +35,20 @@ export default function AddPX() {
 
     const onFinish = async (values: any) => {
         try {
-            const res = await axios.get("/api/addpx")
-            console.log(res);
-
+            const data = { tenKH: values.tenKH, sdt: values.sdt, diaChi: values.diaChi, pt_ThanhToan: "COD", user_id_nv: nvId, status: "0" }
+            const res = await axios.post("/api/addpx", data)
+            setDisabled(true)
+            setDisabled1(false)
+            form1.resetFields()
         } catch (error) {
-
+            message.error("Lỗi rồi ba")
         }
-        setDisabled((prev) => !prev)
     }
 
     const submitCtPx = (values: any) => {
-        setDisabled((prev) => !prev)
+        setDisabled(false)
+        setDisabled1(true)
+        form2.resetFields()
     }
 
     return (
@@ -62,7 +66,7 @@ export default function AddPX() {
                                     name="tenKH"
                                     rules={[{ required: true, message: 'Vui lòng nhập tên khách hàng!' }]}
                                 >
-                                    <Input size='large' placeholder='Tên khách hàng' allowClear />
+                                    <Input disabled={disabled} size='large' placeholder='Tên khách hàng' allowClear />
                                 </Form.Item>
                             </Col>
                             <Col xl={7} md={6} xs={12}>
@@ -70,7 +74,7 @@ export default function AddPX() {
                                     name="diaChi"
                                     rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
                                 >
-                                    <Input size='large' placeholder='Địa chỉ mua hàng' allowClear />
+                                    <Input disabled={disabled} size='large' placeholder='Địa chỉ mua hàng' allowClear />
                                 </Form.Item>
                             </Col>
                             <Col xl={6} md={6} xs={12}>
@@ -83,12 +87,12 @@ export default function AddPX() {
                                     }]}
                                     hasFeedback
                                 >
-                                    <Input size='large' placeholder='Số điện thoại' allowClear />
+                                    <Input disabled={disabled} size='large' placeholder='Số điện thoại' allowClear />
                                 </Form.Item>
                             </Col>
                             <Col xl={4} md={6} xs={12}>
                                 <Form.Item>
-                                    <Button size='large' type="primary" htmlType="submit" target='addPxForm' style={{ width: '100%' }}>
+                                    <Button disabled={disabled} size='large' type="primary" htmlType="submit" target='addPxForm' style={{ width: '100%' }}>
                                         Thêm
                                     </Button>
                                 </Form.Item>
@@ -109,7 +113,7 @@ export default function AddPX() {
                                     rules={[{ required: true, message: 'Vui lòng nhập số lượng sản phẩm!' }]}
                                 >
                                     <AutoComplete
-                                        disabled={disabled}
+                                        disabled={disabled1}
                                         options={productOptions}
                                         size='large'
                                         onSelect={(value, option) => onSelect(option.id)}
@@ -134,12 +138,12 @@ export default function AddPX() {
                                         },
                                     }]}
                                 >
-                                    <Input disabled={disabled} size='large' placeholder='Số lượng' allowClear />
+                                    <Input disabled={disabled1} size='large' placeholder='Số lượng' allowClear />
                                 </Form.Item>
                             </Col>
                             <Col xl={6} md={8} xs={12}>
                                 <Form.Item>
-                                    <Button disabled={disabled} size='large' type="primary" htmlType="submit" target='addCTPX' style={{ width: '100%' }}>
+                                    <Button disabled={disabled1} size='large' type="primary" htmlType="submit" target='addCTPX' style={{ width: '100%' }}>
                                         Thêm Chi Tiết
                                     </Button>
                                 </Form.Item>

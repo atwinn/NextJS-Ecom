@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import type { TableColumnsType } from 'antd';
+import { Input, TableColumnsType } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Tag, Space, Table, Button, Tooltip, Popconfirm, message } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -23,25 +23,48 @@ interface DataType {
 
 interface ExpandedDataType {
     key: React.Key;
+    id: string;
     date: string;
     name: string;
     upgradeNum: string;
+    sl: string
 }
 
 const ListPhieuXuat: React.FC = () => {
     const px = useSelector(selectPX)
     const pxStatus = useSelector(selectPXStatus)
-    const pxError = useSelector(selectPXError)
+    const [pxId, setPxId] = useState<number>(0)
     const dispatch = useDispatch<AppDispatch>()
     const [expandedData, setExpandedData] = useState<ExpandedDataType[]>([]);
     const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
     const { ctPx } = useSelector((store: any) => store.phieuxuat)
     const [loading, setLoading] = useState<boolean>(false)
+    const [editedData, setEditedData] = useState<{ [key: string]: number }>({});
     useEffect(() => {
         dispatch(fetchPx())
     }, [dispatch])
 
+    const handleQuantityChange = (id: string, recordKey: React.Key, value: number) => {
+        setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: value }))
+    }
+
+    const handleQuantityBlur = async (id: string, recordKey: React.Key, sl: string) => {
+        const newValue = editedData[`${id}-${recordKey}`]
+        if (newValue !== undefined && newValue !== parseInt(sl)) {
+            try {
+                const data = { id_px: pxId, product: recordKey, soLuongSP: newValue }
+                console.log(data);
+                await axios.put("/api/updatectpx", data)
+                message.success("Cập nhật số lượng sản phẩm thành công")
+            } catch (error) {
+                message.error("Có lỗi xảy ra khi cập nhật số lượng sản phẩm")
+                setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: data.find((item: any) => item.key === recordKey)?.sl }));
+            }
+        }
+    }
+
     const handlExpandedRow = async (record: any) => {
+        setPxId(record.key)
         setLoading(true)
         try {
             const res = await axios.get(`/api/ctpxs?id_px=${record.key}`)
@@ -55,7 +78,20 @@ const ListPhieuXuat: React.FC = () => {
     const expandedRowRender = () => {
         const columns: TableColumnsType<ExpandedDataType> = [
             { title: 'Tên Sản Phẩm', dataIndex: 'tenSP', key: 'tenSP' },
-            { title: 'Số Lượng', dataIndex: 'sl', key: 'sl' },
+            {
+                title: 'Số Lượng',
+                dataIndex: 'sl',
+                key: 'sl',
+                width: 100,
+                render: (text, record) => (
+                    <Input
+                        type="number"
+                        value={editedData[`${record.id}-${record.key}`] ?? text}
+                        onChange={e => handleQuantityChange(record.id, record.key, +e.target.value)}
+                        onBlur={() => handleQuantityBlur(record.id, record.key, record.sl)}
+                    />
+                )
+            },
             { title: 'Giá', dataIndex: 'gia', key: 'gia' },
             { title: 'Bảo Hành', dataIndex: 'BH', key: 'BH' },
             {
@@ -68,9 +104,10 @@ const ListPhieuXuat: React.FC = () => {
         ];
 
         let data = ctPx.map((item: any) => ({
-            key: item.id,
+            key: item.product.id,
+            id: item.id,
             tenSP: item.product.tenSP,
-            sl: item.product.soLuongSP,
+            sl: item.soLuong,
             gia: item.product.gia,
             BH: item.product.baoHanh,
         }))
