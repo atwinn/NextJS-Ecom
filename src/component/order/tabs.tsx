@@ -2,7 +2,6 @@ import React from 'react';
 import { Tabs } from 'antd';
 import type { TabsProps } from 'antd';
 import ListPhieuXuat from '@/local-page/admin/phieu-xuat/list-px';
-import AddPX from '@/local-page/admin/phieu-xuat/add-px';
 
 const onChange = (key: string) => {
     console.log(key);

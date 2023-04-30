@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Input, TableColumnsType } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { Tag, Space, Table, Button, Tooltip, Popconfirm, message, Radio } from 'antd';
+import { Tag, Space, Table, Button, Tooltip, Popconfirm, message, Radio, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useSelector } from 'react-redux';
-import { addCtPx, fetchPx, selectPX, selectPXError, selectPXStatus } from '@/redux/phieuXuatSlice';
+import { addCtPx, fetchPx, pxInformation, selectPX, selectPXError, selectPXStatus } from '@/redux/phieuXuatSlice';
 import formatMoney from '@/component/formatMoney';
-import { CloseOutlined, CheckOutlined, PushpinOutlined, DeleteOutlined } from '@ant-design/icons'
+import { CloseOutlined, CheckOutlined, PushpinOutlined, DeleteOutlined, PrinterOutlined } from '@ant-design/icons'
 import axios from 'axios';
 import AddProdCtPx from './addProdCtPx';
+import PrintPx from './printPx';
 interface DataType {
     key: React.Key;
     name: string;
@@ -33,8 +34,8 @@ const ListPhieuXuat: React.FC = () => {
     const px = useSelector(selectPX)
     const pxStatus = useSelector(selectPXStatus)
     const [pxId, setPxId] = useState<number>(0)
+    const [show, setShow] = useState<boolean>(false)
     const dispatch = useDispatch<AppDispatch>()
-    const [expandedData, setExpandedData] = useState<ExpandedDataType[]>([]);
     const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
     const { ctPx } = useSelector((store: any) => store.phieuxuat)
     const [loading, setLoading] = useState<boolean>(false)
@@ -216,8 +217,14 @@ const ListPhieuXuat: React.FC = () => {
                         }
                     }
                 }
+                const handlePrint = async () => {
+                    const res = await axios.get(`/api/ctpxs?id_px=${record.key}`)
+                    dispatch(addCtPx(res.data))
+                    dispatch(pxInformation(record))
+                    setShow(true)
+                }
                 return (
-                    <>
+                    <div className='flex justify-start gap-2'>
                         {record.status === 0
                             ? <Space wrap>
                                 <Tooltip title={"Xóa phiếu xuất"}>
@@ -242,7 +249,15 @@ const ListPhieuXuat: React.FC = () => {
                             : record.status === 1
                                 ? <div className='text-lime-600 font-semibold'>Phiếu đã xác nhận</div>
                                 : <div className='text-red-500 font-semibold'>Phiếu đã hủy</div>}
-                    </>
+                        <Tooltip title={"In phiếu xuất"}>
+                            <Button
+                                className="flex justify-center items-center"
+                                shape="circle"
+                                icon={<PrinterOutlined />}
+                                onClick={handlePrint}
+                            />
+                        </Tooltip>
+                    </div>
                 );
             },
         },
@@ -262,6 +277,9 @@ const ListPhieuXuat: React.FC = () => {
 
     return (
         <>
+            <Modal title={"In phiếu xuất"} centered open={show} footer={false} onCancel={() => setShow(false)}>
+                <PrintPx data={ctPx} />
+            </Modal>
             <Table
                 columns={columns}
                 dataSource={data}

@@ -30,7 +30,7 @@ const pxSlice = createSlice({
     name: "phieuxuat",
     initialState,
     reducers: {
-        updateProd: (state, action) => {
+        pxInformation: (state, action) => {
             state.pxId = action.payload
         },
         addCtPx: (state, action) => {
@@ -54,7 +54,7 @@ const pxSlice = createSlice({
             });
     },
 });
-export const { updateProd, addCtPx } = pxSlice.actions;
+export const { pxInformation, addCtPx } = pxSlice.actions;
 
 export default pxSlice.reducer;
 export const selectPX = (state: RootState) => state.phieuxuat.px;
