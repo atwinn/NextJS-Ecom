@@ -57,8 +57,17 @@ const ListPhieuXuat: React.FC = () => {
                 await axios.put("/api/updatectpx", data)
                 message.success("Cập nhật số lượng sản phẩm thành công")
                 dispatch(fetchPx())
-            } catch (error) {
-                message.error("Có lỗi xảy ra khi cập nhật số lượng sản phẩm")
+            } catch (error: any) {
+                if (typeof error.response !== 'undefined') {
+                    if (error.response.status === 400
+                        || error.response.status === 402
+                        || error.response.status === 403
+                        || error.response.status === 404
+                        || error.response.status === 405
+                        || error.response.status === 500) {
+                        message.error(error.response.data.error.message,);
+                    }
+                }
                 setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: data.find((item: any) => item.key === recordKey)?.sl }));
             }
         }
@@ -182,15 +191,40 @@ const ListPhieuXuat: React.FC = () => {
         { title: 'Thanh Toán', dataIndex: 'pttt', render: (text) => <Tag color="green" >{text}</Tag> },
         {
             title: 'Trạng Thái', dataIndex: 'status', render: (_, record) =>
-                <Radio.Group value={record.status.toString()} buttonStyle="solid" size='small' style={{ minWidth: 90 }} onChange={e => updatePxStatus(record.key, +e.target.value)}>
+                <Radio.Group value={record.status.toString()} buttonStyle="solid" size='small' style={{ minWidth: 90 }}>
                     <Tooltip title="Chưa xác nhận">
                         <Radio.Button value="0"><PushpinOutlined /></Radio.Button>
                     </Tooltip>
                     <Tooltip title="Đã xác nhận">
-                        <Radio.Button value="1"><CheckOutlined /></Radio.Button>
+                        {record.status !== 0
+                            ? <Radio.Button value="1"><CheckOutlined /></Radio.Button>
+                            : <Popconfirm
+                                placement="top"
+                                title={"Đổi trạng thái"}
+                                description={"Hành động này sẽ đổi trạng thái sang đã xác nhận, hãy suy nghĩ kỹ"}
+                                onConfirm={() => updatePxStatus(record.key, "1")}
+                                okButtonProps={{ loading: false }}
+                                okText="Đổi"
+                                cancelText="Hủy"
+                            >
+                                <Radio.Button value="1"><CheckOutlined /></Radio.Button>
+                            </Popconfirm>}
                     </Tooltip>
                     <Tooltip title="Hủy đơn hàng">
-                        <Radio.Button value="2"><DeleteOutlined /></Radio.Button>
+                        {record.status === 0
+                            ? <Popconfirm
+                                placement="top"
+                                title={"Đổi trạng thái"}
+                                description={"Hành động này sẽ đổi trạng thái sang hủy đơn hàng, hãy suy nghĩ kỹ"}
+                                onConfirm={() => updatePxStatus(record.key, "2")}
+                                okButtonProps={{ loading: false }}
+                                okText="Đổi"
+                                cancelText="Hủy"
+                                okType="danger"
+                            >
+                                <Radio.Button value="2"><DeleteOutlined /></Radio.Button>
+                            </Popconfirm>
+                            : <Radio.Button value="2"><DeleteOutlined /></Radio.Button>}
                     </Tooltip>
                 </Radio.Group>
         },
@@ -246,9 +280,7 @@ const ListPhieuXuat: React.FC = () => {
                                     </Popconfirm>
                                 </Tooltip>
                             </Space>
-                            : record.status === 1
-                                ? <div className='text-lime-600 font-semibold'>Phiếu đã xác nhận</div>
-                                : <div className='text-red-500 font-semibold'>Phiếu đã hủy</div>}
+                            : null}
                         <Tooltip title={"In phiếu xuất"}>
                             <Button
                                 className="flex justify-center items-center"
