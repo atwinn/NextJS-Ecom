@@ -6,6 +6,7 @@ import { fetchProduct, selectProduct } from '@/redux/productSlice';
 import { AppDispatch } from '@/redux/store';
 import formatMoney from '@/component/formatMoney';
 import axios from 'axios';
+import { fetchPx } from '@/redux/phieuXuatSlice';
 
 export default function AddPX() {
     const [form1] = Form.useForm();
@@ -22,7 +23,7 @@ export default function AddPX() {
     useEffect(() => {
         setNvId(localStorage.getItem("id"))
         dispatch(fetchProduct())
-    }, [dispatch])
+    }, [])
 
 
     const productOptions = product?.data?.map((item: any) => ({
@@ -43,6 +44,7 @@ export default function AddPX() {
             setDisabled(true)
             setDisabled1(false)
             message.success("Thêm phiếu xuất thành công")
+            dispatch(fetchPx())
             form1.resetFields()
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
@@ -78,7 +80,6 @@ export default function AddPX() {
                 }
             }
         }
-
     }
 
     return (
@@ -140,7 +141,7 @@ export default function AddPX() {
                             <Col xl={9} md={8} xs={24}>
                                 <Form.Item
                                     name="tenSP"
-                                    rules={[{ required: true, message: 'Vui lòng nhập số lượng sản phẩm!' }]}
+                                    rules={[{ required: true, message: 'Vui lòng nhập sản phẩm!' }]}
                                 >
                                     <AutoComplete
                                         disabled={disabled1}
@@ -148,6 +149,7 @@ export default function AddPX() {
                                         size='large'
                                         onSelect={(value, option) => onSelect(option.id)}
                                         placeholder="Tìm sản phẩm"
+                                        allowClear
                                         filterOption={(inputValue, option: any) =>
                                             option?.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1
                                         }

@@ -10,7 +10,7 @@ import { addCtPx, fetchPx, selectPX, selectPXError, selectPXStatus } from '@/red
 import formatMoney from '@/component/formatMoney';
 import { CloseOutlined, CheckOutlined, PushpinOutlined, DeleteOutlined } from '@ant-design/icons'
 import axios from 'axios';
-
+import AddProdCtPx from './addProdCtPx';
 interface DataType {
     key: React.Key;
     name: string;
@@ -21,7 +21,6 @@ interface DataType {
     createdAt: string;
     status: number;
 }
-
 interface ExpandedDataType {
     key: React.Key;
     id: string;
@@ -30,7 +29,6 @@ interface ExpandedDataType {
     upgradeNum: string;
     sl: string
 }
-
 const ListPhieuXuat: React.FC = () => {
     const px = useSelector(selectPX)
     const pxStatus = useSelector(selectPXStatus)
@@ -43,7 +41,7 @@ const ListPhieuXuat: React.FC = () => {
     const [editedData, setEditedData] = useState<{ [key: string]: number }>({});
     useEffect(() => {
         dispatch(fetchPx())
-    }, [dispatch])
+    }, [])
 
     const handleQuantityChange = (id: string, recordKey: React.Key, value: number) => {
         setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: value }))
@@ -83,8 +81,17 @@ const ListPhieuXuat: React.FC = () => {
             message.success("Xóa sản phẩm thành công")
             const res = await axios.get(`/api/ctpxs?id_px=${pxId}`)
             dispatch(addCtPx(res.data))
-        } catch (error) {
-
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400
+                    || error.response.status === 402
+                    || error.response.status === 403
+                    || error.response.status === 404
+                    || error.response.status === 405
+                    || error.response.status === 500) {
+                    message.error(error.response.data.error.message,);
+                }
+            }
         }
     }
 
@@ -118,6 +125,7 @@ const ListPhieuXuat: React.FC = () => {
                             title={"Xóa sản phẩm khỏi phiếu xuất"}
                             description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
                             onConfirm={() => deleteProd(record.key)}
+                            okButtonProps={{ loading: false }}
                             okText="Xóa"
                             cancelText="Hủy"
                             okType="danger"
@@ -139,7 +147,7 @@ const ListPhieuXuat: React.FC = () => {
 
         return (
             <>
-                <Button>Thêm sản phẩm mới</Button>
+                <AddProdCtPx pxId={pxId} />
                 <Table columns={columns} dataSource={data} pagination={false} loading={loading} />
             </>
         )
@@ -192,7 +200,7 @@ const ListPhieuXuat: React.FC = () => {
             render: (_, record: any) => {
                 const confirm = async () => {
                     try {
-                        const res = await axios.delete(`/api/deletepx?id_px=${record.key}`)
+                        await axios.delete(`/api/deletepx?id_px=${record.key}`)
                         message.success("Xóa thành công")
                         dispatch(fetchPx())
                     } catch (error: any) {
@@ -210,25 +218,30 @@ const ListPhieuXuat: React.FC = () => {
                 }
                 return (
                     <>
-                        <Space wrap>
-                            <Tooltip title={"Xóa phiếu xuất"}>
-                                <Popconfirm
-                                    placement="top"
-                                    title={"Xóa Phiếu Xuất"}
-                                    description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
-                                    onConfirm={confirm}
-                                    okText="Xóa"
-                                    cancelText="Hủy"
-                                    okType="danger"
-                                >
-                                    <Button
-                                        className="flex justify-center items-center"
-                                        shape="circle"
-                                        icon={<CloseOutlined style={{ color: '#f74a4a' }} />}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
-                        </Space>
+                        {record.status === 0
+                            ? <Space wrap>
+                                <Tooltip title={"Xóa phiếu xuất"}>
+                                    <Popconfirm
+                                        placement="top"
+                                        title={"Xóa Phiếu Xuất"}
+                                        description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
+                                        onConfirm={confirm}
+                                        okButtonProps={{ loading: false }}
+                                        okText="Xóa"
+                                        cancelText="Hủy"
+                                        okType="danger"
+                                    >
+                                        <Button
+                                            className="flex justify-center items-center"
+                                            shape="circle"
+                                            icon={<CloseOutlined style={{ color: '#f74a4a' }} />}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            </Space>
+                            : record.status === 1
+                                ? <div className='text-lime-600 font-semibold'>Phiếu đã xác nhận</div>
+                                : <div className='text-red-500 font-semibold'>Phiếu đã hủy</div>}
                     </>
                 );
             },
