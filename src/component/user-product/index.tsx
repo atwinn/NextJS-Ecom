@@ -1,60 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Typography, Row, Col, Button, InputNumber } from 'antd';
+import { useSelector } from 'react-redux';
+import { fetchDetail, selectDetail, selectDetailStatus } from '@/redux/detailProdSlice';
+import formatMoney from '../formatMoney';
+import ShortenDes from '../shortenDescrip';
+import { ShoppingOutlined } from '@ant-design/icons'
+import Head from 'next/head';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { useRouter } from 'next/router';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
-interface Product {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    imageUrl: string;
-    comments: Comment[];
-}
+const DetailProductCard = () => {
+    const prodDetail = useSelector(selectDetail)
+    const status = useSelector(selectDetailStatus)
+    const dispatch = useDispatch<AppDispatch>()
+    const router = useRouter()
+    const { id } = router.query
+    const [loading, setLoading] = useState<boolean>(true)
 
-interface Comment {
-    id: number;
-    content: string;
-    author: string;
-    avatarUrl: string;
-}
+    useEffect(() => {
+        dispatch(fetchDetail(id))
+        if (status === 'success') {
+            setLoading(false)
+        }
+    }, [status, loading])
 
-interface ProductProps {
-    product: Product;
-}
+    const [quantity, setQuantity] = useState<number>(1)
 
-const DetailProductCard: React.FC = ({ }) => {
-    const onChange = (value: number) => {
-        console.log('changed', value);
-    };
+    const handleQuantityChange = (value: number) => {
+        setQuantity(value)
+    }
+
     return (
-        <Card className='m-5'>
-            <Row gutter={[16, 16]}>
-                <Col xs={24} md={8} lg={6}>
-                    <img
-                        src={"https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
-                        alt=""
-                        style={{ maxWidth: '100%' }}
-                        className='rounded-md'
-                    />
-                </Col>
-                <Col xs={24} md={16} lg={18}>
-                    <div className='flex flex-col h-full justify-between'>
-                        <div>
-                            <Title level={2}>Acer Nitro 5 2023</Title>
-                            <div className='text-black text-xl mb-2'>Đây là giới thiệu sản phẩm</div>
-                            <div className='text-black text-xl mb-2'>Giá: 2000$</div>
-                        </div>
-                        <div>
-                            <div className='mb-2'>
-                                <InputNumber min={1} max={10} defaultValue={3} />
-                            </div>
-                            <Button type="primary" size='large'>Thêm vào giỏ hàng</Button>
-                        </div>
-                    </div>
-                </Col>
-            </Row>
-        </Card>
+        <div className='flex justify-center p-5'>
+            {loading
+                ? "Loading..."
+                : <div style={{ width: 1100 }}>
+                    <Head>
+                        <title>{prodDetail.data.attributes.tenSP}</title>
+                    </Head>
+                    <Card>
+                        <Row gutter={[16, 16]}>
+                            <Col xs={24} md={10}>
+                                <img
+                                    src={prodDetail.data.attributes.hinh.data.attributes.url}
+                                    alt=""
+                                    style={{ width: 300, height: 300 }}
+                                    className='rounded-md object-cover'
+                                />
+                            </Col>
+                            <Col xs={24} md={14}>
+                                <div className='flex flex-col h-full justify-between gap-2'>
+                                    <div>
+                                        <Title level={2}>{prodDetail.data.attributes.tenSP}</Title>
+                                        <div className='text-rose-600 text-lg mb-2'>{formatMoney(prodDetail.data.attributes.gia)}</div>
+                                        <div className='rounded-md p-2 bg-slate-200 max-w-[300px]'>
+                                            {prodDetail.data?.attributes.ctSanPham
+                                                ? <div dangerouslySetInnerHTML={{ __html: prodDetail.data.attributes.ctSanPham }} />
+                                                : "Chưa có thông tin sản phẩm"}
+                                        </div>
+                                    </div>
+                                    <div className='flex gap-2'>
+                                        <InputNumber min={1} max={5} defaultValue={quantity} onChange={() => handleQuantityChange} />
+                                        <Button type="primary" size='large'><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Card>
+                    <ShortenDes content={prodDetail.data.attributes.moTa} />
+                </div>}
+        </div>
     );
 };
 

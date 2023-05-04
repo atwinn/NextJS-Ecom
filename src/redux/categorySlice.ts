@@ -28,10 +28,6 @@ const categorySlice = createSlice({
     name: "category",
     initialState,
     reducers: {
-        //   addModalEmployee: (state,action) => {
-        //     // console.log(action.payload);
-        //     state.employeesId = action.payload
-        //   }
     },
     extraReducers: (builder) => {
         builder
