@@ -24,15 +24,7 @@ interface DataType {
   address: string;
   tags: string[];
 }
-interface Order {
-  id: number;
-  attributes: {
-    createdAt: string;
-    updatedAt: string;
-    status: boolean;
-    tongTien: string;
-  };
-}
+
 
 const columns: ColumnsType<DataType> = [
   {

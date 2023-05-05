@@ -31,8 +31,8 @@ export const fetchPN = createAsyncThunk(
   }
 );
 
-const nccSlice = createSlice({
-  name: "ncc",
+const listPnSlice = createSlice({
+  name: "pn",
   initialState,
   reducers: {
       getDataHistory: (state,action) => { 
@@ -57,9 +57,9 @@ const nccSlice = createSlice({
      
   },
 });
-export const { getDataHistory} = nccSlice.actions;
+export const { getDataHistory} = listPnSlice.actions;
 
-export default nccSlice.reducer;
+export default listPnSlice.reducer;
 export const selectPn = (state: RootState) => state.pn.pn;
 export const selectPnStatus = (state: RootState) => state.pn.status;
 export const selectPnError = (state: RootState) => state.pn.error;

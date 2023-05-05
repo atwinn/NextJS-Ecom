@@ -6,6 +6,7 @@ import { renderTitle } from "./table-pn";
 import { addRow, fetchCtPn, fetchCtPnInView, getSpId } from "@/redux/tableSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { fetchPN } from "@/redux/listPnSlice";
 
 const UpdateCTPN: React.FC = () => {
   const { dataCTPn, idPn, idSp,tab } = useSelector((store: any) => store.table);
@@ -36,24 +37,18 @@ const UpdateCTPN: React.FC = () => {
   const TenSP = result
     ? result.map((product: any) => renderItem(product.tenSP, product.id))
     : [];
-  const options = [
-    {
-      label: renderTitle("Sản phẩm"),
-      options: TenSP,
-    },
-  ];
   //   console.log(dataCTPn);
   const { soluong, gia } = dataCTPn;
-  const onFinish = (values: any) => {
-    const { product, soluong, gia } = values;
+  const onFinish = async (values: any) => {
     values.phieu_nhap = idPn;
     values.product = idSp;
-    console.log("Success:", values)
-    axios.put("/api/updateCtPn",values).then((res) => {
+    // console.log("Success:", values)
+    await axios.put("/api/updateCtPn",values).then((res) => {
         // console.log("in success: " , values);
-        console.log(res);
+        // console.log(res);
         res.status == 200 ? message.success(res.data.message): null
         // dispatch(fetchCtPn(values))
+        dispatch(fetchPN({ page: 1, pageSize:10 }))
         tab == 1 ? fetchCTPN() : fetchCTPNViewTab2()
       }).catch((err) => {
         // console.log(err);

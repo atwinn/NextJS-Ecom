@@ -48,8 +48,7 @@ export const renderTitle = (title: string) => (
 );
 
 
-const PhieuNhapTable: React.FC = () => {
-  const [form] = Form.useForm();
+const PhieuNhapTable = ({form}:any) => {
   const dispatch = useDispatch<AppDispatch>();
   // const data1 = useSelector((state: RootState) => state.table.data);
   const { idSp,idPn } = useSelector((store: any) => store.table);
@@ -103,7 +102,6 @@ const PhieuNhapTable: React.FC = () => {
       res.status == 200 ? dispatch(
         addRow({product, soluong: parseInt(soluong), gia: parseInt(gia),idgetSP:idSp })
       ):null;
-      form.resetFields();
     }).catch((err) => {
       // console.log(err.response.data.error.message);
       message.error(err.response.data.error.message)
@@ -114,7 +112,7 @@ const PhieuNhapTable: React.FC = () => {
 
   
   return (
-    <Form onFinish={onFinish}>
+    <Form onFinish={onFinish} form={form}>
       <Table
         dataSource={data}
         pagination={false}

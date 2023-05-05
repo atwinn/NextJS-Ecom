@@ -36,7 +36,7 @@ const PhieuNhap: React.FC = () => {
 
   const onChange = (key: string) => {
     console.log(key);
-    key == "2" ? dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 })) :null
+    key == "2" ? dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :10 })) :null
     dispatch(setTab(key))
   };
   return (

@@ -56,6 +56,8 @@ const ListPN = () => {
   useEffect(() => {
     dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize ? pageSize :10 }));
   }, [dispatch,page,pageSize]);
+  // console.log(pn);
+  
   let result;
   pn
     ? (result = pn.data?.map((item: any) => {
@@ -105,7 +107,6 @@ const ListPN = () => {
       // console.log(pn.meta);
      let paginate = pn.meta
       paginate ? dispatch(setPageTotal(paginate.pagination.total)): null
-      // console.log(totalPage);
       
   const fetchCTPN = () => {
     axios
@@ -276,7 +277,6 @@ const ListPN = () => {
     // console.log(page,pageSize);
     
   }
-  // const data: DataType[] = [];
   // console.log(pageSize);
   
   const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);

@@ -10,14 +10,14 @@ import { openModal } from "@/redux/modalSlice";
 import UpdateCTPN from "./update-CtPn";
 import { fetchCtPn, getInforModalCtPN, getSpId } from "@/redux/tableSlice";
 import axios from "axios";
-const TableChiTietPN: React.FC = () => {
+const TableChiTietPN = () => {
   const dispatch = useDispatch();
   const data1 = useSelector((state: RootState) => state.table.data);
   const { isOpen } = useSelector((store: any) => store.modal);
   // console.log(data1);
   const {  idPn } = useSelector((store: any) => store.table);
-   const fetchCTPN = () => { 
-    axios
+   const fetchCTPN = async () => { 
+    await axios
         .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
         .then((res) => {
           console.log(res.data);
@@ -32,7 +32,7 @@ const TableChiTietPN: React.FC = () => {
           });
           console.log(result);
         dispatch(fetchCtPn(result))
-
+          
         })
         .catch((err) => {
           console.log(err);
@@ -64,9 +64,9 @@ const TableChiTietPN: React.FC = () => {
           dispatch(getInforModalCtPN(record));
           dispatch(getSpId(record.idgetSP));
         };
-        const confirm = () => {
+        const confirm = async () => {
           // console.log(record.idgetSP);
-          axios.delete(`/api/delCtPn?phieu_nhap=${idPn}&product=${record.idgetSP}`).then((res) => {
+          await axios.delete(`/api/delCtPn?phieu_nhap=${idPn}&product=${record.idgetSP}`).then((res) => {
             console.log(res.data);
             res.status == 200 ? message.success(res.data.message) : null
             fetchCTPN()
