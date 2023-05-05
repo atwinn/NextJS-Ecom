@@ -11,32 +11,16 @@ import { fetchPN } from "@/redux/listPnSlice";
 const UpdateCTPN: React.FC = () => {
   const { dataCTPn, idPn, idSp,tab } = useSelector((store: any) => store.table);
   const { product } = useSelector((state: RootState) => state.product);
-  // const data1 = useSelector((state: RootState) => state.table.data);
-  // console.log(data1);
-
   const dispatch = useDispatch<AppDispatch>();
-  //   console.log(idSp);
-
   let result = [];
-  // console.log(result);
-
   product
     ? (result = product.data?.map((item: any) => {
-        // console.log(item.attributes.tenNCC);
         return {
           id: item.id,
           tenSP: item.attributes.tenSP,
         };
       }))
     : null;
-  const renderItem = (title: string, count: number) => ({
-    id: count,
-    value: title,
-    label: title,
-  });
-  const TenSP = result
-    ? result.map((product: any) => renderItem(product.tenSP, product.id))
-    : [];
   //   console.log(dataCTPn);
   const { soluong, gia } = dataCTPn;
   const onFinish = async (values: any) => {
@@ -44,18 +28,13 @@ const UpdateCTPN: React.FC = () => {
     values.product = idSp;
     // console.log("Success:", values)
     await axios.put("/api/updateCtPn",values).then((res) => {
-        // console.log("in success: " , values);
-        // console.log(res);
         res.status == 200 ? message.success(res.data.message): null
-        // dispatch(fetchCtPn(values))
         dispatch(fetchPN({ page: 1, pageSize:10 }))
-        tab == 1 ? fetchCTPN() : fetchCTPNViewTab2()
+        fetchCTPN() 
       }).catch((err) => {
-        // console.log(err);
         message.error(err.response.data.error.message)
       })
   };
-  // console.log(idPn);
   
 const fetchCTPN = () => { 
     axios
@@ -72,28 +51,7 @@ const fetchCTPN = () => {
             };
           });
           // console.log(result);
-        dispatch(fetchCtPn(result))
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-   }
-const fetchCTPNViewTab2 = () => { 
-    axios
-        .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
-        .then((res) => {
-          console.log(res.data);
-          const data = res.data
-          const result = data.map((item:any) => {
-            return {
-              product: item.product.tenSP,
-              soluong: item.soluong,
-              gia: parseInt(item.gia),
-              key: item.product.id,
-            };
-          });
-          // console.log(result);
-        dispatch(fetchCtPnInView(result))
+          tab == 1 ? dispatch(fetchCtPn(result)) : dispatch(fetchCtPnInView(result))
         })
         .catch((err) => {
           console.log(err);

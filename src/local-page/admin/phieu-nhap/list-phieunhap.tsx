@@ -69,7 +69,7 @@ const ListPN = () => {
             .then((res) => {
               // console.log(res);
               message.success(res.data.message);
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 }));
+              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :10 }));
             })
             .catch((err) => {
               // console.log(err);
@@ -235,11 +235,11 @@ const ListPN = () => {
       key: "action",
       render: (_, record: any) => {
         // console.log(record.key);
-        const confirm = () => {
-          axios
+        const confirm = async () => {
+          await axios
             .delete(`/api/deletePN?idpn=${record.key}`)
             .then(function (response) {
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :5 }));
+              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize : 10 }));
               message.success("Xóa thành công");
               // console.log(response);
             })

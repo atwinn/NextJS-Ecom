@@ -1,12 +1,11 @@
-import { Space, Table, Tooltip, Button,message } from "antd";
+import { Table, Tooltip, Button,message } from "antd";
 import { FileAddOutlined } from "@ant-design/icons";
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 import { Form, Input } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
-import { TableData, addRow, getSpId } from "../../../redux/tableSlice";
-import { UserOutlined } from "@ant-design/icons";
+import { addRow, fetchCtPn, getSpId } from "../../../redux/tableSlice";
 import { AutoComplete } from "antd";
 import { fetchProduct } from "@/redux/productSlice";
 import axios from "axios";
@@ -50,28 +49,21 @@ export const renderTitle = (title: string) => (
 
 const PhieuNhapTable = ({form}:any) => {
   const dispatch = useDispatch<AppDispatch>();
-  // const data1 = useSelector((state: RootState) => state.table.data);
   const { idSp,idPn } = useSelector((store: any) => store.table);
 
   const {product} = useSelector((state: RootState) => state.product);
   useEffect(() => {
     dispatch(fetchProduct())
   },[dispatch])
-  // console.log(product);
-  
   let result = []
-  // console.log(result);
-  
   product
   ? (result = product.data?.map((item: any) => {
-    // console.log(item.attributes.tenNCC);
     return {
       id: item.id,
       tenSP: item.attributes.tenSP,
     };
   }))
   : null;
-  // console.log(result);
  
   const renderItem = (title: string, count: number) => ({
     id:count,
@@ -88,9 +80,30 @@ const PhieuNhapTable = ({form}:any) => {
   const onSelect = (option: any) => {
     const spId = TenSP.find((item:any) => item.value === option);
     dispatch(getSpId(spId.id))
-    // console.log(spId.id);
     
   }
+  const fetchCTPN = async () => { 
+    await axios
+        .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
+        .then((res) => {
+          console.log(res.data);
+          const data = res.data
+          const result = data.map((item:any) => {
+            return {
+              product: item.product.tenSP,
+              soluong: item.soluong,
+              gia: parseInt(item.gia),
+              idgetSP: item.product.id,
+            };
+          });
+          console.log(result);
+        dispatch(fetchCtPn(result))
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+   }
   const onFinish = (values: FormData) => {
     const { product, soluong, gia } = values;
     values.phieu_nhap = idPn
@@ -98,18 +111,14 @@ const PhieuNhapTable = ({form}:any) => {
     console.log(values);
     axios.post("/api/addCtPn",values).then((res) => {
       console.log(res.data);
+      
       res.status == 200 ? message.success("Thêm chi tiết PN thành công"): null
-      res.status == 200 ? dispatch(
-        addRow({product, soluong: parseInt(soluong), gia: parseInt(gia),idgetSP:idSp })
-      ):null;
+      res.status == 200 ? fetchCTPN() :null;
     }).catch((err) => {
-      // console.log(err.response.data.error.message);
       message.error(err.response.data.error.message)
     })
 
   };
-  // console.log(data1);
-
   
   return (
     <Form onFinish={onFinish} form={form}>
