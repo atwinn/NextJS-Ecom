@@ -48,14 +48,7 @@ export default function AddPX() {
             form1.resetFields()
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400
-                    || error.response.status === 402
-                    || error.response.status === 403
-                    || error.response.status === 404
-                    || error.response.status === 405
-                    || error.response.status === 500) {
-                    message.error(error.response.data.error.message,);
-                }
+                message.error(error.response.data.error.message,)
             }
         }
     }
@@ -66,18 +59,12 @@ export default function AddPX() {
             await axios.post("/api/addctpx", data)
             setDisabled(false)
             setDisabled1(true)
+            dispatch(fetchPx())
             form2.resetFields()
             message.success("Thêm chi tiết phiếu xuất thành công")
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400
-                    || error.response.status === 402
-                    || error.response.status === 403
-                    || error.response.status === 404
-                    || error.response.status === 405
-                    || error.response.status === 500) {
-                    message.error(error.response.data.error.message,);
-                }
+                message.error(error.response.data.error.message,)
             }
         }
     }

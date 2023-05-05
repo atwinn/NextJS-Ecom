@@ -19,9 +19,11 @@ const DetailProductCard = () => {
     const router = useRouter()
     const { id } = router.query
     const [loading, setLoading] = useState<boolean>(true)
-
     useEffect(() => {
         dispatch(fetchDetail(id))
+    }, [])
+
+    useEffect(() => {
         if (status === 'success') {
             setLoading(false)
         }
@@ -64,13 +66,17 @@ const DetailProductCard = () => {
                                     </div>
                                     <div className='flex gap-2'>
                                         <InputNumber min={1} max={5} defaultValue={quantity} onChange={() => handleQuantityChange} />
-                                        <Button type="primary" size='large'><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>
+                                        {prodDetail.data.attributes.gia === "0"
+                                            ? <Button type="primary" disabled size='large'><ShoppingOutlined className='text-xl' />Hết hàng</Button>
+                                            : <Button type="primary" size='large'><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>}
                                     </div>
                                 </div>
                             </Col>
                         </Row>
                     </Card>
-                    <ShortenDes content={prodDetail.data.attributes.moTa} />
+                    {prodDetail.data.attributes.moTa
+                        ? <ShortenDes content={prodDetail.data.attributes.moTa} />
+                        : null}
                 </div>}
         </div>
     );
