@@ -19,9 +19,11 @@ const DetailProductCard = () => {
     const router = useRouter()
     const { id } = router.query
     const [loading, setLoading] = useState<boolean>(true)
-
     useEffect(() => {
         dispatch(fetchDetail(id))
+    }, [])
+
+    useEffect(() => {
         if (status === 'success') {
             setLoading(false)
         }
