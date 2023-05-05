@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Checkbox, Form, Input, AutoComplete, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useSelector } from "react-redux";
-import store, { AppDispatch, RootState } from "@/redux/store";
-import { renderTitle } from "./table-pn";
-import { addRow, fetchCtPn, fetchCtPnInView, getSpId } from "@/redux/tableSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import {  fetchCtPn, fetchCtPnInView } from "@/redux/tableSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { fetchPN } from "@/redux/listPnSlice";

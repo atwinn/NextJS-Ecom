@@ -42,11 +42,12 @@ interface DataType {
   tongTien: string;
   createdAt: string;
 }
-const ListPN = () => {
+const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
   const status = useSelector(selectPnStatus);
   const { isOpen } = useSelector((store: any) => store.modal);
   const { idPn } = useSelector((store: any) => store.table);
-  // console.log(idPn);
+
+
   const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
   
   const dispatch = useDispatch<AppDispatch>();
@@ -129,11 +130,11 @@ const ListPN = () => {
         console.log(err);
       });
   };
-  const handleDataRow = (props: any) => {
+  const handleDataRow = async (props: any) => {
     setloading(true);
     dispatch(getIdPN(props.key));
     const idPn = props.key;
-    axios
+    await axios
       .get(`/api/getCtPn?id_pn=${idPn}`)
       .then((res) => {
         setloading(false);
@@ -240,6 +241,7 @@ const ListPN = () => {
             .delete(`/api/deletePN?idpn=${record.key}`)
             .then(function (response) {
               dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize : 10 }));
+              dispatch(getIdPN(null))
               message.success("Xóa thành công");
               // console.log(response);
             })
@@ -279,7 +281,6 @@ const ListPN = () => {
   }
   // console.log(pageSize);
   
-  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
   return (
     <>
       {isOpen && (

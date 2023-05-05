@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import ViewPN from "./view-pn";
@@ -12,32 +12,41 @@ import { fetchPN } from "@/redux/listPnSlice";
 import { useSelector } from "react-redux";
 
 const { Title } = Typography;
-const items: TabsProps["items"] = [
-  {
-    key: "1",
-    label: `Thêm phiếu nhập`,
-    children: <ViewPN />,
-  },
-  {
-    key: "2",
-    label: `Danh sách phiếu nhập`,
-    children: <ListPN />,
-  },
-  {
-    key: "3",
-    label: `Lịch sử nhập hàng`,
-    children: <HistoryPN />,
-  },
-];
 
 const PhieuNhap: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>()
-  const { page,pageSize } = useSelector((store: any) => store.pagination);
-
+  const dispatch = useDispatch<AppDispatch>();
+  const { page, pageSize } = useSelector((store: any) => store.pagination);
+  const [expandedRowKeys, setExpandedRowKeys] = useState<string[]>([]);
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: `Thêm phiếu nhập`,
+      children: <ViewPN />,
+    },
+    {
+      key: "2",
+      label: `Danh sách phiếu nhập`,
+      children: (
+        <ListPN
+          expandedRowKeys={expandedRowKeys}
+          setExpandedRowKeys={setExpandedRowKeys}
+        />
+      ),
+    },
+    {
+      key: "3",
+      label: `Lịch sử nhập hàng`,
+      children: <HistoryPN />,
+    },
+  ];
   const onChange = (key: string) => {
-    console.log(key);
-    key == "2" ? dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :10 })) :null
-    dispatch(setTab(key))
+    key == "2"
+      ? dispatch(
+          fetchPN({ page: page ? page : 1, pageSize: pageSize ? pageSize : 10 })
+        )
+      : null;
+    key != "2" ? setExpandedRowKeys([]) : null;
+    dispatch(setTab(key));
   };
   return (
     <>

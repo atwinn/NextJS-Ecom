@@ -26,7 +26,7 @@ const initialState: NCCState = {
 export const fetchNcc = createAsyncThunk(
   "employees/fetchNcc",
   async () => {
-    const response = await axios.get(API_NCC);
+    const response = await axios.get(`${API_NCC}&pagination[page]=1&pagination[pageSize]=100`);
     // console.log(response);
     return response.data;
   }

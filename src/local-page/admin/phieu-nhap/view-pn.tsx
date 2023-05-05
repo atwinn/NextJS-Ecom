@@ -13,7 +13,7 @@ import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { fetchNcc, selectNcc } from "@/redux/nccSlice";
 import { AppDispatch } from "@/redux/store";
 import {
-  addRow,
+ 
   deleteRow,
   fetchCtPn,
   getIdPN,

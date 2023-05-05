@@ -31,9 +31,6 @@ const tableSlice = createSlice({
   name: "table",
   initialState,
   reducers: {
-    addRow(state, action: PayloadAction<TableData>) {
-      state.data.push(action.payload);
-    },
     deleteRow(state) {
       state.data.splice(0, state.data.length);
     },
@@ -65,7 +62,6 @@ const tableSlice = createSlice({
 });
 
 export const {
-  addRow,
   getNccId,
   getSpId,
   getIdPN,

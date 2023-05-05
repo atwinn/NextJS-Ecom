@@ -5,7 +5,7 @@ import { Form, Input } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
-import { addRow, fetchCtPn, getSpId } from "../../../redux/tableSlice";
+import { fetchCtPn, getSpId } from "../../../redux/tableSlice";
 import { AutoComplete } from "antd";
 import { fetchProduct } from "@/redux/productSlice";
 import axios from "axios";
@@ -105,15 +105,15 @@ const PhieuNhapTable = ({form}:any) => {
         });
    }
   const onFinish = (values: FormData) => {
-    const { product, soluong, gia } = values;
     values.phieu_nhap = idPn
     values.product = idSp
     console.log(values);
     axios.post("/api/addCtPn",values).then((res) => {
       console.log(res.data);
-      
-      res.status == 200 ? message.success("Thêm chi tiết PN thành công"): null
-      res.status == 200 ? fetchCTPN() :null;
+      if (res.status == 200) {
+        fetchCTPN()
+        message.success("Thêm chi tiết PN thành công")
+      }
     }).catch((err) => {
       message.error(err.response.data.error.message)
     })
