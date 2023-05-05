@@ -23,7 +23,7 @@ export const initialState: TableState = {
   idNCC: "",
   idSp: "",
   idPn: "",
-  tab: "",
+  tab: "1",
   dataCTPn: [],
 };
 
