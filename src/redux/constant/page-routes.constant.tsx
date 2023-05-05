@@ -77,4 +77,12 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/userinformation",
         title: 'Thông tin cá nhân',
     },
+    contact: {
+        route: "/contact",
+        title: 'Liên hệ',
+    },
+    checkGuarantee: {
+        route: "/checkGuarantee",
+        title: 'Kiểm tra bảo hành',
+    },
 };

@@ -63,6 +63,22 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                     </Link>
                 ),
             },
+            {
+                key: '6',
+                label: (
+                    <Link href={pageRoutes.contact.route}>
+                        Liên hệ
+                    </Link>
+                ),
+            },
+            {
+                key: '7',
+                label: (
+                    <Link href={pageRoutes.checkGuarantee.route}>
+                        Kiểm tra bao hành
+                    </Link>
+                ),
+            },
         ] : [
             {
                 key: '1',
@@ -81,6 +97,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                 ),
             },
         ]
+
 
     return (
         <Dropdown menu={{ items }}>
