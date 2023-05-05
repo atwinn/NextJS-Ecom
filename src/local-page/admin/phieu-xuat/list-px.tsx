@@ -59,14 +59,7 @@ const ListPhieuXuat: React.FC = () => {
                 dispatch(fetchPx())
             } catch (error: any) {
                 if (typeof error.response !== 'undefined') {
-                    if (error.response.status === 400
-                        || error.response.status === 402
-                        || error.response.status === 403
-                        || error.response.status === 404
-                        || error.response.status === 405
-                        || error.response.status === 500) {
-                        message.error(error.response.data.error.message,);
-                    }
+                    message.error(error.response.data.error.message,)
                 }
                 setEditedData(prev => ({ ...prev, [`${id}-${recordKey}`]: data.find((item: any) => item.key === recordKey)?.sl }));
             }
@@ -91,16 +84,10 @@ const ListPhieuXuat: React.FC = () => {
             message.success("Xóa sản phẩm thành công")
             const res = await axios.get(`/api/ctpxs?id_px=${pxId}`)
             dispatch(addCtPx(res.data))
+            dispatch(fetchPx())
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400
-                    || error.response.status === 402
-                    || error.response.status === 403
-                    || error.response.status === 404
-                    || error.response.status === 405
-                    || error.response.status === 500) {
-                    message.error(error.response.data.error.message,);
-                }
+                message.error(error.response.data.error.message,)
             }
         }
     }
@@ -122,7 +109,7 @@ const ListPhieuXuat: React.FC = () => {
                     />
                 )
             },
-            { title: 'Giá', dataIndex: 'gia', key: 'gia' },
+            { title: 'Giá', dataIndex: 'gia', render: (text) => <div>{formatMoney(text)}</div>, },
             { title: 'Bảo Hành', dataIndex: 'BH', key: 'BH' },
             {
                 title: 'Hành Động',
@@ -172,14 +159,7 @@ const ListPhieuXuat: React.FC = () => {
             dispatch(fetchPx())
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400
-                    || error.response.status === 402
-                    || error.response.status === 403
-                    || error.response.status === 404
-                    || error.response.status === 405
-                    || error.response.status === 500) {
-                    message.error(error.response.data.error.message,);
-                }
+                message.error(error.response.data.error.message,)
             }
         }
     }

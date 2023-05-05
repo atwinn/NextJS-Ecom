@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '@/redux/store'
 import { fetchProduct, selectProduct } from '@/redux/productSlice'
 import axios from 'axios'
-import { addCtPx } from '@/redux/phieuXuatSlice'
+import { addCtPx, fetchPx } from '@/redux/phieuXuatSlice'
 
 const AddProdCtPx = ({ pxId }: any) => {
     const [form] = Form.useForm()
@@ -30,16 +30,10 @@ const AddProdCtPx = ({ pxId }: any) => {
             message.success("Thêm sản phẩm thành công")
             const res = await axios.get(`/api/ctpxs?id_px=${pxId}`)
             dispatch(addCtPx(res.data))
+            dispatch(fetchPx())
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400
-                    || error.response.status === 402
-                    || error.response.status === 403
-                    || error.response.status === 404
-                    || error.response.status === 405
-                    || error.response.status === 500) {
-                    message.error(error.response.data.error.message,);
-                }
+                message.error(error.response.data.error.message,)
             }
         }
     }
