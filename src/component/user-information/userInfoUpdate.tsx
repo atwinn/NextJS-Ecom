@@ -10,9 +10,7 @@ const { Option } = Select;
 dayjs.extend(customParseFormat);
 
 const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
-    const [messageApi, contextHolder] = message.useMessage();
     const dateFormat = 'DD/MM/YYYY';
-    // const [form] = Form.useForm();
 
     const onFinish = async (values: any) => {
         const ngaySinhFormatted = moment(values.ngaySinh.toString()).format('YYYY-MM-DD');
@@ -27,20 +25,12 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
         }
         try {
             const res = await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
-            messageApi.open({
-                type: 'success',
-                content: "Thay đổi thành công",
-            });
+            message.success("Thay đổi thành công");
             close();
             fetch();
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
+                message.error(error.response.data.error.message)
             }
         }
 
@@ -52,7 +42,6 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
 
     return (
         <div>
-            {contextHolder}
             <Form
                 form={form}
                 name="updateUserForm"

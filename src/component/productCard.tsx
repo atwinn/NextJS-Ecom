@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditOutlined, ArrowRightOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Card, message } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
@@ -39,6 +39,7 @@ const ProdCard = (props: ProductData) => {
         <>
             <Card
                 style={{ width: 300 }}
+                hoverable
                 cover={
                     <img
                         alt="example"
@@ -49,7 +50,7 @@ const ProdCard = (props: ProductData) => {
                 actions={[
                     <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />,
                     <Link href={`/sanpham/${props.id}`}>
-                        <ArrowRightOutlined key="arrow" />,
+                        <ArrowRightOutlined key="arrow" className='text-lg' />,
                     </Link>
                 ]}
             >

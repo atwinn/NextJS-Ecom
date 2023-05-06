@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Typography, Row, Col, Button, InputNumber } from 'antd';
+import { Card, Typography, Row, Col, Button, InputNumber, message } from 'antd';
 import { useSelector } from 'react-redux';
 import { fetchDetail, selectDetail, selectDetailStatus } from '@/redux/detailProdSlice';
 import formatMoney from '../formatMoney';
@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 const { Title } = Typography;
 
@@ -17,6 +18,8 @@ const DetailProductCard = () => {
     const status = useSelector(selectDetailStatus)
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
+    const userId = typeof window != 'undefined' ? localStorage.getItem("id") : null
+    const [quantity, setQuantity] = useState<number>(1)
     const { id } = router.query
     const [loading, setLoading] = useState<boolean>(true)
     useEffect(() => {
@@ -29,10 +32,25 @@ const DetailProductCard = () => {
         }
     }, [status, loading])
 
-    const [quantity, setQuantity] = useState<number>(1)
-
-    const handleQuantityChange = (value: number) => {
+    const handleQuantityChange = (value: any) => {
         setQuantity(value)
+    }
+
+    const handleAddToCart = async () => {
+        const data = {
+            soLuongSP: quantity,
+            product: id,
+            user_id: userId,
+        }
+        try {
+            await axios.post("/api/addtocart", data)
+            message.success('Thêm vào giỏ hàng thành công')
+            setQuantity(1)
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                message.error(error.response.data.error.message)
+            }
+        }
     }
 
     return (
@@ -65,10 +83,10 @@ const DetailProductCard = () => {
                                         </div>
                                     </div>
                                     <div className='flex gap-2'>
-                                        <InputNumber min={1} max={5} defaultValue={quantity} onChange={() => handleQuantityChange} />
+                                        <InputNumber min={1} max={5} value={quantity} onChange={(value) => handleQuantityChange(value)} />
                                         {prodDetail.data.attributes.gia === "0"
                                             ? <Button type="primary" disabled size='large'><ShoppingOutlined className='text-xl' />Hết hàng</Button>
-                                            : <Button type="primary" size='large'><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>}
+                                            : <Button type="primary" size='large' onClick={handleAddToCart}><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>}
                                     </div>
                                 </div>
                             </Col>
