@@ -57,7 +57,7 @@ const GuaranteeFormStep1= ({current,setCurrent,getResult}:any) => {
       
       <Form.Item {...tailLayout}>
         <Button type="primary" htmlType="submit" className='mr-4' loading={loading}>
-          Gửi
+          Kiểm tra
         </Button>
         <Button htmlType="button" onClick={onReset}>
           Reset

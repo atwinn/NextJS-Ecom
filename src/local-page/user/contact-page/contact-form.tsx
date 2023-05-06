@@ -22,12 +22,11 @@ const ContactPage = () => {
         console.log(res);
         message.success("Gửi tin nhắn thành công")
     }).catch((err) => {
+        message.error("Gửi tin nhắn không thành công")
         console.log(err);
     })
     }
     return (
-       
-
         <Row
             justify="space-around"
         >
