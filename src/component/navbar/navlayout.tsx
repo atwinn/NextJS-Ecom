@@ -15,7 +15,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { clearUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category, UserDropDown } from "./category";
-import { message } from 'antd'
+import { message, Badge } from 'antd'
+import { AppDispatch } from "@/redux/store";
+import { fetchCart, selectCart } from "@/redux/cartSlice";
+import { useSelector } from "react-redux";
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
@@ -47,7 +50,14 @@ export const Left = () => {
 export const Right = () => {
     const [userAuth, setUserAuth] = useState("")
     const [role, setRole] = useState<string | null>(null)
+    const userId = typeof window != "undefined" ? localStorage.getItem("id") : null
+    const dispatch = useDispatch<AppDispatch>()
+    const cart = useSelector(selectCart)
     const searchParams = useSearchParams()
+
+    useEffect(() => {
+        dispatch(fetchCart(userId))
+    }, [])
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -58,8 +68,7 @@ export const Right = () => {
     useEffect(() => {
         if (searchParams.has("action"))
             handleLogout()
-    }, [searchParams])
-    const dispatch = useDispatch()
+    }, [])
     const { push } = useRouter()
     const handleLogout = () => {
         message.success('Đăng xuất thành công')
@@ -73,7 +82,6 @@ export const Right = () => {
     }
     return (
         <>
-            {/* Right */}
             <div className="flex items-center gap-x-2">
                 {userAuth != "" ? (
                     <>
@@ -91,7 +99,9 @@ export const Right = () => {
                             ? null
                             : <Link href={"/cart"}>
                                 <div className={CartCss}>
-                                    <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
+                                    <Badge count={cart.length} showZero size="small" color="gold" offset={[2, 0]}>
+                                        <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8 text-white" />
+                                    </Badge>
                                 </div>
                             </Link>
                         }
@@ -108,11 +118,6 @@ export const Right = () => {
                             <div className={buttonContainer}>
                                 <VscSignIn className="text-[21px]" />
                                 <p className={NavButtonCss}>Đăng nhập</p>
-                            </div>
-                        </Link>
-                        <Link href={"/cart"}>
-                            <div className={CartCss}>
-                                <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8" />
                             </div>
                         </Link>
                     </>

@@ -3,38 +3,36 @@ import type { MenuProps } from 'antd';
 import { Dropdown } from 'antd';
 import Link from 'next/link';
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
-import axios from 'axios';
 import { getCookie } from '../../../cookies';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import { fetchCategory, selectCategory, selectCategoryStatus } from '@/redux/categorySlice';
 
 interface CategoryProps {
     children: ReactNode;
 }
 
-type Category = {
-    key: string;
-    attributes: {
-        tenLoai: string;
-    };
-};
-
 export const Category = ({ children }: CategoryProps) => {
-    const [categoryData, setCategoryData] = useState<Category[]>([])
+    const dispatch = useDispatch<AppDispatch>()
+    const category = useSelector(selectCategory)
+    const status = useSelector(selectCategoryStatus)
     useEffect(() => {
-        axios.get("/api/loaisps").then(res => {
-            setCategoryData(res.data.data)
-        })
+        dispatch(fetchCategory())
     }, [])
 
-    const items: MenuProps['items'] = categoryData.map((category, index) => {
-        return {
-            key: index + 1,
-            label: (
-                <Link href={pageRoutes.sanPhamUser.route}>
-                    {category.attributes.tenLoai}
-                </Link>
-            ),
-        };
-    });
+    const items: MenuProps['items'] = category.data !== "null" && status === "success"
+        ? category.data.map((category: any) => {
+            return {
+                key: category.id,
+                label: (
+                    <Link href={`/sanpham?loai=${category.id}`}>
+                        {category.attributes.tenLoai}
+                    </Link>
+                ),
+            };
+        })
+        : []
 
     return (
         <Dropdown menu={{ items }}>

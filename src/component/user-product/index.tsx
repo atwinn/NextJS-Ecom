@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { fetchCart } from '@/redux/cartSlice';
 
 const { Title } = Typography;
 
@@ -45,6 +46,7 @@ const DetailProductCard = () => {
         try {
             await axios.post("/api/addtocart", data)
             message.success('Thêm vào giỏ hàng thành công')
+            dispatch(fetchCart(userId))
             setQuantity(1)
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {

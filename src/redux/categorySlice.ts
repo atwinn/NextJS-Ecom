@@ -6,7 +6,7 @@ import { API_CATEGORY } from "@/pages/api/api";
 interface ProductState {
     category: any;
     categoryId: any;
-    status: "idle" | "loading" | "failed";
+    status: "success" | "loading" | "failed" | "idle";
     error: string | null;
 }
 const initialState: ProductState = {
@@ -36,7 +36,7 @@ const categorySlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchCategory.fulfilled, (state, action) => {
-                state.status = "idle";
+                state.status = "success";
                 state.error = null;
                 state.category = action.payload;
             })

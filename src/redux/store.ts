@@ -16,6 +16,7 @@ import PaginationSlice from './pagimationSlice'
 import pagimationSlice from './pagimationSlice'
 import phieuXuatSlice from './phieuXuatSlice'
 import detailProdSlice from './detailProdSlice'
+import cartSlice from './cartSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -33,6 +34,7 @@ const store = configureStore({
     pagination: pagimationSlice,
     phieuxuat: phieuXuatSlice,
     detailProd: detailProdSlice,
+    cart: cartSlice,
   },
 })
 

@@ -1,15 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Divider, Drawer, Menu, message } from 'antd';
 import { AiOutlineMenu } from 'react-icons/ai'
-import { LogoutOutlined, LoginOutlined } from '@ant-design/icons'
-import { items } from './menuItems';
+import { LogoutOutlined, LoginOutlined, LaptopOutlined, AppstoreOutlined, UserOutlined, ContactsOutlined, CustomerServiceOutlined, InsertRowBelowOutlined } from '@ant-design/icons'
+import { MenuProps } from "antd";
 import Link from 'next/link';
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
+import { selectCategory, selectCategoryStatus } from '@/redux/categorySlice';
+import { useSelector } from 'react-redux';
+
+type MenuItem = Required<MenuProps>["items"][number];
+function getItem(
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    children?: MenuItem[]
+): MenuItem {
+    return {
+        label,
+        key,
+        icon,
+        children,
+    } as MenuItem;
+}
 
 const RespNav: React.FC = () => {
-    const [open, setOpen] = useState(false);
-    const user = typeof window != 'undefined' ? localStorage.getItem("username") : null
+    const [open, setOpen] = useState(false)
     const [userAuth, setUserAuth] = useState("")
+    const category = useSelector(selectCategory)
+    const status = useSelector(selectCategoryStatus)
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -23,6 +41,43 @@ const RespNav: React.FC = () => {
     const onClose = () => {
         setOpen(false);
     };
+
+    const items: MenuItem[] = [
+        getItem(
+            <Link href={pageRoutes.sanPhamUser.route}>Sản phẩm</Link>,
+            "1",
+            <LaptopOutlined />
+        ),
+        getItem(
+            "Danh Mục",
+            "2",
+            <AppstoreOutlined />,
+            category.data !== "null" && status === "success"
+                ? category.data.map((item: any) => (
+                    getItem(
+                        <Link key={`category-${item.id}`} href={`/sanpham?loai=${item.id}`}>{item.attributes.tenLoai}</Link>,
+                        `category-${item.id}`,
+                        <InsertRowBelowOutlined />,
+                    )
+                ))
+                : null
+        ),
+        getItem(
+            <Link href={pageRoutes.userInfo.route}>Trang cá nhân</Link>,
+            "3",
+            <UserOutlined />
+        ),
+        getItem(
+            <Link href={pageRoutes.contact.route}>Liên hệ</Link>,
+            "4",
+            <ContactsOutlined />
+        ),
+        getItem(
+            <Link href={pageRoutes.checkGuarantee.route}>Kiểm tra bảo hành</Link>,
+            "5",
+            <CustomerServiceOutlined />
+        )
+    ];
 
     return (
         <>

@@ -27,6 +27,13 @@ const UserProduct = () => {
                 setProdData(res.data)
                 setShow(true)
                 setLoading(false)
+            } else if (searchParams.has("loai")) {
+                const searchQuery = searchParams.get("loai")
+                const res = await axios.get(`/api/products?filters[maLoai][id][$eq]=${searchQuery}&populate=*&pagination[page]=1&pagination[pageSize]=100`)
+                setProdData(res.data.data)
+                setShow(false)
+                setPaginate(res.data.meta.pagination)
+                setLoading(false)
             } else {
                 const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=8&populate=*")
                 setProdData(res.data.data)

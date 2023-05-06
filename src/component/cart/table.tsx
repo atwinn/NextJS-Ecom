@@ -3,6 +3,10 @@ import { Space, Table, message, InputNumber } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
 import formatMoney from '../formatMoney';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { fetchCart, selectCart, selectCartStatus } from '@/redux/cartSlice';
+import { useSelector } from 'react-redux';
 
 interface Table {
     id?: number,
@@ -24,9 +28,12 @@ interface DataType {
 }
 
 const CartTable = () => {
-    const [cartData, setCartData] = useState<Table[]>([])
     const userId = typeof window != 'undefined' ? localStorage.getItem("id") : null
-    const [messageApi, contextHolder] = message.useMessage();
+    const dispatch = useDispatch<AppDispatch>()
+    const cartData = useSelector(selectCart)
+    const status = useSelector(selectCartStatus)
+    console.log(cartData);
+
     const columns: ColumnsType<DataType> = [
         {
             title: 'Tên sản phẩm',
@@ -60,54 +67,26 @@ const CartTable = () => {
         },
     ];
 
-    const data: DataType[] = cartData.map((item, index) => {
-        return {
-            key: index + 1,
-            id: item.product.id !== undefined ? item.product.id : 0,
-            tenSP: item.product.tenSP,
-            soLuong: item.soLuongSP,
-            price: formatMoney(item.product.gia),
-        };
-    })
-
-    const fetchData = async () => {
-        try {
-            const res = await axios.get(`/api/dscart?user_id=${userId}`)
-            setCartData(res.data.dscart)
-        } catch (error: any) {
-            if (typeof error.response !== 'undefined')
-                message.error(error.response.data.error.message);
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
+    const data = cartData.length > 0
+        ? cartData.map((item: any) => {
+            return {
+                key: item.id,
+                id: item.product.id,
+                tenSP: item.product.tenSP,
+                soLuong: item.soLuongSP,
+                price: formatMoney(item.product.gia),
+            }
+        })
+        : null
 
     const deleteCartProd = async (id: number) => {
         try {
             const res = await axios.delete(`/api/deletecart?user_id=${userId}&id_product=${id}`)
-            if (res.status === 200) {
-                messageApi.open({
-                    type: 'success',
-                    content: "Xóa sản phẩm khỏi giỏ hàng thành công",
-                });
-                fetchData()
-            }
+            message.success("Xóa sản phẩm khỏi giỏ hàng thành công");
+            dispatch(fetchCart(userId))
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-                if (error.response.status === 500) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
+                message.error(error.response.data.error.message)
             }
         }
     }
@@ -117,7 +96,7 @@ const CartTable = () => {
             if (value !== null) {
                 await axios.put(`/api/updatecart?user_id=${userId}&id_product=${record.id}&soLuongSP=${value}`)
                 message.success("Cập nhật số lượng sản phẩm thành công");
-                fetchData()
+                dispatch(fetchCart(userId))
             }
         } catch (error: any) {
             if (typeof error.response !== 'undefined')
@@ -126,7 +105,6 @@ const CartTable = () => {
     }
     return (
         <>
-            {contextHolder}
             <Table columns={columns} dataSource={data} />
         </>
     )
