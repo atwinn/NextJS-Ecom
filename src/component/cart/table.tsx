@@ -74,22 +74,9 @@ const CartTable = () => {
         try {
             const res = await axios.get(`/api/dscart?user_id=${userId}`)
             setCartData(res.data.dscart)
-            console.log(res);
         } catch (error: any) {
-            if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-                if (error.response.status === 500) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-            }
+            if (typeof error.response !== 'undefined')
+                message.error(error.response.data.error.message);
         }
     }
 
@@ -126,37 +113,15 @@ const CartTable = () => {
     }
 
     const handleQuantityChange = async (value: number | undefined, record: DataType) => {
-        // Gọi API để cập nhật số lượng trong database
         try {
-            const res = await axios.put(`/api/updatecart?user_id=${userId}&id_product=${record.id}&soLuongSP=${value}`)
-            if (res.status === 200) {
-                messageApi.open({
-                    type: 'success',
-                    content: "Cập nhật số lượng sản phẩm thành công",
-                });
+            if (value !== null) {
+                await axios.put(`/api/updatecart?user_id=${userId}&id_product=${record.id}&soLuongSP=${value}`)
+                message.success("Cập nhật số lượng sản phẩm thành công");
                 fetchData()
             }
         } catch (error: any) {
-            if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-                if (error.response.status === 404) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-                if (error.response.status === 500) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-            }
+            if (typeof error.response !== 'undefined')
+                message.error(error.response.data.error.message);
         }
     }
     return (
