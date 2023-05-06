@@ -9,10 +9,10 @@ import { BsLaptop } from "react-icons/bs"
 import { CloseOutlined } from "@ant-design/icons"
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deleteCookie, getCookie } from "../../../cookies";
 import { useRouter, useSearchParams } from "next/navigation";
-import { clearUser, setUser } from "@/redux/userSlice";
+import { clearUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category, UserDropDown } from "./category";
 import { message } from 'antd'
@@ -45,22 +45,24 @@ export const Left = () => {
 };
 
 export const Right = () => {
-    // const user = useSelector((state: any) => state.user)
-    const [messageApi, contextHolder] = message.useMessage();
     const [userAuth, setUserAuth] = useState("")
     const [role, setRole] = useState<string | null>(null)
+    const searchParams = useSearchParams()
+
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
         setUserAuth(storedUsername || "")
         setRole(getCookie("role") || null)
     }, []);
+
+    useEffect(() => {
+        if (searchParams.has("action"))
+            handleLogout()
+    }, [searchParams])
     const dispatch = useDispatch()
     const { push } = useRouter()
     const handleLogout = () => {
-        messageApi.open({
-            type: 'success',
-            content: 'Đăng xuất thành công'
-        })
+        message.success('Đăng xuất thành công')
         localStorage.removeItem("username")
         setUserAuth("")
         localStorage.removeItem("id")
@@ -72,7 +74,6 @@ export const Right = () => {
     return (
         <>
             {/* Right */}
-            {contextHolder}
             <div className="flex items-center gap-x-2">
                 {userAuth != "" ? (
                     <>
