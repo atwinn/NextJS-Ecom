@@ -34,36 +34,32 @@ const tailFormItemLayout = {
 
 const CP: React.FC = () => {
     const [form] = Form.useForm();
-    const [messageApi, contextHolder] = message.useMessage();
     const searchParams = useSearchParams();
     const resetCode = searchParams.get("code");
     const { push } = useRouter()
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
 
         const data = {
             code: resetCode,
             password: values.password,
             passwordConfirmation: values.confirm,
         }
-
-        axios.post('/api/auth/reset-password', data).then((res: any) => {
-            if (res.status === 200) {
-                messageApi.open({
-                    type: 'success',
-                    content: 'Đặt lại mật khẩu thành công',
-                });
-                setTimeout(() => {
-                    push("/auth/login")
-                }, 1000)
+        try {
+            await axios.post('/api/auth/reset-password', data)
+            message.success('Đặt lại mật khẩu thành công')
+            setTimeout(() => {
+                push("/auth/login")
+            }, 1000)
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                message.error(error.response.data.error.message)
             }
         }
-        )
-    };
+    }
 
     return (
         <>
-            {contextHolder}
             <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
                 <Card bordered={false} >
                     <Title level={3} className='text-center'>Đặt lại mật khẩu</Title>

@@ -1,22 +1,7 @@
-import type { CascaderProps } from 'antd';
-import {
-  AutoComplete,
-  Button,
-  Cascader,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  Card,
-  message
-} from 'antd';
+import { Button, Form, Input, Select, Card, message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Typography } from 'antd';
 import axios from 'axios';
-import { setCookie } from '../../../cookies';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -57,7 +42,6 @@ const tailFormItemLayout = {
 const Register: React.FC = () => {
   const [form] = Form.useForm();
   const { push } = useRouter()
-  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     const user = localStorage.getItem("id")
@@ -66,48 +50,25 @@ const Register: React.FC = () => {
     }
   })
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     const data = {
       username: values.username,
       email: values.email,
       password: values.password,
     }
     try {
-      axios.post('/api/auth/local/register', data).then((res: any) => {
-        if (res.status === 200) {
-          messageApi.open({
-            type: 'success',
-            content: 'Đăng ký thành công vui lòng xác nhận email',
-          });
-        }
+      await axios.post('/api/auth/local/register', data).then((res: any) => {
+        message.success('Đăng ký thành công vui lòng xác nhận email')
       })
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
-        if (error.response.status === 400) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
-        if (error.response.status === 404) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
-        if (error.response.status === 500) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
+        message.error(error.response.data.error.message)
       }
     }
   };
 
   return (
     <>
-      {contextHolder}
       <div className='w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center' >
         <Card bordered={false} >
           <Title level={2} className='text-center'>Đăng ký</Title>
@@ -116,7 +77,6 @@ const Register: React.FC = () => {
             form={form}
             name="register"
             onFinish={onFinish}
-            // initialValues={{ residence: ['zhejiang', 'hangzhou', 'xihu'], prefix: '86' }}
             style={{ maxWidth: 800, width: "100%" }}
             scrollToFirstError
           >

@@ -32,7 +32,6 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     const user = localStorage.getItem("id")
@@ -70,17 +69,7 @@ const App: React.FC = () => {
       role === 3 || role === 4 || role === 6 ? push("/page-admin") : push("/");
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
-        if (error.response.status === 400
-          || error.response.status === 402
-          || error.response.status === 403
-          || error.response.status === 404
-          || error.response.status === 405
-          || error.response.status === 500) {
-          messageApi.open({
-            type: 'error',
-            content: error.response.data.error.message,
-          });
-        }
+        message.error(error.response.data.error.message)
       }
       setLoading(false);
     }
@@ -92,7 +81,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      {contextHolder}
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
         <Card bordered={false} className="max-w-[400px] w-full">
           <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>

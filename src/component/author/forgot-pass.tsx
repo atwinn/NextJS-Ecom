@@ -8,22 +8,22 @@ import axios from "axios";
 import { message } from "antd"
 
 const App: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     const data = {
       email: values.email
     }
-    axios.post("/api/auth/forgot-password", data).then(res => {
-      messageApi.open({
-        type: 'success',
-        content: 'Vui lòng kiểm tra email của bạn để đặt lại mật khẩu',
-      });
-    })
+    try {
+      axios.post("/api/auth/forgot-password", data)
+      message.success('Vui lòng kiểm tra email của bạn để đặt lại mật khẩu')
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        message.error(error.response.data.error.message)
+      }
+    }
+
   };
   return (
     <>
-      {contextHolder}
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
         <Card bordered={false}>
           <Title level={3} className="text-center">
