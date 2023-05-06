@@ -1,9 +1,9 @@
 import { UserLayoutManager } from '@/layout/layoutUser';
-import ContactPage from '@/local-page/user/contact';
+import LayoutContact from '@/local-page/user/contact-page/layout-contact';
 export default function Contact () {
   return (
     <>
-      <ContactPage/>
+      <LayoutContact/>
     </>
   );
 }
