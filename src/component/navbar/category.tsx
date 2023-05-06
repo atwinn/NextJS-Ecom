@@ -63,8 +63,17 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                     </Link>
                 ),
             },
+        ] : [
             {
-                key: '6',
+                key: '1',
+                label: (
+                    <Link href={pageRoutes.userInfo.route}>
+                        Trang cá Nhân
+                    </Link>
+                ),
+            },
+            {
+                key: '2',
                 label: (
                     <Link href={pageRoutes.contact.route}>
                         Liên hệ
@@ -72,27 +81,10 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                 ),
             },
             {
-                key: '7',
+                key: '3',
                 label: (
                     <Link href={pageRoutes.checkGuarantee.route}>
-                        Kiểm tra bao hành
-                    </Link>
-                ),
-            },
-        ] : [
-            {
-                key: '1',
-                label: (
-                    <Link href={pageRoutes.userInfo.route}>
-                        Cá Nhân
-                    </Link>
-                ),
-            },
-            {
-                key: '2',
-                label: (
-                    <Link href={pageRoutes.userInfo.route}>
-                        Gì đó
+                        Kiểm tra bảo hành
                     </Link>
                 ),
             },
