@@ -58,6 +58,11 @@ const items: MenuItem[] = [
     "7",
     <ContainerOutlined />
   ),
+  getItem(
+    <Link href={pageRoutes.contactAdmin.route}>Liên lạc</Link>,
+    "8",
+    <ContainerOutlined />
+  ),
 ];
 
 export default function Menu1(props: IMenuProps) {
@@ -68,7 +73,7 @@ export default function Menu1(props: IMenuProps) {
 
   const filteredItems = items.filter(item => {
     if (roleId === "3") {
-      return ["1", "3", "4"].includes(item?.key?.toString() ?? '');
+      return ["1", "3", "4","8"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "4") {
       return ["1", "3", "4", "6", "7"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "6") {

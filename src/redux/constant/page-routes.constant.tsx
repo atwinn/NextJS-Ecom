@@ -85,4 +85,9 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/checkGuarantee",
         title: 'Kiểm tra bảo hành',
     },
+    contactAdmin: {
+        route: "/page-admin/contact-page",
+        title: 'Liên hệ - Admin',
+    },
+    
 };
