@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import axios from 'axios';
-import { useDownloadExcel } from 'react-export-table-to-excel'
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -39,12 +38,6 @@ const LichSuXH: React.FC = () => {
             setDisable(true)
         }
     }
-
-    const { onDownload } = useDownloadExcel({
-        currentTableRef: tableRef.current,
-        filename: `Lich_Su_XH_${Date.now()}`,
-        sheet: 'PhieuXuat'
-    })
 
     const columns = [
         {
@@ -82,6 +75,20 @@ const LichSuXH: React.FC = () => {
             status: item.attributes.status,
         }
     ))
+
+    const handleExportToExcel = () => {
+        const worksheet = tableRef.current
+        const html = worksheet?.outerHTML;
+        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `LichSuXH_${Date.now()}.xls`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
     return (
         <div className='space-y-3'>
             <div className='bg-white rounded-md p-5 flex justify-start gap-5'>
@@ -92,7 +99,7 @@ const LichSuXH: React.FC = () => {
                     size='large'
                     allowClear
                 />
-                <Button onClick={onDownload} size='large' disabled={disable}>Xuất ra Excel</Button>
+                <Button onClick={handleExportToExcel} size='large' disabled={disable}>Xuất ra Excel</Button>
             </div>
             <Table columns={columns} dataSource={data} ref={tableRef} />
         </div>
