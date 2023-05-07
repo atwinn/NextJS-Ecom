@@ -1,6 +1,35 @@
-import { Carousel, Card, Row, Col, Button } from 'antd';
+import formatMoney from '@/component/formatMoney';
+import { Carousel, Card, Row, Col, Button, Divider } from 'antd';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const TrangChu = () => {
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState<boolean>(false)
+    useEffect(() => {
+        const fetchDataBestSeller = async () => {
+            try {
+                setLoading(true)
+                const res = await axios.get("/api/bestseller");
+                // console.log(res.data);
+                if (res.status === 200) {
+                    setLoading(false)
+                    setData(res.data)
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchDataBestSeller()
+    }, [])
+
+    const result = data?.map(({ product }: any) => ({
+        id: product.id,
+        tenSP: product.tenSP,
+        gia: product.gia,
+        url: product.hinh.url,
+    }));
+
     return (
         <div>
             <div className="mx-auto p-4">
@@ -22,21 +51,34 @@ const TrangChu = () => {
                     </div>
                 </Carousel>
                 <div className=''>
-                    <h1 className="text-2xl font-semibold mb-4 text-black">Sản phẩm nổi bật</h1>
-                    <Row gutter={[16, 16]}>
-                        <Col xs={24} sm={12} md={8} lg={6}>
-                            <Card
-                                hoverable
-                                cover={<img src="https://plus.unsplash.com/premium_photo-1675237625772-73e3eddf0abd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                                    alt="Product 1"
-                                    className="h-48 object-cover" />}
-                                actions={[<Button type="primary">Thêm vào giỏ hàng</Button>]}
-                            >
-                                <Card.Meta title="Sản phẩm 1" description="Mô tả sản phẩm 1" />
-                            </Card>
-                        </Col>
-                        {/* Các card sản phẩm khác tương tự */}
-                    </Row>
+                    <Divider ></Divider>
+                    <h1 className="custom-text text-2xl font-semibold mb-4 text-black">Sản phẩm nổi bật ( •̀ ω •́ )✧</h1>
+
+                    <Card >
+                        <Row gutter={[16, 16]}>
+                            {result.map((item): any => {
+                                return (
+                                    <>
+                                        <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
+                                            <Card
+                                                hoverable
+                                                cover={<img src={item.url}
+                                                    alt="Product"
+                                                    className="h-48 object-cover" />}
+                                                actions={[<Button type="primary">Thêm vào giỏ hàng</Button>]}
+                                            >
+                                                <Card.Meta title={item.tenSP} description={formatMoney(item.gia)} />
+                                            </Card>
+                                        </Col>
+                                    </>
+                                )
+                            })}
+
+
+
+                            {/* Các card sản phẩm khác tương tự */}
+                        </Row>
+                    </Card>
                 </div>
             </div>
         </div>

@@ -32,7 +32,7 @@ const LayoutContact = () => {
         <ProCard
           colSpan="30%"
           className="bg-transparent"
-          style={{ border: "none" }}
+          style={{ border: "none",minWidth:"250px" }}
         >
           <div style={{ height: "100%" }}>
             <p className="font-bold">Hỗ trợ 24/7</p>
