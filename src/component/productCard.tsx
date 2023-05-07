@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRightOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Card, message } from 'antd';
+import { Card, message, Tooltip } from 'antd';
 import axios from 'axios';
 import Link from 'next/link';
 import formatMoney from './formatMoney';
@@ -42,18 +42,23 @@ const ProdCard = (props: ProductData) => {
         <>
             <Card
                 style={{ width: 300 }}
+                className="drop-shadow-md"
                 hoverable
                 cover={
                     <img
                         alt="example"
                         src={props.image}
-                        className='h-48 object-cover'
+                        className='h-48 object-cover object-center'
                     />
                 }
                 actions={[
-                    <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />,
+                    <Tooltip title="Thêm vào giỏ hàng">
+                        <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />
+                    </Tooltip>,
                     <Link href={`/sanpham/${props.id}`}>
-                        <ArrowRightOutlined key="arrow" className='text-lg' />,
+                        <Tooltip title="Xem sản phẩm">
+                            <ArrowRightOutlined key="arrow" className='text-lg' />
+                        </Tooltip>,
                     </Link>
                 ]}
             >

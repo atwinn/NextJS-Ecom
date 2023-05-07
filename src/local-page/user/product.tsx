@@ -75,13 +75,13 @@ const UserProduct = () => {
                 <Col xs={0} lg={5}>
                     <UserProdFilter />
                 </Col>
-                <Col lg={15} className='p-4 bg-white rounded-md'>
+                <Col lg={15} className='py-2 bg-white rounded-md'>
                     {loading ? <Skeleton active />
                         :
                         !showSearch ?
-                            <Row gutter={[16, 16]}>
+                            <Row gutter={[16, 16]} className='p-4'>
                                 {prodData && prodData.map((item: any) => (
-                                    <Col xs={24} sm={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
+                                    <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.attributes.tenSP}
                                             price={item.attributes.gia}
@@ -96,7 +96,7 @@ const UserProduct = () => {
                             </Row>
                             : <Row gutter={[16, 16]}>
                                 {prodData && prodData.map((item: any) => (
-                                    <Col xs={24} sm={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
+                                    <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.tenSP}
                                             price={item.gia}

@@ -24,7 +24,7 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
             }
         }
         try {
-            const res = await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
+            await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
             message.success("Thay đổi thành công");
             close();
             fetch();
