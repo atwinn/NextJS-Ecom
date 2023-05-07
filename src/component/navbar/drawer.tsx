@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
 import { selectCategory, selectCategoryStatus } from '@/redux/categorySlice';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'next/navigation';
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -28,11 +29,13 @@ const RespNav: React.FC = () => {
     const [userAuth, setUserAuth] = useState("")
     const category = useSelector(selectCategory)
     const status = useSelector(selectCategoryStatus)
+    const searchParams = useSearchParams()
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
+        if (searchParams.has("action")) setUserAuth("")
         setUserAuth(storedUsername || "")
-    }, []);
+    }, [searchParams]);
 
     const showDrawer = () => {
         setOpen(true);

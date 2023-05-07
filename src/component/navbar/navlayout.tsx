@@ -66,9 +66,8 @@ export const Right = () => {
     }, []);
 
     useEffect(() => {
-        if (searchParams.has("action"))
-            handleLogout()
-    }, [])
+        if (searchParams.has("action")) handleLogout()
+    }, [searchParams])
     const { push } = useRouter()
     const handleLogout = () => {
         message.success('Đăng xuất thành công')
