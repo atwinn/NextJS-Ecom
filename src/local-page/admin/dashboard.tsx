@@ -10,10 +10,11 @@ export default function Dashboard() {
   const [dataPercent, setDataPercent] = React.useState([]);
   const [chitieu, setChiTieu] = React.useState(0);
   const [doanhThu, setDoanhThu] = React.useState(0);
-  const [donHuy, setdonHuy] = React.useState();
+  const [donHuy, setdonHuy] = React.useState(0);
+  const [mess, setMess] = React.useState(0);
   // const [dataPercent, setDataPercent] = React.useState([]);
   React.useEffect(() => {
-    axios
+     axios
       .get("/api/thongKeLoai")
       .then((res) => {
         console.log(res.data);
@@ -21,6 +22,7 @@ export default function Dashboard() {
         setChiTieu(res.data.chiTieu)
         setDoanhThu(res.data.doanhThu)
         setdonHuy(res.data.donHuy)
+        setMess(res.data.contact_false)
       })
       .catch((err) => {
         console.log(err);
@@ -29,7 +31,7 @@ export default function Dashboard() {
   return (
     <>
       <Divider1 name={pageRoutes.home.title} />
-      <Statistic1 chitieu={chitieu} doanhThu={doanhThu} donHuy={donHuy}/>
+      <Statistic1 chitieu={chitieu} doanhThu={doanhThu} donHuy={donHuy} mess={mess}/>
       <Row gutter={16}>
         <Col md={8} xs={24}>
           <DemoPie data={dataPercent}/>

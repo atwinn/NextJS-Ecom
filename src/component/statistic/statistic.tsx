@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowDownOutlined, ArrowUpOutlined,CloseSquareOutlined } from '@ant-design/icons';
+import { BsReplyAll } from 'react-icons/bs'
 import { Card, Col, Row, Statistic } from 'antd';
 import formatMoney from '../formatMoney';
 
@@ -44,12 +45,11 @@ const App = (props:any) => (
     <Col md={6} >
       <Card bordered={false}>
         <Statistic
-          title="Idle"
-          value={9.3}
-          precision={2}
+          title="Tin nhắn chưa phản hồi"
+          value={props.mess}
+          // precision={2}
           valueStyle={{ color: '#cf1322' }}
-          prefix={<ArrowDownOutlined />}
-          suffix="%"
+          prefix={<BsReplyAll />}
         />
       </Card>
     </Col>
