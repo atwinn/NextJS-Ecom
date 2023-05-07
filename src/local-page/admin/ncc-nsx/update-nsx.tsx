@@ -11,7 +11,7 @@ export interface IUpdateNCCNSXProps {}
 
 export default function UpdateNSX(props: IUpdateNCCNSXProps) {
   const { nsxId } = useSelector((store: any) => store.ncc);
-  console.log(nsxId);
+  // console.log(nsxId);
 const dispatch = useDispatch<AppDispatch>();
 
   const onFinish = (value: any) => {

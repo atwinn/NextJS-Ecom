@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { DownOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
 import {
-  Badge,
-  Dropdown,
   Space,
   Table,
   Popconfirm,
@@ -21,11 +18,9 @@ import { useSelector } from "react-redux";
 import {
   CloseOutlined,
   EditOutlined,
-  UserAddOutlined,
+  
 } from "@ant-design/icons";
 import {
-  deleteRow,
-  fetchCtPn,
   fetchCtPnInView,
   getIdPN,
   getInforModalCtPN,
