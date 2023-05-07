@@ -4,38 +4,27 @@ import axios from 'axios';
 
 const UserPassChange = ({ close }: any) => {
     const [form] = Form.useForm();
-    const [messageApi, contextHolder] = message.useMessage();
 
-    const onFinish = (values: any) => {
-        console.log(values);
-        form.resetFields()
-        close();
+    const onFinish = async (values: any) => {
+        const data = {
+            currentPassword: values.oldpass,
+            password: values.pass,
+            passwordConfirmation: values.confirm,
+        }
+        try {
+            await axios.put(`/api/change-password`, data)
+            message.success("Thay đổi thành công");
+            close();
+            form.resetFields()
+        } catch (error: any) {
+            if (typeof error.response !== 'undefined') {
+                if (error.response.status === 400) {
+                    message.error(error.response.data.error.message)
+                }
+            }
 
-        // try {
-        //     const res = await axios.put(`/api/khach-hangs/${userUpdateData.id}`, data)
-        //     messageApi.open({
-        //         type: 'success',
-        //         content: "Thay đổi thành công",
-        //     });
-        //     close();
-        // } catch (error: any) {
-        //     if (typeof error.response !== 'undefined') {
-        //         if (error.response.status === 400) {
-        //             messageApi.open({
-        //                 type: 'error',
-        //                 content: error.response.data.error.message,
-        //             });
-        //         }
-        //         if (error.response.status === 500) {
-        //             messageApi.open({
-        //                 type: 'error',
-        //                 content: error.response.data.error.message,
-        //             });
-        //         }
-        //     }
-        // }
-
-    };
+        };
+    }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -43,7 +32,6 @@ const UserPassChange = ({ close }: any) => {
 
     return (
         <div>
-            {contextHolder}
             <Form
                 form={form}
                 name="updateUserForm"

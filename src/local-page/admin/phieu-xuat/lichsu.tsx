@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import axios from 'axios';
+import formatMoney from '@/component/formatMoney';
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -63,6 +64,11 @@ const LichSuXH: React.FC = () => {
             dataIndex: 'status',
             render: (text: any) => <p>{text === 0 ? "Chưa xác nhận" : text === 1 ? "Đã xác nhận" : "Đã hủy"}</p>,
         },
+        {
+            title: 'Tổng tiền',
+            dataIndex: 'tongTien',
+            render: (text: any) => <p>{formatMoney(text)}</p>,
+        },
     ];
 
     let data = px.map((item: any) => (
@@ -73,6 +79,7 @@ const LichSuXH: React.FC = () => {
             diaChi: item.attributes.diaChi,
             ptTT: item.attributes.pt_ThanhToan,
             status: item.attributes.status,
+            tongTien: item.attributes.tongTien,
         }
     ))
 

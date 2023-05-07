@@ -6,6 +6,8 @@ import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Link from "next/link";
 import { getCookie } from "../../cookies";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 export interface IMenuProps { }
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -67,13 +69,21 @@ const items: MenuItem[] = [
 
 export default function Menu1(props: IMenuProps) {
   const [roleId, setRoleId] = useState<string>()
+  var pathName = usePathname();
+  Object.keys(pageRoutes).forEach((obj: string) => {
+    return (
+      (pathName == pageRoutes[obj].route) ?
+        pathName = pageRoutes[obj].key : null
+    )
+  })
+
   useEffect(() => {
     setRoleId(getCookie("role"))
   }, [])
 
   const filteredItems = items.filter(item => {
     if (roleId === "3") {
-      return ["1", "3", "4","8"].includes(item?.key?.toString() ?? '');
+      return ["1", "3", "4", "8"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "4") {
       return ["1", "3", "4", "6", "7"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "6") {
@@ -86,7 +96,7 @@ export default function Menu1(props: IMenuProps) {
     <div>
       <Menu
         theme="dark"
-        defaultSelectedKeys={["1"]}
+        selectedKeys={[pathName]}
         mode="inline"
         items={filteredItems}
       />

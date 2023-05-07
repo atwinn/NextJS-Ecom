@@ -1,5 +1,5 @@
 interface title {
-    route: string; title: string; key?: string;
+    route: string; title: string; key: string;
 }
 export const pageRoutes: { [key: string]: title } = {
     home: {
@@ -25,69 +25,82 @@ export const pageRoutes: { [key: string]: title } = {
     trangchu: {
         route: "/",
         title: 'Trang chủ',
-        key: "3",
+        key: "20",
     },
     sanPhamUser: {
         route: "/sanpham",
         title: 'Sản phẩm',
+        key: "21",
     },
     login: {
         route: "/auth/login",
         title: 'Đăng nhập',
-        key: "4",
+        key: "22",
     },
     register: {
         route: "/auth/register",
         title: 'Đăng ký',
-        key: "5",
+        key: "23",
     },
     account: {
         route: "/page-admin/account-manage/view",
         title: 'Quản lý tài khoản',
+        key: "5",
     },
     forgotPass: {
         route: "/auth/forgot-pass",
         title: 'Lấy lại mật khẩu',
+        key: "24",
     },
     phieuNhap: {
         route: "/page-admin/phieu-nhap/view",
         title: 'Phiếu nhập',
+        key: "6",
     },
     ncc_nsx: {
         route: "/page-admin/ncc-nsx/view",
         title: 'Đối tác',
+        key: "7",
     },
     redirectLogin: {
         route: "/auth/redirect",
         title: 'Chuyển hướng...',
+        key: "25",
     },
     confirmPass: {
         route: "/auth/confirm-pass",
         title: 'Đặt lại mật khẩu',
+        key: "26",
     },
     cart: {
         route: "/cart",
         title: 'Giỏ hàng',
+        key: "27",
     },
     payment: {
         route: "/payment",
         title: 'Thanh toán',
+        key: "28",
     },
     userInfo: {
         route: "/userinformation",
         title: 'Thông tin cá nhân',
+        key: "29",
     },
     contact: {
         route: "/contact",
         title: 'Liên hệ',
+        key: "31"
     },
     checkGuarantee: {
         route: "/checkGuarantee",
         title: 'Kiểm tra bảo hành',
+        key: "30",
     },
     contactAdmin: {
         route: "/page-admin/contact-page",
         title: 'Liên hệ - Admin',
+        key: "8",
     },
-    
+
 };

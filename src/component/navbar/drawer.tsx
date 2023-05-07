@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Drawer, Menu, message } from 'antd';
+import { Button, Tag, Drawer, Menu, message } from 'antd';
 import { AiOutlineMenu } from 'react-icons/ai'
 import { LogoutOutlined, LoginOutlined, LaptopOutlined, AppstoreOutlined, UserOutlined, ContactsOutlined, CustomerServiceOutlined, InsertRowBelowOutlined } from '@ant-design/icons'
 import { MenuProps } from "antd";
@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { pageRoutes } from '@/redux/constant/page-routes.constant';
 import { selectCategory, selectCategoryStatus } from '@/redux/categorySlice';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
@@ -30,6 +30,13 @@ const RespNav: React.FC = () => {
     const category = useSelector(selectCategory)
     const status = useSelector(selectCategoryStatus)
     const searchParams = useSearchParams()
+    var pathName = usePathname();
+    Object.keys(pageRoutes).forEach((obj: string) => {
+        return (
+            (pathName == pageRoutes[obj].route) ?
+                pathName = pageRoutes[obj].key : null
+        )
+    })
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
@@ -48,7 +55,7 @@ const RespNav: React.FC = () => {
     const items: MenuItem[] = [
         getItem(
             <Link href={pageRoutes.sanPhamUser.route}>Sản phẩm</Link>,
-            "1",
+            pageRoutes.sanPhamUser.key,
             <LaptopOutlined />
         ),
         getItem(
@@ -67,17 +74,17 @@ const RespNav: React.FC = () => {
         ),
         getItem(
             <Link href={pageRoutes.userInfo.route}>Trang cá nhân</Link>,
-            "3",
+            pageRoutes.userInfo.key,
             <UserOutlined />
         ),
         getItem(
             <Link href={pageRoutes.contact.route}>Liên hệ</Link>,
-            "4",
+            pageRoutes.contact.key,
             <ContactsOutlined />
         ),
         getItem(
             <Link href={pageRoutes.checkGuarantee.route}>Kiểm tra bảo hành</Link>,
-            "5",
+            pageRoutes.checkGuarantee.key,
             <CustomerServiceOutlined />
         )
     ];
@@ -89,7 +96,8 @@ const RespNav: React.FC = () => {
                 footer={[
                     userAuth != ""
                         ?
-                        <Link href="?action=logout">
+                        <Link href="?action=logout" className='flex justify-between'>
+                            <Tag className='text-black text-lg' color='geekblue'>{userAuth}</Tag>
                             <Button onClick={onClose}><LogoutOutlined />Đăng Xuất</Button>
                         </Link>
                         :
@@ -101,6 +109,7 @@ const RespNav: React.FC = () => {
                 <Menu
                     theme="light"
                     mode="inline"
+                    selectedKeys={[pathName]}
                     style={{ border: 'none' }}
                     items={items}
                     onClick={onClose}
