@@ -42,6 +42,7 @@ const tailFormItemLayout = {
 const Register: React.FC = () => {
   const [form] = Form.useForm();
   const { push } = useRouter()
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const user = localStorage.getItem("id")
@@ -56,14 +57,17 @@ const Register: React.FC = () => {
       email: values.email,
       password: values.password,
     }
+    setLoading(true)
     try {
-      await axios.post('/api/auth/local/register', data).then((res: any) => {
-        message.success('Đăng ký thành công vui lòng xác nhận email')
-      })
+      await axios.post('/api/auth/local/register', data)
+      message.success('Đăng ký thành công vui lòng xác nhận email')
+      setLoading(false)
+      push("/auth/login")
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         message.error(error.response.data.error.message)
       }
+      setLoading(false)
     }
   };
 
@@ -149,7 +153,7 @@ const Register: React.FC = () => {
               <Input.Password placeholder='Nhập lại mật khẩu' />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={loading}>
                 Đăng ký
               </Button>
               <Link href='/' className='ml-2'>

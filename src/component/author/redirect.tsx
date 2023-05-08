@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
 import { useRouter } from 'next/router';
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Redirect = () => {
     const router = useRouter()
@@ -26,8 +28,12 @@ const Redirect = () => {
 
         fetchData();
     }, []);
+    const antIcon = <LoadingOutlined style={{ fontSize: 60 }} />;
     return (
-        <div>Đang chuyển hướng</div>
+        <div style={{ width: '100vw', height: '100vh' }} className='bg-white flex justify-center items-center flex-col gap-12'>
+            <Spin indicator={antIcon} />
+            <p className='custom-text font-semibold text-lg'>Đang chuyển hướng chờ chút nhé</p>
+        </div>
     )
 }
 
