@@ -19,21 +19,10 @@ const UserPage = () => {
             }
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
-                if (error.response.status === 500) {
-                    messageApi.open({
-                        type: 'error',
-                        content: error.response.data.error.message,
-                    });
-                }
+                message.error(error.response.data.error.message)
             }
         }
-    };
+    }
 
     const fetchDonHang = async () => {
         try {
@@ -41,8 +30,6 @@ const UserPage = () => {
             if (userId) {
                 const res = await axios.get(`/api/dsdonhang?user_id=${userId}`)
                 setDonHang(res.data)
-                console.log(res);
-
             }
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {

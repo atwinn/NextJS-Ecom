@@ -1,4 +1,4 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import type { AppProps } from "next/app";
 import "antd/dist/reset.css";
 import "../styles/globals.css";
@@ -9,20 +9,8 @@ import store from "../redux/store";
 import Header from './head';
 import axios from "axios";
 import { getCookie } from '../../cookies';
+import { useSearchParams } from 'next/navigation';
 
-const token = typeof window != 'undefined' ? localStorage.getItem("token") : null;
-
-axios.defaults.baseURL = "https://l3mshop.onrender.com";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.post["Accept"] = "application/json";
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " + token;
-
-axios.interceptors.request.use((config) => {
-  config.headers.Authorization = token ? `Bearer ${token}` : "";
-  return config;
-});
 
 const queryClient = new QueryClient();
 type ComponentWithPageLayout = AppProps & {
@@ -32,6 +20,19 @@ type ComponentWithPageLayout = AppProps & {
 };
 
 function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
+
+  axios.defaults.baseURL = "https://l3mshop.onrender.com";
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+  axios.defaults.headers.post["Accept"] = "application/json";
+  axios.defaults.withCredentials = true;
+  axios.interceptors.request.use((config) => {
+    const token = typeof window !== "undefined" ? getCookie("token") : null
+    if (token) config.headers.Authorization = `Bearer ${token}`
+    else config.headers.Authorization = "";
+    return config;
+  })
+
+
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>

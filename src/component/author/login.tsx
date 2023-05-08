@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, message, Form, Input, Space } from "antd";
 import { Typography } from "antd";
@@ -7,15 +7,12 @@ import {
   GithubOutlined,
   FacebookOutlined,
 } from "@ant-design/icons";
-const { Title } = Typography;
 import "../../styles/Home.module.css";
 import Link from "next/link";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Divider1 from "../devider";
 import type { CSSProperties } from "react";
 import { setCookie } from "../../../cookies";
-import { setUser } from "@/redux/userSlice";
-import { useDispatch } from "react-redux";
 
 const iconStyles: CSSProperties = {
   color: "rgba(0, 0, 0, 0.2)",
@@ -31,14 +28,13 @@ import logo from "../../assets/logoL3M.png";
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const { push } = useRouter();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const user = localStorage.getItem("id")
     if (user) {
       push("/")
     }
-  })
+  }, [])
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -46,31 +42,31 @@ const App: React.FC = () => {
       identifier: values.username,
       password: values.password,
     };
+    const source = axios.CancelToken.source()
+    const timeout = setTimeout(() => {
+      source.cancel("Request timeout")
+      message.warning("Hết thời gian vui lòng đăng nhập lại!")
+      setLoading(false);
+    }, 5000);
     try {
-      const source = axios.CancelToken.source()
-      const timeout = setTimeout(() => {
-        source.cancel("Request timeout")
-        message.warning("Hết thời gian vui lòng đăng nhập lại!")
-        setLoading(false);
-      }, 5000);
-      const res = await axios.post("https://l3mshop.onrender.com/api/auth/local", data, {
+      const res = await axios.post("/api/auth/local", data, {
         cancelToken: source.token
       });
       clearTimeout(timeout)
       localStorage.setItem("username", res.data.user.username);
       localStorage.setItem("id", res.data.user.id);
       setCookie("token", res.data.jwt);
-      dispatch(setUser(res.data.user));
       const userId = res.data.user.id;
       const res2 = await axios.get(`/api/users/${userId}?populate=*`);
       const role = res2.data.role.id;
       setCookie("role", role);
       setLoading(false);
-      role === 3 || role === 4 || role === 6 ? push("/page-admin") : push("/");
+      push("/");
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         message.error(error.response.data.error.message)
       }
+      clearTimeout(timeout)
       setLoading(false);
     }
   }

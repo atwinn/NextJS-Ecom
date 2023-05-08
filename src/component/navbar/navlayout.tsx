@@ -12,7 +12,6 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { deleteCookie, getCookie } from "../../../cookies";
 import { useRouter, useSearchParams } from "next/navigation";
-import { clearUser } from "@/redux/userSlice";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { Category, UserDropDown } from "./category";
 import { message, Badge } from 'antd'
@@ -66,7 +65,7 @@ export const Right = () => {
     }, []);
 
     useEffect(() => {
-        if (searchParams.has("action")) handleLogout()
+        if (searchParams.get("action") === "logout") handleLogout()
     }, [searchParams])
     const { push } = useRouter()
     const handleLogout = () => {
@@ -77,7 +76,6 @@ export const Right = () => {
         deleteCookie("token")
         deleteCookie("role")
         push("/")
-        dispatch(clearUser())
     }
     return (
         <>
@@ -98,7 +96,7 @@ export const Right = () => {
                             ? null
                             : <Link href={"/cart"}>
                                 <div className={CartCss}>
-                                    <Badge count={cart.length} showZero size="small" color="gold" offset={[2, 0]}>
+                                    <Badge count={cart.length} showZero size="small" color="gold" offset={[2, 0]} style={{ backgroundColor: 'transparent' }}>
                                         <AiOutlineShoppingCart className="md:w-5 md:h-5 w-8 h-8 text-white" />
                                     </Badge>
                                 </div>

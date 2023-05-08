@@ -23,7 +23,7 @@ export const pageRoutes: { [key: string]: title } = {
         key: "4",
     },
     trangchu: {
-        route: "/",
+        route: "/" || "/home",
         title: 'Trang chủ',
         key: "20",
     },

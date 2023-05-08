@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Select, DatePicker, message } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import axios from 'axios';
+import { getCookie } from '../../../cookies';
 
 const UserPassChange = ({ close }: any) => {
     const [form] = Form.useForm();
+    const token = typeof window != 'undefined' ? getCookie("token") : null;
 
     const onFinish = async (values: any) => {
         const data = {
@@ -12,15 +14,15 @@ const UserPassChange = ({ close }: any) => {
             passwordConfirmation: values.confirm,
         }
         try {
-            await axios.put(`/api/change-password`, data)
+            await axios.post(`/api/auth/change-password`, data)
             message.success("Thay đổi thành công");
             close();
             form.resetFields()
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
-                if (error.response.status === 400) {
-                    message.error(error.response.data.error.message)
-                }
+                if (error.response.status === 405)
+                    message.error(error.response.data)
+                else message.error(error.response.data.error.message)
             }
 
         };
