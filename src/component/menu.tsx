@@ -68,7 +68,7 @@ const items: MenuItem[] = [
 ];
 
 export default function Menu1(props: IMenuProps) {
-  const [roleId, setRoleId] = useState<string>()
+  const [roleId, setRoleId] = useState<string | null>()
   var pathName = usePathname();
   Object.keys(pageRoutes).forEach((obj: string) => {
     return (
