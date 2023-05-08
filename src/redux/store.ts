@@ -17,6 +17,7 @@ import pagimationSlice from './pagimationSlice'
 import phieuXuatSlice from './phieuXuatSlice'
 import detailProdSlice from './detailProdSlice'
 import cartSlice from './cartSlice'
+import commentSlice from './commentSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -35,6 +36,7 @@ const store = configureStore({
     phieuxuat: phieuXuatSlice,
     detailProd: detailProdSlice,
     cart: cartSlice,
+    comment: commentSlice,
   },
 })
 

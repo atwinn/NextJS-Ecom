@@ -11,11 +11,14 @@ import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { fetchCart } from '@/redux/cartSlice';
+import Comment from './comment';
+import { fetchComment, selectComment } from '@/redux/commentSlice';
 
 const { Title } = Typography;
 
 const DetailProductCard = () => {
     const prodDetail = useSelector(selectDetail)
+    const comment = useSelector(selectComment)
     const status = useSelector(selectDetailStatus)
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
@@ -23,9 +26,13 @@ const DetailProductCard = () => {
     const [quantity, setQuantity] = useState<number>(1)
     const { id } = router.query
     const [loading, setLoading] = useState<boolean>(true)
+
     useEffect(() => {
-        dispatch(fetchDetail(id))
-    }, [])
+        if (id) {
+            dispatch(fetchDetail(id))
+            dispatch(fetchComment(id))
+        }
+    }, [id])
 
     useEffect(() => {
         if (status === 'success') {
@@ -78,6 +85,7 @@ const DetailProductCard = () => {
                                     <div>
                                         <Title level={2}>{prodDetail.data.attributes.tenSP}</Title>
                                         <div className='text-rose-600 text-lg mb-2'>{formatMoney(prodDetail.data.attributes.gia)}</div>
+                                        <p>{comment.length} Bình luận</p>
                                         <div className='rounded-md p-2 bg-slate-200 max-w-[300px]'>
                                             {prodDetail.data?.attributes.ctSanPham
                                                 ? <div dangerouslySetInnerHTML={{ __html: prodDetail.data.attributes.ctSanPham }} />
@@ -97,6 +105,7 @@ const DetailProductCard = () => {
                     {prodDetail.data.attributes.moTa
                         ? <ShortenDes content={prodDetail.data.attributes.moTa} />
                         : null}
+                    <Comment comment={comment} id={id} userId={userId} />
                 </div>}
         </div>
     );
