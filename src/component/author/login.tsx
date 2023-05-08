@@ -61,7 +61,8 @@ const App: React.FC = () => {
       const role = res2.data.role.id;
       setCookie("role", role);
       setLoading(false);
-      push("/");
+      if (role === 3 || role === 4 || role === 6) push("/page-admin")
+      else push("/")
     } catch (error: any) {
       if (typeof error.response !== 'undefined') {
         message.error(error.response.data.error.message)

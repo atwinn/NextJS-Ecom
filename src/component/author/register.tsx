@@ -49,7 +49,7 @@ const Register: React.FC = () => {
     if (user) {
       push("/")
     }
-  })
+  }, [])
 
   const onFinish = async (values: any) => {
     const data = {

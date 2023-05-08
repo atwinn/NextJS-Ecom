@@ -23,9 +23,19 @@ export const pageRoutes: { [key: string]: title } = {
         key: "4",
     },
     trangchu: {
-        route: "/" || "/home",
+        route: "/",
         title: 'Trang chủ',
         key: "20",
+    },
+    trangchu2: {
+        route: "/home",
+        title: 'Trang chủ',
+        key: "20",
+    },
+    pageNotFound: {
+        route: "/404",
+        title: 'Không tìm thấy',
+        key: "35",
     },
     sanPhamUser: {
         route: "/sanpham",
