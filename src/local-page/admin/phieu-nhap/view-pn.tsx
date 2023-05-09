@@ -12,13 +12,7 @@ import Link from "next/link";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import { fetchNcc, selectNcc } from "@/redux/nccSlice";
 import { AppDispatch } from "@/redux/store";
-import {
- 
-  deleteRow,
-  fetchCtPn,
-  getIdPN,
-  getNccId,
-} from "@/redux/tableSlice";
+import { deleteRow, fetchCtPn, getIdPN, getNccId } from "@/redux/tableSlice";
 import axios from "axios";
 export interface IAppProps {}
 
@@ -29,10 +23,10 @@ const ViewPN = (props: IAppProps) => {
   React.useEffect(() => {
     dispatch(fetchNcc());
   }, [dispatch]);
-
+  console.log("re render View Pn");
+  
   const dayNow: Date = new Date();
   let result = [];
-
   ncc
     ? (result = ncc.data?.map((item: any) => {
         return {
@@ -95,11 +89,12 @@ const ViewPN = (props: IAppProps) => {
   //clear form
   const [form] = Form.useForm();
 
-  const handleReset = () => {
+  const handleReset = React.useCallback(() => {
     form.resetFields();
     dispatch(fetchCtPn([]));
     dispatch(getIdPN(null));
-  };
+  }, [form, dispatch]);
+  const memoizedForm = React.useMemo(() => form, [form]);
   return (
     <>
       <Card>
@@ -136,11 +131,11 @@ const ViewPN = (props: IAppProps) => {
           </Col>
         </Row>
         <Divider1 name="Thêm phiếu nhập" />
-        <PhieuNhapTable form={form} />
+        <PhieuNhapTable form={memoizedForm} />
         <Divider1 name="Chi tiết phiếu nhập" />
         <TableChiTietPN />
       </Card>
     </>
   );
 };
-export default ViewPN;
+export default React.memo(ViewPN);

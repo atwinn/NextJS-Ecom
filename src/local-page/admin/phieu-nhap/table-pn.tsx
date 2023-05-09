@@ -50,7 +50,8 @@ export const renderTitle = (title: string) => (
 const PhieuNhapTable = ({form}:any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { idSp,idPn } = useSelector((store: any) => store.table);
-
+  console.log("render PhieuNhap table");
+  
   const {product} = useSelector((state: RootState) => state.product);
   useEffect(() => {
     dispatch(fetchProduct())
@@ -193,7 +194,7 @@ const PhieuNhapTable = ({form}:any) => {
         />
       </Table>
     </Form>
-  );
+  ); 
 };
 
-export default PhieuNhapTable;
+export default React.memo(PhieuNhapTable);

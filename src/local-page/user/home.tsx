@@ -53,8 +53,7 @@ const TrangChu = () => {
                 <div className=''>
                     <Divider ></Divider>
                     <h1 className="custom-text text-2xl font-semibold mb-4 text-black">Sản phẩm nổi bật ( •̀ ω •́ )✧</h1>
-
-                    <Card >
+                    <Card loading={loading}>
                         <Row gutter={[16, 16]}>
                             {result.map((item): any => {
                                 return (
