@@ -3,6 +3,7 @@ import { Carousel, Card, Row, Col, Button, Divider } from "antd";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { EllipsisOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import ProdCard from "@/component/productCard";
 const TrangChu = () => {
   const [data, setData] = useState([]);
   const [dataLoaiPC, setDataLoaiPC] = useState([]);
@@ -138,25 +139,16 @@ const TrangChu = () => {
                 return (
                   <>
                     <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
-                      <Card
-                        hoverable
-                        cover={
-                          <img
-                            src={item.url}
-                            alt="Product"
-                            className="h-48 object-cover"
-                          />
+                      <ProdCard
+                        name={item.tenSP}
+                        price={item.gia}
+                        image={
+                          item.url
+                            ? item.url
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                         }
-                        actions={[
-                          <ShoppingCartOutlined key="setting" />,
-                          <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                      >
-                        <Card.Meta
-                          title={item.tenSP}
-                          description={formatMoney(item.gia)}
-                        />
-                      </Card>
+                        id={item.id}
+                      />
                     </Col>
                   </>
                 );
@@ -169,32 +161,21 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               👉 PC (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
             </h1>
-            <Row
-              gutter={[16, 16]}
-            >
+            <Row gutter={[16, 16]}>
               {resultLoaiPC.map((item): any => {
                 return (
                   <>
                     <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
-                      <Card
-                        hoverable
-                        cover={
-                          <img
-                            src={item.hinh}
-                            alt="Product"
-                            className="h-48 object-cover"
-                          />
+                      <ProdCard
+                        name={item.tenSP}
+                        price={item.gia}
+                        image={
+                          item.hinh
+                            ? item.hinh
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                         }
-                        actions={[
-                          <ShoppingCartOutlined key="setting" />,
-                          <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                      >
-                        <Card.Meta
-                          title={item.tenSP}
-                          description={formatMoney(item.gia)}
-                        />
-                      </Card>
+                        id={item.id}
+                      />
                     </Col>
                   </>
                 );
@@ -207,32 +188,21 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               👉 Laptop (〃￣︶￣)人(￣︶￣〃)
             </h1>
-            <Row
-              gutter={[16, 16]}
-            >
+            <Row gutter={[16, 16]}>
               {resultLoaiLap.map((item): any => {
                 return (
                   <>
                     <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
-                      <Card
-                        hoverable
-                        cover={
-                          <img
-                            src={item.hinh}
-                            alt="Product"
-                            className="h-48 object-cover"
-                          />
+                      <ProdCard
+                        name={item.tenSP}
+                        price={item.gia}
+                        image={
+                          item.hinh
+                            ? item.hinh
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                         }
-                        actions={[
-                          <ShoppingCartOutlined key="setting" />,
-                          <EllipsisOutlined key="ellipsis" />,
-                        ]}
-                      >
-                        <Card.Meta
-                          title={item.tenSP}
-                          description={formatMoney(item.gia)}
-                        />
-                      </Card>
+                        id={item.id}
+                      />
                     </Col>
                   </>
                 );
