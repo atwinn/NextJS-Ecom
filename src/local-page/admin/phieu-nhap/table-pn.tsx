@@ -50,7 +50,7 @@ export const renderTitle = (title: string) => (
 const PhieuNhapTable = ({form}:any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { idSp,idPn } = useSelector((store: any) => store.table);
-  console.log("render PhieuNhap table");
+  // console.log("render PhieuNhap table");
   
   const {product} = useSelector((state: RootState) => state.product);
   useEffect(() => {

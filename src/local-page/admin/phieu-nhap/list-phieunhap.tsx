@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 import {
   CloseOutlined,
   EditOutlined,
-  
+  PrinterOutlined
 } from "@ant-design/icons";
 import {
   fetchCtPnInView,
@@ -162,10 +162,10 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
         key: "operation",
         render: (_: any, record: any) => {
           const handleChange = () => {
-            // console.log(record);
+            // console.log(record.idgetSP);
             dispatch(openModal());
             dispatch(getInforModalCtPN(record));
-            dispatch(getSpId(record.key));
+            dispatch(getSpId(record.idgetSP));
           };
           const confirm1 = () => {
             // console.log(record);
@@ -263,6 +263,11 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
                 icon={<CloseOutlined />}
               />
             </Popconfirm>
+              <Button
+                className="flex justify-center items-center"
+                shape="circle"
+                icon={<PrinterOutlined />}
+              />
           </Space>
         );
       },

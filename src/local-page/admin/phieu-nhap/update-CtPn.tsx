@@ -11,6 +11,8 @@ const UpdateCTPN: React.FC = () => {
   const { dataCTPn, idPn, idSp,tab } = useSelector((store: any) => store.table);
   const { product } = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
+  // console.log(idSp);
+  
   let result = [];
   product
     ? (result = product.data?.map((item: any) => {
@@ -31,6 +33,7 @@ const UpdateCTPN: React.FC = () => {
         dispatch(fetchPN({ page: 1, pageSize:10 }))
         fetchCTPN() 
       }).catch((err) => {
+        console.log(err);
         message.error(err.response.data.error.message)
       })
   };

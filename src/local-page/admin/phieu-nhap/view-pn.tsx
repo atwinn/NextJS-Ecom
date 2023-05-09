@@ -23,7 +23,7 @@ const ViewPN = (props: IAppProps) => {
   React.useEffect(() => {
     dispatch(fetchNcc());
   }, [dispatch]);
-  console.log("re render View Pn");
+  // console.log("re render View Pn");
   
   const dayNow: Date = new Date();
   let result = [];

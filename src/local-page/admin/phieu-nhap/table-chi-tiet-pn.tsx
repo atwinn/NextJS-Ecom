@@ -11,7 +11,7 @@ import UpdateCTPN from "./update-CtPn";
 import { fetchCtPn, getInforModalCtPN, getSpId } from "@/redux/tableSlice";
 import axios from "axios";
 const TableChiTietPN = () => {
-  console.log("render chi tiet phieu nhap");
+  // console.log("render chi tiet phieu nhap");
   
   const dispatch = useDispatch();
   const data1 = useSelector((state: RootState) => state.table.data);
