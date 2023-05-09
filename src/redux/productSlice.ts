@@ -7,12 +7,14 @@ import { API_PRODUCT } from "@/pages/api/api";
 
 interface ProductState {
   product: any;
+  filterData: any;
   productId: any;
   status: "idle" | "loading" | "failed";
   error: string | null;
 }
 const initialState: ProductState = {
   product: [],
+  filterData: undefined,
   productId: [],
   status: "idle",
   error: null,
@@ -33,6 +35,9 @@ const productSlice = createSlice({
   reducers: {
     updateProd: (state, action) => {
       state.productId = action.payload
+    },
+    setfilterData: (state, action) => {
+      state.filterData = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -52,7 +57,7 @@ const productSlice = createSlice({
       });
   },
 });
-export const { updateProd } = productSlice.actions;
+export const { updateProd,setfilterData} = productSlice.actions;
 
 export default productSlice.reducer;
 export const selectProduct = (state: RootState) => state.product.product;

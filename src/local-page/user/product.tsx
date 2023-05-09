@@ -6,10 +6,15 @@ import axios from 'axios'
 import type { PaginationProps } from 'antd';
 import { useSearchParams } from 'next/navigation'
 import Button from 'antd/lib/button'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setfilterData } from '@/redux/productSlice'
 
 const UserProduct = () => {
+    const {filterData} = useSelector((store:any) => store.product)
+    const dispatch = useDispatch()
     const [prodData, setProdData] = useState([])
-    const [filterData, setFilterData] = useState<[]>()
+    // const [filterData, setFilterData] = useState<[]>()
     const [showSearch, setShow] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
     const [paginate, setPaginate] = useState({
@@ -53,11 +58,12 @@ const UserProduct = () => {
     }
 
     useEffect(() => {
+        console.log("render SP");
         fetchProd()
     }, [searchParams])
     const backRenderSP =  () => {
-     fetchProd()
-     setFilterData(undefined)
+    //  fetchProd()
+     dispatch(setfilterData(undefined)) //setFilterData(undefined)
     }
     
     const pageChange: PaginationProps['onChange'] = async (page) => {
@@ -74,13 +80,13 @@ const UserProduct = () => {
             setLoading(false)
         }
     };
-    console.log(filterData?.length);
-    
+        console.log(filterData);
     return (
         <div className='p-5'>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
-                    <UserProdFilter getSP={setFilterData} />
+                    <UserProdFilter  /> 
+                    {/* getSP={setFilterData} */}
                 </Col>
                 <Col lg={15} className='py-2 bg-white rounded-md'>
                     {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>

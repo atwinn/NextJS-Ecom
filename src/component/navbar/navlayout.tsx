@@ -18,12 +18,18 @@ import { message, Badge } from 'antd'
 import { AppDispatch } from "@/redux/store";
 import { fetchCart, selectCart } from "@/redux/cartSlice";
 import { useSelector } from "react-redux";
+import { setfilterData } from "@/redux/productSlice";
+
 
 const NavButtonCss = "text-[16px] font-semibold pt-4 select-none";
 const buttonContainer = "md:flex gap-2 items-center hidden hover:bg-slate-300/50 px-3 rounded-full transition-all cursor-pointer hover:text-white";
 const CartCss = "hover:bg-slate-300/50 py-3 px-4 rounded-full transition-all cursor-pointer hover:text-white"
 
 export const Left = () => {
+    const dispatch = useDispatch()
+    const handleLoadProduct = () => {
+        dispatch(setfilterData(undefined))
+    }
     return (
         <>
             <div className="flex items-center gap-x-3 shrink-0">
@@ -37,7 +43,7 @@ export const Left = () => {
                         <p className={NavButtonCss}>Danh mục</p>
                     </div>
                 </Category>
-                <Link href={pageRoutes.sanPhamUser.route} className={buttonContainer}>
+                <Link onClick={handleLoadProduct} href={pageRoutes.sanPhamUser.route} className={buttonContainer}>
                     <BsLaptop className="text-[20px]" />
                     <p className={NavButtonCss}>Sản Phẩm</p>
                 </Link>

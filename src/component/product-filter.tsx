@@ -13,8 +13,11 @@ import {
 import type { SliderMarks } from "antd/es/slider";
 import formatMoney from "./formatMoney";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setfilterData } from "@/redux/productSlice";
 const { Title } = Typography;
-const UserProdFilter = ({ getSP }: any) => {
+const UserProdFilter = () => {
+    const dispatch = useDispatch()
     const [range, setRange] = useState({ min: 0, max: 100000000 });
     const [nsx, setNsx] = useState([]);
     const [loaiSp, setLoaiSP] = useState([]);
@@ -38,7 +41,7 @@ const UserProdFilter = ({ getSP }: any) => {
                 console.log(res);
                 if (res.status == 200) {
                     setLoad(false)
-                    getSP(res.data);
+                    dispatch(setfilterData(res.data));
                 }
             })
             .catch((err) => {
