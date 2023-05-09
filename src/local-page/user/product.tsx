@@ -58,7 +58,7 @@ const UserProduct = () => {
     }
 
     useEffect(() => {
-        console.log("render SP");
+        // console.log("render SP");
         fetchProd()
     }, [searchParams])
     const backRenderSP =  () => {
@@ -80,7 +80,7 @@ const UserProduct = () => {
             setLoading(false)
         }
     };
-        console.log(filterData);
+        // console.log(filterData);
     return (
         <div className='p-5'>
             <Row gutter={[16, 16]}>

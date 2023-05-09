@@ -142,9 +142,11 @@ const TrangChu = () => {
                       <ProdCard
                         name={item.tenSP}
                         price={item.gia}
-                        image={item.url
-                          ? item.url
-                          : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                        image={
+                          item.url
+                            ? item.url
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        }
                         id={item.id}
                       />
                     </Col>
@@ -159,9 +161,7 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               👉 PC (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
             </h1>
-            <Row
-              gutter={[16, 16]}
-            >
+            <Row gutter={[16, 16]}>
               {resultLoaiPC.map((item): any => {
                 return (
                   <>
@@ -169,9 +169,11 @@ const TrangChu = () => {
                       <ProdCard
                         name={item.tenSP}
                         price={item.gia}
-                        image={item.hinh
-                          ? item.hinh
-                          : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                        image={
+                          item.hinh
+                            ? item.hinh
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        }
                         id={item.id}
                       />
                     </Col>
@@ -186,9 +188,7 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               👉 Laptop (〃￣︶￣)人(￣︶￣〃)
             </h1>
-            <Row
-              gutter={[16, 16]}
-            >
+            <Row gutter={[16, 16]}>
               {resultLoaiLap.map((item): any => {
                 return (
                   <>
@@ -196,9 +196,11 @@ const TrangChu = () => {
                       <ProdCard
                         name={item.tenSP}
                         price={item.gia}
-                        image={item.hinh
-                          ? item.hinh
-                          : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                        image={
+                          item.hinh
+                            ? item.hinh
+                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                        }
                         id={item.id}
                       />
                     </Col>
