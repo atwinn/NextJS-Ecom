@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Col, Row, Button, Modal } from 'antd';
-import { ImportOutlined, ExportOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Modal } from 'antd';
+import { PlusOutlined } from '@ant-design/icons'
 import ProdForm from '../form-input/ProdForm';
 
 export default function TitleAndAction() {
-
     const [modalOpen, setModalOpen] = useState(false);
     const handleClose = () => setModalOpen(false)
 

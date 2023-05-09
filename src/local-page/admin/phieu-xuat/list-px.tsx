@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
-import { Input, TableColumnsType } from 'antd';
+import { Empty, Input, TableColumnsType } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Tag, Space, Table, Button, Tooltip, Popconfirm, message, Radio, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ import { CloseOutlined, CheckOutlined, PushpinOutlined, DeleteOutlined, PrinterO
 import axios from 'axios';
 import AddProdCtPx from './addProdCtPx';
 import PrintPx from './printPx';
+import { getCookie } from '../../../../cookies';
 interface DataType {
     key: React.Key;
     name: string;
@@ -40,6 +41,7 @@ const ListPhieuXuat: React.FC = () => {
     const { ctPx } = useSelector((store: any) => store.phieuxuat)
     const [loading, setLoading] = useState<boolean>(false)
     const [editedData, setEditedData] = useState<{ [key: string]: number }>({});
+    const role = typeof window !== "undefined" ? getCookie("role") : null
     useEffect(() => {
         dispatch(fetchPx())
     }, [])
@@ -101,22 +103,24 @@ const ListPhieuXuat: React.FC = () => {
                 key: 'sl',
                 width: 100,
                 render: (text, record) => (
-                    <Input
-                        type="number"
-                        value={editedData[`${record.id}-${record.key}`] ?? text}
-                        onChange={e => handleQuantityChange(record.id, record.key, +e.target.value)}
-                        onBlur={() => handleQuantityBlur(record.id, record.key, record.sl)}
-                    />
+                    role === "4"
+                        ? <Input
+                            type="number"
+                            value={editedData[`${record.id}-${record.key}`] ?? text}
+                            onChange={e => handleQuantityChange(record.id, record.key, +e.target.value)}
+                            onBlur={() => handleQuantityBlur(record.id, record.key, record.sl)}
+                        />
+                        : <p>{text}</p>
                 )
             },
             { title: 'Giá', dataIndex: 'gia', render: (text) => <div>{formatMoney(text)}</div>, },
             { title: 'Bảo Hành', dataIndex: 'BH', key: 'BH' },
             {
-                title: 'Hành Động',
+                title: 'Thao tác',
                 dataIndex: 'operation',
                 key: 'operation',
                 render: (_, record) =>
-                    <Tooltip title={"Xóa sản phẩm"}>
+                    <Tooltip title={role === "4" ? "Xóa sản phẩm" : "Không có quyền thao tác"}>
                         <Popconfirm
                             placement="top"
                             title={"Xóa sản phẩm khỏi phiếu xuất"}
@@ -126,8 +130,9 @@ const ListPhieuXuat: React.FC = () => {
                             okText="Xóa"
                             cancelText="Hủy"
                             okType="danger"
+                            disabled={role === "4" ? false : true}
                         >
-                            <DeleteOutlined className='cursor-pointer text-red-500' />
+                            <DeleteOutlined className='cursor-pointer text-red-500' disabled={role === "4" ? false : true} />
                         </Popconfirm>
                     </Tooltip>
             },
@@ -144,7 +149,9 @@ const ListPhieuXuat: React.FC = () => {
 
         return (
             <>
-                <AddProdCtPx pxId={pxId} />
+                {role === "4"
+                    ? <AddProdCtPx pxId={pxId} />
+                    : null}
                 <Table columns={columns} dataSource={data} pagination={false} loading={loading} />
             </>
         )
@@ -210,7 +217,7 @@ const ListPhieuXuat: React.FC = () => {
         },
         { title: 'Tổng Tiền', dataIndex: 'tongTien', render: (text) => <div>{formatMoney(text)}</div>, },
         {
-            title: 'Hành Động',
+            title: 'Thao tác',
             key: 'operation',
             render: (_, record: any) => {
                 const confirm = async () => {
@@ -241,24 +248,27 @@ const ListPhieuXuat: React.FC = () => {
                     <div className='flex justify-start gap-2'>
                         {record.status === 0
                             ? <Space wrap>
-                                <Tooltip title={"Xóa phiếu xuất"}>
-                                    <Popconfirm
-                                        placement="top"
-                                        title={"Xóa Phiếu Xuất"}
-                                        description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
-                                        onConfirm={confirm}
-                                        okButtonProps={{ loading: false }}
-                                        okText="Xóa"
-                                        cancelText="Hủy"
-                                        okType="danger"
-                                    >
-                                        <Button
-                                            className="flex justify-center items-center"
-                                            shape="circle"
-                                            icon={<CloseOutlined style={{ color: '#f74a4a' }} />}
-                                        />
-                                    </Popconfirm>
-                                </Tooltip>
+                                {role === "4"
+                                    ?
+                                    <Tooltip title={"Xóa phiếu xuất"}>
+                                        <Popconfirm
+                                            placement="top"
+                                            title={"Xóa Phiếu Xuất"}
+                                            description={"Hành động này không thể hoàn tác, hãy suy nghĩ kỹ"}
+                                            onConfirm={confirm}
+                                            okButtonProps={{ loading: false }}
+                                            okText="Xóa"
+                                            cancelText="Hủy"
+                                            okType="danger"
+                                        >
+                                            <Button
+                                                className="flex justify-center items-center"
+                                                shape="circle"
+                                                icon={<CloseOutlined style={{ color: '#f74a4a' }} />}
+                                            />
+                                        </Popconfirm>
+                                    </Tooltip>
+                                    : null}
                             </Space>
                             : null}
                         <Tooltip title={"In phiếu xuất"}>
