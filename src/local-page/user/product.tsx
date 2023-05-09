@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
-import { Col, Pagination, Row, message, Skeleton } from 'antd'
+import { Col, Pagination, Row, message, Skeleton, Spin } from 'antd'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
 import type { PaginationProps } from 'antd';
 import { useSearchParams } from 'next/navigation'
+import Button from 'antd/lib/button'
 
 const UserProduct = () => {
     const [prodData, setProdData] = useState([])
+    const [filterData, setFilterData] = useState<[]>()
     const [showSearch, setShow] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
     const [paginate, setPaginate] = useState({
@@ -53,7 +55,11 @@ const UserProduct = () => {
     useEffect(() => {
         fetchProd()
     }, [searchParams])
-
+    const backRenderSP =  () => {
+     fetchProd()
+     setFilterData(undefined)
+    }
+    
     const pageChange: PaginationProps['onChange'] = async (page) => {
         setLoading(true)
         try {
@@ -68,25 +74,43 @@ const UserProduct = () => {
             setLoading(false)
         }
     };
-
+    console.log(filterData?.length);
+    
     return (
         <div className='p-5'>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
-                    <UserProdFilter />
+                    <UserProdFilter getSP={setFilterData} />
                 </Col>
                 <Col lg={15} className='py-2 bg-white rounded-md'>
+                    {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>
+                        Không tìm thấy sản phẩm...
+                        <Button onClick={backRenderSP}>
+                            Quay lại
+                        </Button>
+                    </div> : null}
                     {loading ? <Skeleton active />
                         :
                         !showSearch ?
                             <Row gutter={[16, 16]} className='p-4'>
-                                {prodData && prodData.map((item: any) => (
+                                {!filterData ? prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.attributes.tenSP}
                                             price={item.attributes.gia}
                                             image={item.attributes.hinh.data?.attributes.url
                                                 ? item.attributes.hinh.data.attributes.url
+                                                : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                                            id={item.id}
+                                        />
+                                    </Col>
+                                )) : filterData.map((item: any) => (
+                                    <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
+                                        <ProdCard
+                                            name={item.tenSP}
+                                            price={item.gia}
+                                            image={item.hinh.url
+                                                ? item.hinh.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                         />
@@ -110,7 +134,7 @@ const UserProduct = () => {
                                 }
                             </Row>
                     }
-                    {showSearch
+                    {showSearch || filterData
                         ? null
                         : <Pagination
                             total={paginate.total}
