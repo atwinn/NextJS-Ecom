@@ -112,5 +112,9 @@ export const pageRoutes: { [key: string]: title } = {
         title: 'Liên hệ - Admin',
         key: "8",
     },
-
+    categoryAdmin: {
+        route: "/page-admin/category-manage/view",
+        title: 'Quản lý loại sản phẩm',
+        key: "9",
+    },
 };

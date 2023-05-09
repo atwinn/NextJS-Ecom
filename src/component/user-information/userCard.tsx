@@ -37,7 +37,7 @@ const UserCard = ({ data, fectchData }: any) => {
                 <Row gutter={[16, 16]} key={item.id}>
                     <Col xs={24} sm={10} lg={9}>
                         <img
-                            src={"https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
+                            src={"https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                             alt=""
                             style={{ maxWidth: '100%' }}
                             className='rounded-full object-fit'

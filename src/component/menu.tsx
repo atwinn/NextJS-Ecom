@@ -1,7 +1,7 @@
 "use client";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
-import { FileOutlined, PieChartOutlined, ContainerOutlined, AppstoreOutlined } from "@ant-design/icons";
+import { FileOutlined, PieChartOutlined, ContainerOutlined, AppstoreOutlined, MailOutlined, LaptopOutlined, SolutionOutlined, UserSwitchOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Link from "next/link";
 import { getCookie } from "../../cookies";
@@ -38,17 +38,22 @@ const items: MenuItem[] = [
   getItem(
     <Link href={pageRoutes.sanPham.route}>Quản lý sản phẩm</Link>,
     "3",
+    <LaptopOutlined />
+  ),
+  getItem(
+    <Link href={pageRoutes.categoryAdmin.route}>Loại sản phẩm</Link>,
+    "9",
     <AppstoreOutlined />
   ),
   getItem(
     <Link href={pageRoutes.orderManage.route}>Quản lý đơn hàng</Link>,
     "4",
-    <ContainerOutlined />
+    <ShoppingOutlined />
   ),
   getItem(
     <Link href={pageRoutes.account.route}>Quản lý tài khoản</Link>,
     "5",
-    <ContainerOutlined />
+    <UserSwitchOutlined />
   ),
   getItem(
     <Link href={pageRoutes.phieuNhap.route}>Phiếu nhập</Link>,
@@ -58,12 +63,12 @@ const items: MenuItem[] = [
   getItem(
     <Link href={pageRoutes.ncc_nsx.route}>Đối tác</Link>,
     "7",
-    <ContainerOutlined />
+    <SolutionOutlined />
   ),
   getItem(
     <Link href={pageRoutes.contactAdmin.route}>Liên lạc</Link>,
     "8",
-    <ContainerOutlined />
+    <MailOutlined />
   ),
 ];
 
@@ -83,7 +88,7 @@ export default function Menu1(props: IMenuProps) {
 
   const filteredItems = items.filter(item => {
     if (roleId === "3") {
-      return ["1", "3", "4", "8"].includes(item?.key?.toString() ?? '');
+      return ["1", "3", "4", "8", "9"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "4") {
       return ["1", "3", "4", "6", "7"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "6") {

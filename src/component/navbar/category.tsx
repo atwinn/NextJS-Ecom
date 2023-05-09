@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { fetchCategory, selectCategory, selectCategoryStatus } from '@/redux/categorySlice';
+import { UserOutlined, CustomerServiceOutlined, PhoneOutlined, AreaChartOutlined } from '@ant-design/icons'
 
 interface CategoryProps {
     children: ReactNode;
@@ -60,6 +61,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                         Đến Trang Quản Trị
                     </Link>
                 ),
+                icon: <AreaChartOutlined />
             },
         ] : [
             {
@@ -69,6 +71,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                         Trang cá Nhân
                     </Link>
                 ),
+                icon: <UserOutlined />
             },
             {
                 key: '2',
@@ -77,6 +80,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                         Liên hệ
                     </Link>
                 ),
+                icon: <PhoneOutlined />
             },
             {
                 key: '3',
@@ -85,6 +89,7 @@ export const UserDropDown = ({ children }: CategoryProps) => {
                         Kiểm tra bảo hành
                     </Link>
                 ),
+                icon: <CustomerServiceOutlined />
             },
         ]
 

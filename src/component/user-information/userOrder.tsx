@@ -10,6 +10,8 @@ const { Title, Text } = Typography;
 
 const UserOrder = ({ data, fetchData }: any) => {
     const [loading, setLoading] = useState<boolean>(false)
+    console.log(data);
+
     const cancelOrder = async () => {
         const data1 = {
             user_id_kh: localStorage.getItem("id"),
@@ -62,7 +64,9 @@ const UserOrder = ({ data, fetchData }: any) => {
                     <div className='flex justify-start space-x-2 mb-2 cursor-pointer'>
                         <div>
                             <img
-                                src={"https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
+                                src={item.product.hinh
+                                    ? item.product.hinh.url
+                                    : "https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
                                 alt=""
                                 className='rounded-md object-fill w-12 h-12'
                             />
