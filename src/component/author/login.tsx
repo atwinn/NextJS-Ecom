@@ -80,7 +80,7 @@ const App: React.FC = () => {
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
         <Card bordered={false} className="max-w-[400px] w-full">
-          <Link href={"/"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
+          <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
           <Form
             name="normal_login"
             className="login-form"

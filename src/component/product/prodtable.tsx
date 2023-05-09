@@ -65,7 +65,7 @@ const ProdTable: React.FC = () => {
             dataIndex: 'baoHanh',
         },
         {
-            title: "Thao tác",
+            title: "Action",
             key: "action",
             render: (_, record: any) => {
                 let id = record.id;
@@ -132,7 +132,6 @@ const ProdTable: React.FC = () => {
                 loading={status === "loading" ? true : false}
                 columns={columns}
                 dataSource={tableData}
-                scroll={{ x: true }}
             />
         </div>
     );

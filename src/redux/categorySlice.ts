@@ -28,9 +28,6 @@ const categorySlice = createSlice({
     name: "category",
     initialState,
     reducers: {
-        updateCate: (state, action) => {
-            state.categoryId = action.payload
-        }
     },
     extraReducers: (builder) => {
         builder
@@ -49,7 +46,7 @@ const categorySlice = createSlice({
             });
     },
 });
-export const { updateCate } = categorySlice.actions;
+export const { } = categorySlice.actions;
 
 export default categorySlice.reducer;
 export const selectCategory = (state: RootState) => state.category.category;

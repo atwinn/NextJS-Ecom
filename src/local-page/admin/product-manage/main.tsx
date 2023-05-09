@@ -13,6 +13,7 @@ export default function ProdManage(props: IQLSanPhamProps) {
     return (
         <div className='md:px-5 xs:px-0 xs:py-2'>
             <Divider1 name="Quản lý sản phẩm" />
+            <ProdFilter />
             <TitleAndAction />
             <Divider1 name="Danh sách sản phẩm" />
             <ProdTable />

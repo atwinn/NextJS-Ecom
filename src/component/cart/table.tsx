@@ -105,7 +105,7 @@ const CartTable = () => {
     }
     return (
         <>
-            <Table columns={columns} dataSource={data} scroll={{ x: true }} />
+            <Table columns={columns} dataSource={data} />
         </>
     )
 }
