@@ -41,7 +41,7 @@ const ProdCard = (props: ProductData) => {
     return (
         <>
             <Card
-                style={{ width: 300 }}
+                style={{ width: "100%" }}
                 className="drop-shadow-md"
                 hoverable
                 cover={
