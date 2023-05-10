@@ -16,18 +16,20 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setfilterData } from "@/redux/productSlice";
 const { Title } = Typography;
+
+interface range {
+    min: number;
+    max: number;
+}
 const UserProdFilter = () => {
     const dispatch = useDispatch()
-    const [range, setRange] = useState({ min: 0, max: 100000000 });
+    const [range, setRange] = useState({ min: 0, max: 0 });
+    const [defaultRange, setDefaultRange] = useState<range>();
     const [nsx, setNsx] = useState([]);
     const [loaiSp, setLoaiSP] = useState([]);
     const [valueNsx, setValueNSX] = useState<number | string>(0);
     const [valueLoai, setValueLoai] = useState<number | string>(0);
     const [load, setLoad] = useState<boolean>(false);
-    const marks: SliderMarks = {
-        0: range ? formatMoney(range.min) : "0",
-        100000000: range ? formatMoney(range.max) : "100000000",
-    };
     const handleChange = (props: any) => {
         setRange({ min: props[0], max: props[1] });
     };
@@ -76,9 +78,23 @@ const UserProdFilter = () => {
                 console.log(err);
             });
     };
+    const renderMinMax = async () => {
+        await axios
+            .get("/api/products/laymaxmin")
+            .then((res) => {
+                console.log(res);
+                if (res.status == 200) {
+                    setDefaultRange({min: parseInt(res.data.gia_min.gia), max: parseInt(res.data.gia_max.gia)})
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     useEffect(() => {
         renderLoaiSp();
         renderNSX();
+        renderMinMax()
     }, []);
 
 
@@ -92,19 +108,25 @@ const UserProdFilter = () => {
         setValueNSX(0)
         setValueLoai(0)
     };
+    
     return (
         <div className="bg-white p-4 rounded-md">
             <Space direction="vertical" size="large" style={{ display: "flex" }}>
                 <Title level={2}>Bộ lọc sản phẩm</Title>
+                <div className="relative">
                 <Slider
                     step={100000}
-                    marks={marks}
-                    range={{ draggableTrack: true }}
-                    defaultValue={[0, 100000000]}
-                    max={100000000}
+                    // marks={marks}
+                    range={{draggableTrack:true}}
+                    defaultValue={[defaultRange ? defaultRange.min: 0, defaultRange ? defaultRange.max: 100]}
+                    max={defaultRange ? defaultRange.max: 100}
+                    min={defaultRange ? defaultRange.min : 0}
                     className="mr-7 ml-7"
-                    onChange={handleChange}
+                    onAfterChange={handleChange}
                 />
+                <span className="absolute top-[18px] left-[13px]">{formatMoney(range.min)}</span>
+                <span className="absolute top-[13px] right-[13px]">{formatMoney(range.max)}</span>
+                </div>
                 <Divider>Loại sản phẩm</Divider>
                 <Checkbox.Group style={{ width: "100%" }}>
                     <Row gutter={16}>
