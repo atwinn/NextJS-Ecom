@@ -104,7 +104,7 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
                 <Form.Item label="Ngày Sinh" name="ngaySinh" >
                     <DatePicker placeholder='Chọn ngày' format={dateFormat}
                         // value={dayjs(userUpdateData.attributes.ngaySinh)}
-                        value={dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : dayjs('01/01/2000')}
+                        value={dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : dayjs('01/01/2000', dateFormat)}
                     />
                 </Form.Item>
 
