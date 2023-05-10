@@ -2,12 +2,8 @@ import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import {  Col } from "antd";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
-// import required modules
 import { Pagination } from "swiper";
 import ProdCard from "../productCard";
 
@@ -55,7 +51,7 @@ export default function CarouselBestSell({data}:any) {
         {result.map((item:any) => {
                 return (
                   <>
-                    <SwiperSlide   key={item.id}>
+                    <SwiperSlide key={item.id}>
                       <ProdCard
                         name={item.tenSP}
                         price={item.gia}
