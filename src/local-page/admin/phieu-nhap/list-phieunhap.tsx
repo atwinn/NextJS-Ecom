@@ -8,7 +8,8 @@ import {
   Tag,
   message,
   Tooltip,
-  Pagination
+  Pagination,
+  Modal,
 } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -18,7 +19,7 @@ import { useSelector } from "react-redux";
 import {
   CloseOutlined,
   EditOutlined,
-  PrinterOutlined
+  PrinterOutlined,
 } from "@ant-design/icons";
 import {
   fetchCtPnInView,
@@ -31,45 +32,59 @@ import UpdateCTPN from "./update-CtPn";
 import { openModal } from "@/redux/modalSlice";
 import formatMoney from "@/component/formatMoney";
 import { setPage, setPageSide, setPageTotal } from "@/redux/pagimationSlice";
+import PrintPN from "./printPN";
 
 interface DataType {
   status: boolean;
   tongTien: string;
   createdAt: string;
 }
-const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
+interface InforPN {
+  inforPn: [];
+  inforCTPN:{}
+}
+const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
   const status = useSelector(selectPnStatus);
   const { isOpen } = useSelector((store: any) => store.modal);
   const { idPn } = useSelector((store: any) => store.table);
+  const [show, setShow] = useState<boolean>(false);
+  const [inforPrinter,setInforPrinter] = useState<InforPN>()
+  const { page, totalPage, pageSize } = useSelector(
+    (store: any) => store.pagination
+  );
 
-
-  const { page,totalPage,pageSize } = useSelector((store: any) => store.pagination);
-  
   const dispatch = useDispatch<AppDispatch>();
   const dataInView = useSelector((state: RootState) => state.table.dataInView);
   const [loading, setloading] = useState(false);
   const { pn } = useSelector((store: any) => store.pn);
   useEffect(() => {
-    dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize ? pageSize :10 }));
-  }, [dispatch,page,pageSize]);
+    dispatch(
+      fetchPN({ page: page ? page : 1, pageSize: pageSize ? pageSize : 10 })
+    );
+  }, [dispatch, page, pageSize]);
   // console.log(pn);
-  
+
   let result;
   pn
     ? (result = pn.data?.map((item: any) => {
         const confirm = () => {
           const idpn = { idpn: item.id };
-          console.log(idpn);
+          // console.log(idpn);
           axios
             .post("/api/change-status-pn", idpn)
             .then((res) => {
               // console.log(res);
               message.success(res.data.message);
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize :10 }));
+              dispatch(
+                fetchPN({
+                  page: page ? page : 1,
+                  pageSize: pageSize ? pageSize : 10,
+                })
+              );
             })
             .catch((err) => {
               // console.log(err);
-              message.error(err.response.data.error.message)
+              message.error(err.response.data.error.message);
             });
         };
         return {
@@ -83,27 +98,30 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
                   description={"Khi thanh toán sẽ không thể hoàn tác?"}
                   onConfirm={confirm}
                   okText="Yes"
-                  
                   okType="danger"
                   showCancel={false}
                 >
-                  <Tag style={{cursor:"pointer"}} color="red">Chưa thanh toán</Tag>
+                  <Tag style={{ cursor: "pointer" }} color="red">
+                    Chưa thanh toán
+                  </Tag>
                 </Popconfirm>
               </>
             ) : (
               <>
-                <Tag style={{cursor:"pointer"}} color="green">Thanh toán</Tag>
+                <Tag style={{ cursor: "pointer" }} color="green">
+                  Thanh toán
+                </Tag>
               </>
             ),
-          tongTien: formatMoney(item.attributes.tongTien) ,
+          tongTien: formatMoney(item.attributes.tongTien),
           createdAt: item.attributes.createdAt.toString().slice(0, 10),
         };
       }))
     : null;
-      // console.log(pn.meta);
-     let paginate = pn.meta
-      paginate ? dispatch(setPageTotal(paginate.pagination.total)): null
-      
+  // console.log(pn.meta);
+  let paginate = pn.meta;
+  paginate ? dispatch(setPageTotal(paginate.pagination.total)) : null;
+
   const fetchCTPN = () => {
     axios
       .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
@@ -161,22 +179,27 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
         dataIndex: "operation",
         key: "operation",
         render: (_: any, record: any) => {
+          // console.log(record);
+          
           const handleChange = () => {
-            // console.log(record.idgetSP);
+            console.log(record);
             dispatch(openModal());
             dispatch(getInforModalCtPN(record));
-            dispatch(getSpId(record.idgetSP));
+            dispatch(getSpId(record.key ? record.key : record.idgetSP));
           };
           const confirm1 = () => {
             // console.log(record);
-            axios.delete(`/api/delCtPn?phieu_nhap=${idPn}&product=${record.key}`).then((res) => {
-              console.log(res.data);
-              res.status == 200 ? message.success(res.data.message) : null
-              fetchCTPN()
-            }).catch((err) => {
-              // console.log(err.response.data.error.message);
-              message.error(err.response.data.error.message)
-            })
+            axios
+              .delete(`/api/delCtPn?phieu_nhap=${idPn}&product=${record.key}`)
+              .then((res) => {
+                console.log(res.data);
+                res.status == 200 ? message.success(res.data.message) : null;
+                fetchCTPN();
+              })
+              .catch((err) => {
+                // console.log(err.response.data.error.message);
+                message.error(err.response.data.error.message);
+              });
           };
           return (
             <Space size="middle">
@@ -235,8 +258,13 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
           await axios
             .delete(`/api/deletePN?idpn=${record.key}`)
             .then(function (response) {
-              dispatch(fetchPN({ page: page ? page : 1, pageSize: pageSize? pageSize : 10 }));
-              dispatch(getIdPN(null))
+              dispatch(
+                fetchPN({
+                  page: page ? page : 1,
+                  pageSize: pageSize ? pageSize : 10,
+                })
+              );
+              dispatch(getIdPN(null));
               message.success("Xóa thành công");
               // console.log(response);
             })
@@ -244,6 +272,19 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
               message.error(error.response.data.error.message);
               // console.log(error.response.data.error.message);
             });
+        };
+        const handlePrinter = async () => {
+          console.log(record.key);
+          const checkPrinter = record.status.props.children.props.children;
+          if (checkPrinter == "Thanh toán") {
+            const res = await axios.get(`/api/getCtPn?id_pn=${record.key}`)
+            setInforPrinter({inforPn: record, inforCTPN: res.data})
+            setShow(true)
+
+          }
+          else {
+            message.warning("phiếu nhập chưa thanh toán!");
+          } 
         };
         return (
           <Space size="middle">
@@ -263,24 +304,25 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
                 icon={<CloseOutlined />}
               />
             </Popconfirm>
+            <Tooltip title={"In phiếu xuất"}>
               <Button
                 className="flex justify-center items-center"
                 shape="circle"
                 icon={<PrinterOutlined />}
+                onClick={handlePrinter}
               />
+            </Tooltip>
           </Space>
         );
       },
     },
   ];
-  const onchange = (page:any,pageSize:any) => {
-    dispatch(setPage(page))
+
+  const onchange = (page: any, pageSize: any) => {
+    dispatch(setPage(page));
     dispatch(setPageSide(pageSize));
     // console.log(page,pageSize);
-    
-  }
-  // console.log(pageSize);
-  
+  };
   return (
     <>
       {isOpen && (
@@ -288,6 +330,15 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
           <UpdateCTPN />
         </Modal1>
       )}
+      <Modal
+        title={"In phiếu Nhập"}
+        centered
+        open={show}
+        footer={false}
+        onCancel={() => setShow(false)}
+      >
+        <PrintPN data={inforPrinter} />
+      </Modal>
       <Table
         columns={columns}
         dataSource={result}
@@ -310,7 +361,13 @@ const ListPN = ({expandedRowKeys,setExpandedRowKeys}:any) => {
         loading={status === "loading" ? true : false}
       />
       <div className="flex justify-end m-3">
-      <Pagination defaultCurrent={1} onChange={onchange} total={totalPage} pageSize={pageSize? pageSize : 10} responsive/>
+        <Pagination
+          defaultCurrent={1}
+          onChange={onchange}
+          total={totalPage}
+          pageSize={pageSize ? pageSize : 10}
+          responsive
+        />
       </div>
     </>
   );

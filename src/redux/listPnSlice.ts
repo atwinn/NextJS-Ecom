@@ -11,12 +11,11 @@ interface PNState {
   error: string | null;
 }
 const initialState: PNState = {
-    pn: [],
-    historyPn: [],
+  pn: [],
+  historyPn: [],
   status: "idle",
   statusNSX: "idle",
   error: null,
-
 };
 
 export const fetchPN = createAsyncThunk(

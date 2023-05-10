@@ -59,12 +59,12 @@ const TrangChu = () => {
     fetchDataLoaiLaptop();
   }, []);
 
-  const result = data?.map(({ product }: any) => ({
-    id: product.id,
-    tenSP: product.tenSP,
-    gia: product.gia,
-    url: product.hinh.url,
-  }));
+  // const result = data?.map(({ product }: any) => ({
+  //   id: product.id,
+  //   tenSP: product.tenSP,
+  //   gia: product.gia,
+  //   url: product.hinh.url,
+  // }));
   const resultLoaiPC = dataLoaiPC?.map((item: any) => {
     // console.log(item.attributes.hinh.data?.attributes?.url);
     return {
@@ -82,21 +82,21 @@ const TrangChu = () => {
       hinh: item.attributes.hinh.data?.attributes?.url,
     };
   });
-  const rowRef = useRef<HTMLDivElement>(null);
-  const handleWheel = (event: any) => {
-    event.preventDefault();
-    const container = rowRef.current;
+  // const rowRef = useRef<HTMLDivElement>(null);
+  // const handleWheel = (event: any) => {
+  //   event.preventDefault();
+  //   const container = rowRef.current;
 
-    if (container) {
-      const containerScrollPosition = container.scrollLeft;
+  //   if (container) {
+  //     const containerScrollPosition = container.scrollLeft;
 
-      container.scrollTo({
-        top: 0,
-        left: containerScrollPosition + event.deltaY,
-        behavior: "smooth",
-      });
-    }
-  };
+  //     container.scrollTo({
+  //       top: 0,
+  //       left: containerScrollPosition + event.deltaY,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // };
   return (
     <div>
       <div className="mx-auto p-4">
