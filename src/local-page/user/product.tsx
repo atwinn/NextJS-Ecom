@@ -88,7 +88,7 @@ const UserProduct = () => {
                     <UserProdFilter  /> 
                     {/* getSP={setFilterData} */}
                 </Col>
-                <Col lg={15} className='py-2 bg-white rounded-md'>
+                <Col lg={15} className='py-2 min-w-[78%] bg-white rounded-md'>
                     {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>
                         Không tìm thấy sản phẩm...
                         <Button onClick={backRenderSP}>

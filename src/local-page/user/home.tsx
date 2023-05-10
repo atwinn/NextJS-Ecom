@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { EllipsisOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import ProdCard from "@/component/productCard";
+import CarouselBestSell from "@/component/carosel/carousel";
 const TrangChu = () => {
   const [data, setData] = useState([]);
   const [dataLoaiPC, setDataLoaiPC] = useState([]);
@@ -128,14 +129,15 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               Sản phẩm nổi bật ( •̀ ω •́ )✧
             </h1>
-            <Row
+            {/* <Row
               gutter={[16, 16]}
-              wrap={false}
-              style={{ overflowX: "auto" }}
-              onWheel={handleWheel}
-              ref={rowRef}
-            >
-              {result.map((item): any => {
+              // wrap={false}
+              // style={{ overflowX: "auto" }}
+              // onWheel={handleWheel}
+              // ref={rowRef}
+            > */}
+            <CarouselBestSell data={data}/>
+              {/* {result.map((item:any) => {
                 return (
                   <>
                     <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
@@ -152,9 +154,9 @@ const TrangChu = () => {
                     </Col>
                   </>
                 );
-              })}
+              })} */}
               {/* Các card sản phẩm khác tương tự */}
-            </Row>
+            {/* </Row> */}
           </Card>
           <Divider></Divider>
           <Card loading={loading}>

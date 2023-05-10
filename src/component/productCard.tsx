@@ -46,9 +46,10 @@ const ProdCard = (props: ProductData) => {
                 hoverable
                 cover={
                     <img
+                        height={198}
                         alt="example"
                         src={props.image}
-                        className='h-48 object-cover object-center'
+                        className='h-48 object-cover object-center '
                     />
                 }
                 actions={[
