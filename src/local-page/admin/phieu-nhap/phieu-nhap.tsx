@@ -10,6 +10,7 @@ import { setTab } from "@/redux/tableSlice";
 import { AppDispatch } from "@/redux/store";
 import { fetchPN } from "@/redux/listPnSlice";
 import { useSelector } from "react-redux";
+import SanPhamSapHet from "./out-of-tock";
 
 const { Title } = Typography;
 
@@ -37,6 +38,11 @@ const PhieuNhap: React.FC = () => {
       key: "3",
       label: `Lịch sử nhập hàng`,
       children: <HistoryPN />,
+    },
+    {
+      key: "4",
+      label: `Sản phầm gần hết`,
+      children: <SanPhamSapHet />,
     },
   ];
   const onChange = (key: string) => {
