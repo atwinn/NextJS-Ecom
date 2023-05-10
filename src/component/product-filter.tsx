@@ -10,7 +10,7 @@ import {
     Divider,
     Radio,
 } from "antd";
-import type { SliderMarks } from "antd/es/slider";
+// import type { SliderMarks } from "antd/es/slider";
 import formatMoney from "./formatMoney";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -53,7 +53,7 @@ const UserProdFilter = () => {
     const renderNSX = async () => {
         await axios
             .get(
-                "https://l3mshop.onrender.com/api/nsxes?pagination[page]=1&pagination[pageSize]=100"
+                "/api/nsxes?pagination[page]=1&pagination[pageSize]=100"
             )
             .then((res) => {
                 console.log(res);
@@ -118,14 +118,14 @@ const UserProdFilter = () => {
                     step={100000}
                     // marks={marks}
                     range={{draggableTrack:true}}
-                    defaultValue={[defaultRange ? defaultRange.min: 0, defaultRange ? defaultRange.max: 100]}
+                    defaultValue={[defaultRange ? defaultRange.min: 0, defaultRange ? defaultRange?.max: 1000000000]}
                     max={defaultRange ? defaultRange.max: 100}
                     min={defaultRange ? defaultRange.min : 0}
                     className="mr-7 ml-7"
                     onAfterChange={handleChange}
                 />
-                <span className="absolute top-[18px] left-[13px]">{formatMoney(range.min)}</span>
-                <span className="absolute top-[13px] right-[13px]">{formatMoney(range.max)}</span>
+                <span className="absolute top-[18px] left-[13px]">{range.min != 0 ? formatMoney(range.min) : formatMoney(defaultRange?.min)}</span>
+                <span className="absolute top-[13px] right-[13px]">{range.max != 0 ?formatMoney(range.max): formatMoney(defaultRange?.max )}</span>
                 </div>
                 <Divider>Loại sản phẩm</Divider>
                 <Checkbox.Group style={{ width: "100%" }}>
