@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Form, Input, Button, message, Modal } from 'antd';
+import { Form, Input, Button, message, Modal, notification } from 'antd';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Link from 'next/link';
 const CLIENT_ID = "ATaOhULP-j3qS5A6R-J8ZUwLgoRhLDM5dL05X7eYcannZ0SEQrOeGTPouc71Wt5fWVJk45d7FrKmR2oJ"
 const { TextArea } = Input;
 
@@ -21,7 +22,13 @@ const Payment = ({ userId, cart, tongTien }: any) => {
         }
         try {
             await axios.post("/api/order", data)
-            message.success("Đặt hàng thành công")
+            notification.success({
+                message: 'Thành công',
+                description:
+                    'Đặt hàng thành công vui lòng kiểm tra đơn hàng trong trang cá nhân',
+                placement: 'topRight',
+                btn: <Button type='primary' onClick={() => router.push("/userinformation")}>Đi đến trang cá nhân</Button>
+            });
             router.push("/")
         } catch (error: any) {
             if (typeof error.response !== 'undefined')
@@ -49,14 +56,19 @@ const Payment = ({ userId, cart, tongTien }: any) => {
         }
         try {
             await axios.post("/api/order", order_data)
-            message.success("Đặt hàng thành công")
+            notification.success({
+                message: 'Thành công',
+                description:
+                    'Đặt hàng và thanh toán Paypal thành công vui lòng kiểm tra đơn hàng trong trang cá nhân',
+                placement: 'topRight',
+                btn: <Button type='primary' onClick={() => router.push("/userinformation")}>Đi đến trang cá nhân</Button>
+            });
             router.push("/")
         } catch (error: any) {
             if (typeof error.response !== 'undefined')
                 message.error(error.response.data.error.message);
         }
     };
-
     const createOrder = (data: any, actions: any) => {
         return actions.order.create({
             purchase_units: [

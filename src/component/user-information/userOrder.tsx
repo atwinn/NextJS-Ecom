@@ -10,7 +10,6 @@ const { Title, Text } = Typography;
 
 const UserOrder = ({ data, fetchData }: any) => {
     const [loading, setLoading] = useState<boolean>(false)
-    console.log(data);
 
     const cancelOrder = async () => {
         const data1 = {
