@@ -72,8 +72,17 @@ const App: React.FC = () => {
     }
   }
 
-  const loginGoogle = () => {
-    push("https://l3mshop.onrender.com/api/connect/google")
+  const loginPLatForm = (key: string) => {
+    switch (key) {
+      case "google":
+        push(`https://l3mshop.onrender.com/api/connect/${key}`)
+        break;
+      case "facebook":
+        push(`https://l3mshop.onrender.com/api/connect/${key}`)
+        break;
+      default:
+        break;
+    }
   }
 
   return (
@@ -163,9 +172,9 @@ const App: React.FC = () => {
                 <GoogleOutlined
                   style={{ ...iconStyles, color: "#000" }}
                   className="hover:text-2xl"
-                  onClick={loginGoogle} />
+                  onClick={() => loginPLatForm("google")} />
               </div>
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -180,7 +189,7 @@ const App: React.FC = () => {
                 <GithubOutlined
                   style={{ ...iconStyles, color: "#000" }}
                   className="hover:text-2xl" />
-              </div>
+              </div> */}
               <div
                 style={{
                   display: "flex",
@@ -195,7 +204,8 @@ const App: React.FC = () => {
               >
                 <FacebookOutlined
                   style={{ ...iconStyles, color: "#333333" }}
-                  className="hover:text-2xl" />
+                  className="hover:text-2xl"
+                  onClick={() => loginPLatForm("facebook")} />
               </div>
             </Space>
           </div>
