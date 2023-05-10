@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios';
 import { setCookie } from '../../../cookies';
 import { useRouter } from 'next/router';
-import { Spin } from 'antd'
+import { Spin, message } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons';
 
 const Redirect = () => {
@@ -21,8 +21,16 @@ const Redirect = () => {
                     const res2 = await axios.get(`/api/users/${userId}?populate=*`)
                     setCookie("role", res2.data.role.id)
                     router.push("/")
+                } else {
+                    message.error("Đăng nhập thất bại")
+                    router.push("/auth/login")
                 }
-            } catch (error) {
+            } catch (error: any) {
+                if (typeof error.response !== 'undefined') {
+                    message.error(error.response.data.error.message)
+                    message.error("Đăng nhập thất bại")
+                    router.push("/auth/login")
+                }
             }
         };
 
