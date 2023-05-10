@@ -25,19 +25,19 @@ export default function CarouselBestSell({data}:any) {
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
+        autoplay={true}      
         pagination={{
           clickable: true,
         }}
         modules={[Pagination]}
         className="mySwiper"
-        autoplay      
         breakpoints={{
           640: {
             slidesPerView: 2,
             spaceBetween: 20,
           },
           768: {
-            slidesPerView: 4,
+            slidesPerView: 3,
             spaceBetween: 10,
           },
           990: {
