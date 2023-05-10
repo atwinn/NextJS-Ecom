@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import UserCard from '@/component/user-information/userCard'
 import UserOrder from '@/component/user-information/userOrder'
 import axios from 'axios'
-import { message, Row, Col } from 'antd'
+import { message, Row, Col, Empty } from 'antd'
 import PrivatePage from '@/redux/constant/privatepage'
 
 const UserPage = () => {
@@ -58,9 +58,10 @@ const UserPage = () => {
                     </Col>
                     <Col xs={24} md={14} lg={16}>
                         <div className='space-y-2'>
-                            {donHang && donHang.map((item: any) => (
+                            {donHang && donHang?.length !== 0 ? donHang.map((item: any) => (
                                 <UserOrder data={item} fetchData={fetchDonHang} />
-                            ))}
+                            ))
+                                : <Empty description="Chưa có gì ở đây cả" />}
                         </div>
                     </Col>
                 </Row>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Typography, Row, Col, Button, InputNumber, message } from 'antd';
+import { Card, Typography, Row, Col, Button, InputNumber, message, notification } from 'antd';
 import { useSelector } from 'react-redux';
 import { fetchDetail, selectDetail, selectDetailStatus } from '@/redux/detailProdSlice';
 import formatMoney from '../formatMoney';
@@ -50,16 +50,24 @@ const DetailProductCard = () => {
             product: id,
             user_id: userId,
         }
-        try {
-            await axios.post("/api/addtocart", data)
-            message.success('Thêm vào giỏ hàng thành công')
-            dispatch(fetchCart(userId))
-            setQuantity(1)
-        } catch (error: any) {
-            if (typeof error.response !== 'undefined') {
-                message.error(error.response.data.error.message)
+        if (userId) {
+            try {
+                await axios.post("/api/addtocart", data)
+                message.success('Thêm vào giỏ hàng thành công')
+                dispatch(fetchCart(userId))
+                setQuantity(1)
+            } catch (error: any) {
+                if (typeof error.response !== 'undefined') {
+                    message.error(error.response.data.error.message)
+                }
             }
-        }
+        } else notification.error({
+            message: 'Thất bại',
+            description:
+                'Vui lòng đăng nhập để mua hàng',
+            placement: 'topRight',
+            btn: <Button type='primary' onClick={() => router.push("/auth/login")}>Đăng nhập ngay</Button>
+        });
     }
 
     return (
