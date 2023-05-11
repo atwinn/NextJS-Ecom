@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setfilterData } from "@/redux/productSlice";
 const { Title } = Typography;
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
+import { FilterOutlined, LaptopOutlined } from '@ant-design/icons'
 interface range {
     min: number;
     max: number;
@@ -38,7 +39,7 @@ const UserProdFilter = () => {
         setLoad(true)
         await axios
             .get(
-                `/api/products/sortSP?minP=${range.min}&maxP=${range.max}&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",") }&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",") }`
+                `/api/products/sortSP?minP=${range.min}&maxP=${range.max}&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",")}&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",")}`
             )
             .then((res) => {
                 console.log(res);
@@ -109,8 +110,8 @@ const UserProdFilter = () => {
     };
     return (
         <div className="bg-white p-4 rounded-md">
-            <Space direction="vertical" size="large" style={{ display: "flex" }}>
-                <Title level={2}>Bộ lọc sản phẩm</Title>
+            <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+                <Title level={3}><FilterOutlined className="ml-2 mr-3" />Bộ lọc sản phẩm</Title>
                 <div className="relative">
                     <Slider
                         step={100000}
@@ -121,8 +122,8 @@ const UserProdFilter = () => {
                         className="mr-7 ml-7"
                         onAfterChange={handleChange}
                     />
-                    <span className="absolute top-[18px] left-[13px]">{range.min != 0 ? formatMoney(range.min) : formatMoney(defaultRange?.min)}</span>
-                    <span className="absolute top-[13px] right-[13px]">{range.max != 0 ? formatMoney(range.max) : formatMoney(defaultRange?.max)}</span>
+                    <span className="absolute top-[18px] left-[13px] text-black mt-2 font-semibold">{range.min != 0 ? formatMoney(range.min) : formatMoney(defaultRange?.min)}</span>
+                    <span className="absolute top-[13px] right-[13px] text-black mt-2 font-semibold">{range.max != 0 ? formatMoney(range.max) : formatMoney(defaultRange?.max)}</span>
                 </div>
                 <Divider>Loại sản phẩm</Divider>
                 <Checkbox.Group style={{ width: "100%" }} onChange={onChangeLoai}>
@@ -160,9 +161,9 @@ const UserProdFilter = () => {
                             : null}
                     </Row>
                 </Checkbox.Group>
-                <div className="flex">
-                    <Button className="mr-3 bg-green-600 text-white" onClick={filter} loading={load}>Lọc</Button>
-                    {/* <Button className="bg-red-600 text-white" onClick={handleReset}>Reset Lọc</Button> */}
+                <Divider></Divider>
+                <div className="flex justify-end">
+                    <Button className="-mt-5" onClick={filter} loading={load} danger><LaptopOutlined />Lọc sản phẩm</Button>
                 </div>
             </Space>
         </div>
