@@ -12,12 +12,15 @@ export default function Dashboard() {
   const [doanhThu, setDoanhThu] = React.useState(0);
   const [donHuy, setdonHuy] = React.useState(0);
   const [mess, setMess] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   // const [dataPercent, setDataPercent] = React.useState([]);
   React.useEffect(() => {
+    setLoading(true)
      axios
       .get("/api/thongKeLoai")
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
+        setLoading(false)
         setDataPercent(res.data.loai);
         setChiTieu(res.data.chiTieu)
         setDoanhThu(res.data.doanhThu)
@@ -31,13 +34,13 @@ export default function Dashboard() {
   return (
     <>
       <Divider1 name={pageRoutes.home.title} />
-      <Statistic1 chitieu={chitieu} doanhThu={doanhThu} donHuy={donHuy} mess={mess}/>
+      <Statistic1 loading={loading} chitieu={chitieu} doanhThu={doanhThu} donHuy={donHuy} mess={mess}/>
       <Row gutter={16}>
         <Col md={8} xs={24}>
-          <DemoPie data={dataPercent}/>
+          <DemoPie data={dataPercent} loading={loading}/>
         </Col>
         <Col md={16} xs={24}>
-          <DemoColumn />
+          <DemoColumn  />
         </Col>
       </Row>
     </>

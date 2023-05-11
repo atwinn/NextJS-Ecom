@@ -9,11 +9,15 @@ import axios from "axios";
 
 const DemoColumn = () => {
   const [dataCol, setDataCol] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true)
     axios
       .get("/api/thongKe12ThangGanNhat")
       .then((res) => {
+        
         setDataCol(res.data.result)
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +60,7 @@ const DemoColumn = () => {
   };
 
   return (
-    <Card bordered={false}>
+    <Card loading={loading} bordered={false}>
       <Column {...config} />
     </Card>
   );

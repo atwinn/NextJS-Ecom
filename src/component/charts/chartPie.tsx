@@ -37,7 +37,7 @@ const DemoPie = (props:any) => {
     ],
   };
   return (
-    <Card bordered={false}>
+    <Card loading={props.loading} bordered={false}>
       <Pie {...config} />
     </Card>
   );
