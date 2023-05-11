@@ -7,7 +7,7 @@ export const API_NCC =
 export const API_NSX =
   "https://l3mshop.onrender.com/api/nsxes?sort=id:desc";
 export const API_PRODUCT =
-  "https://l3mshop.onrender.com/api/products?populate=*&pagination[pageSize]=10000";
+  "https://l3mshop.onrender.com/api/products?populate=*&pagination[pageSize]=10000&sort=id:desc";
 export const API_PN =
   "https://l3mshop.onrender.com/api/phieu-nhaps?sort=id:desc";
 export const API_CATEGORY =

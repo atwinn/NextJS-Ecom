@@ -44,7 +44,7 @@ const UserProduct = () => {
                 setPaginate(res.data.meta.pagination)
                 setLoading(false)
             } else {
-                const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=8&populate=*")
+                const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=8&sort=id:asc&populate=*")
                 setProdData(res.data.data)
                 setShow(false)
                 setPaginate(res.data.meta.pagination)
@@ -71,7 +71,7 @@ const UserProduct = () => {
     const pageChange: PaginationProps['onChange'] = async (page) => {
         setLoading(true)
         try {
-            const res = await axios.get(`/api/products?pagination[page]=${page}&pagination[pageSize]=8&populate=*`)
+            const res = await axios.get(`/api/products?pagination[page]=${page}&pagination[pageSize]=8&sort=id:asc&populate=*`)
             setProdData(res.data.data)
             setPaginate(res.data.meta.pagination)
             setLoading(false)
