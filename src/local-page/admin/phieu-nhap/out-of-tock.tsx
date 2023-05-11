@@ -5,9 +5,12 @@ import formatMoney from "@/component/formatMoney";
 
 export default function SanPhamSapHet() {
     const [data,setData] = React.useState<any>()
+    const [loading,setLoading] = React.useState<boolean>(false)
     React.useEffect(() => {
+        setLoading(true)
         axios.get("/api/products?filters[soLuongSP][$lte]=10").then((res) => {
-            console.log(res);
+            // console.log(res);
+            setLoading(false)
             setData(res.data)
         }).catch((err) => {
             console.log(err);
@@ -42,7 +45,7 @@ export default function SanPhamSapHet() {
   return (
     <>
       <Card>
-        <Table dataSource={resutl} columns={columns} />
+        <Table dataSource={resutl} columns={columns} loading={loading} />
       </Card>
     </>
   );
