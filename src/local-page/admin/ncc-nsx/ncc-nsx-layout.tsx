@@ -36,6 +36,8 @@ export default function NCCNSXLayout(props: IAppProps) {
             console.log(res);
           })
           .catch((err) => {
+            setLoading(false);
+            message.error("thêm thất bại");
             console.log(err);
           })
       : axios
@@ -49,6 +51,8 @@ export default function NCCNSXLayout(props: IAppProps) {
         console.log(res);
       })
       .catch((err) => {
+        setLoading(false);
+          message.error("thêm thất bại");
         console.log(err);
       })
 
