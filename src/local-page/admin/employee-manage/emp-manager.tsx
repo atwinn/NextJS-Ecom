@@ -79,7 +79,7 @@ const App: React.FC = () => {
         const dispatch = useDispatch<AppDispatch>();
         const confirm = () => {
           axios
-            .delete(`https://l3mshop.onrender.com/api/nhan-viens/${id}`)
+            .delete(`/api/delete-nv?id=${id}`)
             .then(function (response) {
               dispatch(fetchEmployees(page));
               message.success("Xóa thành công");

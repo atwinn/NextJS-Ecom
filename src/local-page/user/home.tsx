@@ -29,7 +29,7 @@ const TrangChu = () => {
       const res = await axios.get(
         "/api/products?filters[maLoai][id][$eq]=2&populate=*"
       );
-      console.log(res.data.data);
+      // console.log(res.data.data);
       if (res.status === 200) {
         // setLoading(false)
         setDataLoaiLap(res.data.data);

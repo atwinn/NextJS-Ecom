@@ -69,21 +69,24 @@ const ViewPN = (props: IAppProps) => {
   const onSelect = (option: any) => {
     const NccId = mangTenNCC.find((item: any) => item.value === option);
     dispatch(getNccId(NccId.id));
-    // console.log('onSelect', NccId.id);
   };
+  const localStorageValue = window.localStorage.getItem("id");
   const addPN = () => {
-    const data = { ncc: idNCC, user_id: 72 };
+    const data = { ncc: idNCC, user_id: localStorageValue };
+    // console.log(data);
+    
     axios
       .post("/api/addPN", data)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(getIdPN(res.data.id));
         message.success("thêm phiếu nhập thành công");
         dispatch(deleteRow());
+        res.status == 400 ? message.error("Hãy nhập nhà cung cấp"): null
       })
       .catch((err) => {
         console.log(err);
-        message.error("Hãy nhập nhà cung cấp");
+        message.error("Lỗi server")
       });
   };
   //clear form
@@ -113,7 +116,7 @@ const ViewPN = (props: IAppProps) => {
               />
               <Tooltip title="Thêm nhà cung cấp">
                 <Button className="ml-4">
-                  <Link href={pageRoutes.ncc_nsx.route}>Thêm</Link>
+                  <Link href={pageRoutes.ncc_nsx.route}>Thêm nhà cung cấp</Link>
                 </Button>
               </Tooltip>
             </div>
