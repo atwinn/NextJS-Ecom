@@ -116,7 +116,7 @@ const ViewPN = (props: IAppProps) => {
               />
               <Tooltip title="Thêm nhà cung cấp">
                 <Button className="ml-4">
-                  <Link href={pageRoutes.ncc_nsx.route}>Thêm</Link>
+                  <Link href={pageRoutes.ncc_nsx.route}>Thêm nhà cung cấp</Link>
                 </Button>
               </Tooltip>
             </div>
