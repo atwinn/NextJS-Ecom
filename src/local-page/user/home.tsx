@@ -1,8 +1,6 @@
-import formatMoney from "@/component/formatMoney";
-import { Carousel, Card, Row, Col, Button, Divider } from "antd";
+import { Carousel, Card, Row, Col, Divider } from "antd";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { EllipsisOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import ProdCard from "@/component/productCard";
 import CarouselBestSell from "@/component/carosel/carousel";
 const TrangChu = () => {
@@ -59,12 +57,6 @@ const TrangChu = () => {
     fetchDataLoaiLaptop();
   }, []);
 
-  // const result = data?.map(({ product }: any) => ({
-  //   id: product.id,
-  //   tenSP: product.tenSP,
-  //   gia: product.gia,
-  //   url: product.hinh.url,
-  // }));
   const resultLoaiPC = dataLoaiPC?.map((item: any) => {
     // console.log(item.attributes.hinh.data?.attributes?.url);
     return {
@@ -82,25 +74,11 @@ const TrangChu = () => {
       hinh: item.attributes.hinh.data?.attributes?.url,
     };
   });
-  // const rowRef = useRef<HTMLDivElement>(null);
-  // const handleWheel = (event: any) => {
-  //   event.preventDefault();
-  //   const container = rowRef.current;
 
-  //   if (container) {
-  //     const containerScrollPosition = container.scrollLeft;
-
-  //     container.scrollTo({
-  //       top: 0,
-  //       left: containerScrollPosition + event.deltaY,
-  //       behavior: "smooth",
-  //     });
-  //   }
-  // };
   return (
     <div>
       <div className="mx-auto p-4">
-        <Carousel autoplay className="mb-4">
+        <Carousel lazyLoad="progressive" autoplay className="mb-4">
           <div>
             <img
               src="https://xgear.net/wp-content/uploads/2023/05/Gia-re-zdach.jpg"
@@ -113,6 +91,7 @@ const TrangChu = () => {
               src="https://xgear.net/wp-content/uploads/2023/04/Nang-cap-la-phai-gap.jpg"
               alt="Slide 2"
               className="w-full h-96 object-cover rounded-lg"
+              
             />
           </div>
           <div>
@@ -129,34 +108,9 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               Sản phẩm nổi bật ( •̀ ω •́ )✧
             </h1>
-            {/* <Row
-              gutter={[16, 16]}
-              // wrap={false}
-              // style={{ overflowX: "auto" }}
-              // onWheel={handleWheel}
-              // ref={rowRef}
-            > */}
+            
             <CarouselBestSell data={data}/>
-              {/* {result.map((item:any) => {
-                return (
-                  <>
-                    <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
-                      <ProdCard
-                        name={item.tenSP}
-                        price={item.gia}
-                        image={
-                          item.url
-                            ? item.url
-                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                        }
-                        id={item.id}
-                      />
-                    </Col>
-                  </>
-                );
-              })} */}
-              {/* Các card sản phẩm khác tương tự */}
-            {/* </Row> */}
+              
           </Card>
           <Divider></Divider>
           <Card loading={loading}>
