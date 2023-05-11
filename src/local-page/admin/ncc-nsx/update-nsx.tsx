@@ -41,7 +41,7 @@ const dispatch = useDispatch<AppDispatch>();
           name={"tenNSX"}
           rules={[
             { required: true, message: "Vui lòng nhập tên NCC!" },
-            { min: 3, message: "Tên nhân viên phải có ít nhất 3 ký tự!" },
+            { min: 3, message: "tên NCC phải có ít nhất 3 ký tự!" },
           ]}
         >
           <Input />

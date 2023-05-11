@@ -117,4 +117,9 @@ export const pageRoutes: { [key: string]: title } = {
         title: 'Quản lý loại sản phẩm',
         key: "9",
     },
+    Customer: {
+        route: "/page-admin/customer-manage",
+        title: 'Quản lý khách hàng',
+        key: "10",
+    },
 };
