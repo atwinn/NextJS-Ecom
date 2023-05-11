@@ -2,18 +2,13 @@ import Divider1 from "@/component/devider";
 import * as React from "react";
 import { Space, Table, Tag, Tooltip, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import ButtonToolTip from "@/component/button";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import Modal1 from "@/component/modal";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
 import { useDispatch } from "react-redux";
-import { currModal, openModal } from "@/redux/modalSlice";
 import { AppDispatch } from "@/redux/store";
 import { fetchAccountEmployees, selectAccEmployeesStatus } from "@/redux/accountSlice";
 import axios from "axios";
-import accountService from "../../../services/account-service";
-// import axios from "@/apis/axios";
 interface DataType {
   username: string;
   email: string;
@@ -21,18 +16,12 @@ interface DataType {
 }
 
 export default function AccountManager() {
-  // const { isOpen } = useSelector((store: any) => store.modal);
   const { accEmployees,success } = useSelector((store: any) => store.accEmployees);
   const status = useSelector(selectAccEmployeesStatus);
-
   const dispatch = useDispatch<AppDispatch>();
-  // const addModalAcc = () => {
-  //   dispatch(openModal());
-  // };
   React.useEffect(() => {
     dispatch(fetchAccountEmployees());
   }, [dispatch]);
-  // console.log(accEmployees[0].blocked);
    
  
   const columns: ColumnsType<DataType> = [
