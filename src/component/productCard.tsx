@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { fetchCart } from '@/redux/cartSlice';
 import { useRouter } from 'next/router';
+import { getCookie } from '../../cookies';
 
 const { Meta } = Card;
 interface ProductData {
@@ -20,6 +21,7 @@ interface ProductData {
 const ProdCard = (props: ProductData) => {
     const prodId = props.id
     const userId = typeof window != 'undefined' ? localStorage.getItem("id") : null
+    const role = typeof window != 'undefined' ? getCookie("role") : null
     const dispatch = useDispatch<AppDispatch>()
     const router = useRouter()
 
@@ -29,7 +31,7 @@ const ProdCard = (props: ProductData) => {
             product: prodId,
             user_id: userId,
         }
-        if (userId) {
+        if (role === "5") {
             try {
                 await axios.post("/api/addtocart", data)
                 message.success('Thêm vào giỏ hàng thành công')
@@ -39,13 +41,22 @@ const ProdCard = (props: ProductData) => {
                     message.error(error.response.data.error.message)
                 }
             }
-        } else notification.error({
-            message: 'Thất bại',
-            description:
-                'Vui lòng đăng nhập để mua hàng',
-            placement: 'topRight',
-            btn: <Button type='primary' onClick={() => router.push("/auth/login")}>Đăng nhập ngay</Button>
-        });
+        } else if (!role)
+            notification.error({
+                message: 'Thất bại',
+                description:
+                    'Vui lòng đăng nhập để mua hàng',
+                placement: 'topRight',
+                btn: <Button type='primary' onClick={() => router.push("/auth/login")}>Đăng nhập ngay</Button>
+            });
+        else {
+            notification.error({
+                message: 'Thất bại',
+                description:
+                    'Không có quyền mua hàng',
+                placement: 'topRight',
+            });
+        }
     }
 
     return (
