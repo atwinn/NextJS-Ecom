@@ -42,7 +42,7 @@ const ProdTable: React.FC = () => {
         } else if (searchParams.get("search") === "") {
             dispatch(fetchProduct())
             setShow(false)
-        }
+        } else dispatch(fetchProduct())
     }, [searchParams])
 
     const columns: ColumnsType<DataType> = [
