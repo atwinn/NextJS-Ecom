@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Button, Card, Col, Input, Row, Pagination } from "antd";
@@ -47,6 +47,8 @@ const columns: ColumnsType<DataType> = [
 const HistoryPN: React.FC = () => {
   const dispatch = useDispatch();
   const { historyPn } = useSelector((store: any) => store.pn);
+  const tableRef = useRef<any>(null);
+
   const { page, totalPage, pageSize } = useSelector(
     (store: any) => store.pagination
   );
@@ -115,6 +117,18 @@ const HistoryPN: React.FC = () => {
     dispatch(setPageSide(pageSize));
     dispatch(setPage(page));
   };
+  const handleExportToExcel = () => {
+    const worksheet = tableRef.current
+    const html = worksheet?.outerHTML;
+    const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `LichSuNH_${Date.now()}.xls`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
   return (
     <>
       <Card>
@@ -123,9 +137,9 @@ const HistoryPN: React.FC = () => {
           {/* <Col md={6}>
             <Button className="mx-3">Xem</Button>
           </Col> */}
-          {/* <Col md={11} className="flex justify-end">
-            <Button icon={<ExportOutlined />}>Xuất file excel</Button>
-          </Col> */}
+          <Col md={4} className="flex justify-end">
+            <Button icon={<ExportOutlined />} onClick={handleExportToExcel}>Xuất file excel</Button>
+          </Col>
         </Row>
         <Divider1 name="Lịch sử" />
         <Table
@@ -134,6 +148,7 @@ const HistoryPN: React.FC = () => {
           style={{ maxWidth: "100vw" }}
           scroll={{ x: true }}
           pagination={false}
+          ref={tableRef}
         />
         {date ?<> 
           <div className="flex justify-end m-3">
