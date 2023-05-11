@@ -85,7 +85,7 @@ const UserProduct = () => {
     // console.log(filterData);
     return (
         <div className='p-5'>
-            <Drawer placement="right" width={300} closable={false} onClose={() => setShowDrawer(false)} open={showDrawer}>
+            <Drawer placement="right" width={370} onClose={() => setShowDrawer(false)} open={showDrawer}>
                 {loading ? <Card><Skeleton active /> </Card> :
                     <UserProdFilter />
                 }

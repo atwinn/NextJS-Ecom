@@ -117,15 +117,16 @@ const UserProdFilter = () => {
                         ]}
                         max={defaultRange ? defaultRange.max : 100}
                         min={defaultRange ? defaultRange.min : 0}
+                        tooltip={{ open: false }}
                         className="mr-7 ml-7"
                         onAfterChange={handleChange}
                     />
-                    <span className="absolute top-[18px] left-[13px] text-black font-semibold mt-2">
+                    <span className="absolute top-[17px] left-[13px] text-black font-semibold mt-2">
                         {range.min != 0
                             ? formatMoney(range.min)
                             : formatMoney(defaultRange?.min)}
                     </span>
-                    <span className="absolute top-[13px] right-[13px] text-black font-semibold mt-2">
+                    <span className="absolute top-[17px] right-[13px] text-black font-semibold mt-2">
                         {range.max != 0
                             ? formatMoney(range.max)
                             : formatMoney(defaultRange?.max)}
@@ -172,7 +173,7 @@ const UserProdFilter = () => {
                     </Row>
                 </Checkbox.Group>
                 <Divider></Divider>
-                <div className="flex justify-end">
+                <div className="flex lg:justify-end">
                     <Button
                         className="-mt-5"
                         onClick={filter}
