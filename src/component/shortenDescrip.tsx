@@ -10,6 +10,7 @@ const ShortenDes = ({ content }: { content: string }) => {
 
     return (
         <Card className='mt-3'>
+            <h3 className='text-black'>Mô tả sản phẩm</h3>
             <div dangerouslySetInnerHTML={{ __html: content }} style={{ maxHeight: showAll ? 'none' : '300px', overflow: 'hidden' }} />
             {content?.length > 100 && (
                 <Button onClick={toggleShowAll} className='mt-3'>

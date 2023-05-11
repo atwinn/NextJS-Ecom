@@ -84,7 +84,7 @@ const DetailProductCard = () => {
     return (
         <div className='flex justify-center p-5'>
             {loading
-                ? "Loading..."
+                ? <div className='text-black'>Loading...</div>
                 : <div style={{ width: 1100 }}>
                     <Head>
                         <title>{prodDetail.data.attributes.tenSP}</title>

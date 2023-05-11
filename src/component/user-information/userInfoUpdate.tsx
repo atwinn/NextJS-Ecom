@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const { TextArea } = Input;
 const { Option } = Select;
-dayjs.extend(customParseFormat);
+// dayjs.extend(customParseFormat);
 
 const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
     const dateFormat = 'DD/MM/YYYY';
@@ -39,6 +39,7 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
+    const defaultDate = dayjs('1999-02-01');
 
     return (
         <div>
@@ -53,7 +54,7 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
                     sdt: userUpdateData.attributes.sdt,
                     diachi: userUpdateData.attributes.diaChi,
                     gioiTinh: userUpdateData.attributes.gioiTinh ? true : false,
-                    ngaySinh: dayjs(userUpdateData.attributes.ngaySinh) ? dayjs(userUpdateData.attributes.ngaySinh) : null
+                    ngaySinh: userUpdateData.attributes.ngaySinh ? dayjs(userUpdateData.attributes.ngaySinh) : null
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -102,10 +103,7 @@ const UserUpdateForm = ({ userUpdateData, close, fetch, form }: any) => {
                 </Form.Item>
 
                 <Form.Item label="Ngày Sinh" name="ngaySinh" >
-                    <DatePicker placeholder='Chọn ngày' format={dateFormat}
-                        // value={dayjs(userUpdateData.attributes.ngaySinh)}
-                        value={userUpdateData.attributes.ngaySinh ? dayjs(userUpdateData.attributes.ngaySinh) : null}
-                    />
+                    <DatePicker placeholder='Chọn ngày' format={dateFormat} />
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 5, span: 16 }}>

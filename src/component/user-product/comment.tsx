@@ -52,6 +52,7 @@ const Comment = ({ comment, id, userId }: any) => {
 
     return (
         <div className='bg-white rounded-md p-5 mt-3'>
+            <h3 className='text-black'>Bình luận</h3>
             <List
                 itemLayout="horizontal"
                 dataSource={comment}
@@ -65,7 +66,7 @@ const Comment = ({ comment, id, userId }: any) => {
                 )}
             />
             <div className='flex justify-between gap-2'>
-                <Input placeholder='Thêm bình luận' value={newComment} onChange={(e) => setNewcomment(e.target.value)} onKeyDown={handleKeyDown} />
+                <Input placeholder='Thêm bình luận' value={newComment} onChange={(e) => setNewcomment(e.target.value)} onKeyDown={handleKeyDown} allowClear />
                 <Button onClick={sendComment}><SendOutlined className='-rotate-45' /></Button>
             </div>
         </div>
