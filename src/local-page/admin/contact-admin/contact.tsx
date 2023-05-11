@@ -136,14 +136,14 @@ export default function ContactAdmin() {
     <>
       <Row gutter={16}>
         <Col sm={6} xs={24}>
-          <Divider>Phản hồi</Divider>
-          <p>
+          <Divider >Phản hồi</Divider>
+          <p className="text-black">
             Đang phản hồi khách hàng: <b>{ten}</b>
           </p>
-          <p>
+          <p className="text-black">
             Email khách hàng: <b>{email}</b>
           </p>
-          <p>
+          <p className="text-black">
             Lời nhắn của khách hàng: <b>{messKH}</b>
           </p>
           <Form name="phanHoi" onFinish={onFinish}>

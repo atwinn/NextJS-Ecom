@@ -70,6 +70,11 @@ const items: MenuItem[] = [
     "8",
     <MailOutlined />
   ),
+  getItem(
+    <Link href={pageRoutes.Customer.route}>Quản lý khách hàng</Link>,
+    "10",
+    <UserSwitchOutlined />
+  ),
 ];
 
 export default function Menu1(props: IMenuProps) {
@@ -88,7 +93,7 @@ export default function Menu1(props: IMenuProps) {
 
   const filteredItems = items.filter(item => {
     if (roleId === "3") {
-      return ["1", "3", "4", "8", "9"].includes(item?.key?.toString() ?? '');
+      return ["1", "3", "4", "8", "9","10"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "4") {
       return ["1", "3", "4", "6", "7", "9"].includes(item?.key?.toString() ?? '');
     } else if (roleId === "6") {
