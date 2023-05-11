@@ -41,14 +41,14 @@ interface DataType {
 }
 interface InforPN {
   inforPn: [];
-  inforCTPN:{}
+  inforCTPN: {};
 }
 const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
   const status = useSelector(selectPnStatus);
   const { isOpen } = useSelector((store: any) => store.modal);
   const { idPn } = useSelector((store: any) => store.table);
   const [show, setShow] = useState<boolean>(false);
-  const [inforPrinter,setInforPrinter] = useState<InforPN>()
+  const [inforPrinter, setInforPrinter] = useState<InforPN>();
   const { page, totalPage, pageSize } = useSelector(
     (store: any) => store.pagination
   );
@@ -180,7 +180,7 @@ const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
         key: "operation",
         render: (_: any, record: any) => {
           // console.log(record);
-          
+
           const handleChange = () => {
             console.log(record);
             dispatch(openModal());
@@ -244,10 +244,18 @@ const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
       />
     );
   };
-
+ 
   const columns: TableColumnsType<DataType> = [
     { title: "Trạng thái", dataIndex: "status", key: "status" },
-    { title: "Tổng tiền", dataIndex: "tongTien", key: "tongTien" },
+    {
+      
+      title: "Tổng tiền",
+      dataIndex: "tongTien",
+      key: "tongTien",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => parseInt(a.tongTien) - parseInt(b.tongTien),
+      showSorterTooltip: false
+    },
     { title: "Ngày Tạo", dataIndex: "createdAt", key: "createdAt" },
     {
       title: "Thao tác",
@@ -277,14 +285,12 @@ const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
           console.log(record.key);
           const checkPrinter = record.status.props.children.props.children;
           if (checkPrinter == "Thanh toán") {
-            const res = await axios.get(`/api/getCtPn?id_pn=${record.key}`)
-            setInforPrinter({inforPn: record, inforCTPN: res.data})
-            setShow(true)
-
-          }
-          else {
+            const res = await axios.get(`/api/getCtPn?id_pn=${record.key}`);
+            setInforPrinter({ inforPn: record, inforCTPN: res.data });
+            setShow(true);
+          } else {
             message.warning("phiếu nhập chưa thanh toán!");
-          } 
+          }
         };
         return (
           <Space size="middle">
