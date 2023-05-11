@@ -2,7 +2,7 @@ import Divider1 from "@/component/devider";
 import * as React from "react";
 import { Space, Table, Tag, Tooltip, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
 import { useDispatch } from "react-redux";
@@ -13,10 +13,11 @@ interface DataType {
   username: string;
   email: string;
   blocked: boolean;
+  
 }
 
 export default function AccountManager() {
-  const { accEmployees,success } = useSelector((store: any) => store.accEmployees);
+  const { accEmployees } = useSelector((store: any) => store.accEmployees);
   const status = useSelector(selectAccEmployeesStatus);
   const dispatch = useDispatch<AppDispatch>();
   React.useEffect(() => {
@@ -42,6 +43,17 @@ export default function AccountManager() {
       dataIndex: "blocked",
       key: "blocked",
       responsive: ["md"],
+      filters: [
+        {
+          text: 'Khóa',
+          value: true,
+        },
+        {
+          text: 'Không khóa',
+          value: false,
+        },
+        
+      ],
       render: (_, record:any) => {
         const statusBlocked = record?.blocked;
         const hanldeBlocker = async () => {
@@ -49,10 +61,10 @@ export default function AccountManager() {
           await axios.put(`/api/users/${record.id}?sort=id:desc`, {blocked: statusBlocked == false ? true : false}).then((res) => {
             // console.log(res);
               dispatch(fetchAccountEmployees());
-            message.success("Khóa thành công")
+            message.success("thành công")
           } ).catch((err) => {
             console.log(err);
-            message.success("Lỗi")
+            message.error("Lỗi")
           })
         }
         return (
@@ -65,6 +77,7 @@ export default function AccountManager() {
           </>
         );
       },
+      onFilter: (value: any, record:any) => record.blocked == value ,
     },
 
     {
