@@ -32,13 +32,21 @@ const Comment = ({ comment, id, userId }: any) => {
             noiDung: newComment,
         }
         try {
-            await axios.post("/api/addcomment", data)
-            setNewcomment("")
-            dispatch(fetchComment(id))
+            if (userId) {
+                await axios.post("/api/addcomment", data)
+                setNewcomment("")
+                dispatch(fetchComment(id))
+            } else message.warning("Vui lòng đăng nhập để bình luận!")
         } catch (error: any) {
             if (typeof error.response !== 'undefined') {
                 message.error(error.response.data.error.message)
             }
+        }
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            sendComment();
         }
     }
 
@@ -57,7 +65,7 @@ const Comment = ({ comment, id, userId }: any) => {
                 )}
             />
             <div className='flex justify-between gap-2'>
-                <Input placeholder='Thêm bình luận' value={newComment} onChange={(e) => setNewcomment(e.target.value)} />
+                <Input placeholder='Thêm bình luận' value={newComment} onChange={(e) => setNewcomment(e.target.value)} onKeyDown={handleKeyDown} />
                 <Button onClick={sendComment}><SendOutlined className='-rotate-45' /></Button>
             </div>
         </div>
