@@ -53,16 +53,25 @@ export default function AccountManager() {
       dataIndex: "blocked",
       key: "blocked",
       responsive: ["md"],
-      render: (_, record) => {
+      render: (_, record:any) => {
         const statusBlocked = record?.blocked;
-        // console.log(statusBlocked);
-
+        const hanldeBlocker = async () => {
+          // console.log(statusBlocked == false ? true : false);
+          await axios.put(`/api/users/${record.id}?sort=id:desc`, {blocked: statusBlocked == false ? true : false}).then((res) => {
+            console.log(res);
+              dispatch(fetchAccountEmployees());
+            
+          } ).catch((err) => {
+            console.log(err);
+            
+          })
+        }
         return (
           <>
             {statusBlocked ? (
-              <Tag color="red">ĐÃ KHÓA</Tag>
+              <Tag color="red" className="cursor-pointer" onClick={hanldeBlocker}>ĐÃ KHÓA</Tag>
             ) : (
-              <Tag color="blue">KHÔNG KHÓA</Tag>
+              <Tag color="blue" className="cursor-pointer" onClick={hanldeBlocker}>KHÔNG KHÓA</Tag>
             )}
           </>
         );
@@ -75,13 +84,8 @@ export default function AccountManager() {
       responsive: ["md"],
       render: (_, record:any) => {
         const confirm = () => {
-          // accountService.accountGetRequest(51)
-          // console.log(record.id);
           const id = record.id
-          // accountService.accountDelete(id)
-          
-          // console.log(success);
-          axios.delete(`https://l3mshop.onrender.com/api/users/${id}`).then((res) => {
+          axios.delete(`/api/users/${id}`).then((res) => {
             // console.log(res);
             res.status ==200 ? 
             message.success("Xóa thành công"):null
