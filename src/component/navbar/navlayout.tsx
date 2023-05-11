@@ -61,8 +61,8 @@ export const Right = () => {
     const searchParams = useSearchParams()
 
     useEffect(() => {
-        if (userId) dispatch(fetchCart(userId))
-    }, [userId])
+        if (role === "5") dispatch(fetchCart(userId))
+    }, [role])
 
     useEffect(() => {
         const storedUsername = localStorage.getItem("username");
