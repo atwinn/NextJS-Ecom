@@ -105,8 +105,8 @@ const UserProdFilter = () => {
     };
     return (
         <div className="bg-white p-4 rounded-md">
-            <Space direction="vertical" size="large" style={{ display: "flex" }}>
-                <Title level={2}>Bộ lọc sản phẩm</Title>
+            <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+                <Title level={3}><FilterOutlined className="ml-2 mr-3" />Bộ lọc sản phẩm</Title>
                 <div className="relative">
                     <Slider
                         step={100000}
@@ -120,12 +120,12 @@ const UserProdFilter = () => {
                         className="mr-7 ml-7"
                         onAfterChange={handleChange}
                     />
-                    <span className="absolute top-[18px] left-[13px]">
+                    <span className="absolute top-[18px] left-[13px] text-black font-semibold mt-2">
                         {range.min != 0
                             ? formatMoney(range.min)
                             : formatMoney(defaultRange?.min)}
                     </span>
-                    <span className="absolute top-[13px] right-[13px]">
+                    <span className="absolute top-[13px] right-[13px] text-black font-semibold mt-2">
                         {range.max != 0
                             ? formatMoney(range.max)
                             : formatMoney(defaultRange?.max)}
@@ -171,13 +171,15 @@ const UserProdFilter = () => {
                             : null}
                     </Row>
                 </Checkbox.Group>
-                <div className="flex">
+                <Divider></Divider>
+                <div className="flex justify-end">
                     <Button
-                        className="mr-3 bg-green-600 text-white"
+                        className="-mt-5"
                         onClick={filter}
                         loading={load}
+                        danger
                     >
-                        Lọc
+                        <LaptopOutlined />Lọc sản phẩm
                     </Button>
                     {/* <Button className="bg-red-600 text-white" onClick={handleReset}>Reset Lọc</Button> */}
                 </div>
