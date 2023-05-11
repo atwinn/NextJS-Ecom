@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
-import { Col, Pagination, Row, message, Skeleton, Spin, Card } from 'antd'
+import { Col, Pagination, Row, message, Skeleton, Card, Drawer } from 'antd'
+import { MenuFoldOutlined } from '@ant-design/icons'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
 import type { PaginationProps } from 'antd';
@@ -17,6 +18,7 @@ const UserProduct = () => {
     // const [filterData, setFilterData] = useState<[]>()
     const [showSearch, setShow] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
+    const [showDrawer, setShowDrawer] = useState<boolean>(false)
     const [paginate, setPaginate] = useState({
         page: 0,
         pageCount: 0,
@@ -83,6 +85,16 @@ const UserProduct = () => {
     // console.log(filterData);
     return (
         <div className='p-5'>
+            <Drawer placement="right" width={300} closable={false} onClose={() => setShowDrawer(false)} open={showDrawer}>
+                {loading ? <Card><Skeleton active /> </Card> :
+                    <UserProdFilter />
+                }
+            </Drawer>
+            <div className='relative mb-12 lg:hidden'>
+                <Button className='absolute right-0' onClick={() => setShowDrawer(true)}>
+                    Bộ lọc<MenuFoldOutlined />
+                </Button>
+            </div>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
                     {loading ? <Card><Skeleton active /> </Card> :
@@ -125,7 +137,7 @@ const UserProduct = () => {
                                 ))
                                 }
                             </Row>
-                            : <Row gutter={[16, 16]}>
+                            : <Row gutter={[16, 16]} className='p-4'>
                                 {prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard

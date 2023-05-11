@@ -71,6 +71,7 @@ const ProdCard = (props: ProductData) => {
                         alt="example"
                         src={props.image}
                         className='h-48 object-scale-down mt-1'
+                        onClick={() => router.push(`/sanpham/${props.id}`)}
                     />
                 }
                 actions={[
@@ -84,10 +85,12 @@ const ProdCard = (props: ProductData) => {
                     </Link>
                 ]}
             >
-                <Meta
-                    title={props.name}
-                    description={formatMoney(props.price)}
-                />
+                <Link href={`/sanpham/${props.id}`}>
+                    <Meta
+                        title={props.name}
+                        description={formatMoney(props.price)}
+                    />
+                </Link>
             </Card>
         </>
     );
