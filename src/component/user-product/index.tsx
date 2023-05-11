@@ -96,7 +96,7 @@ const DetailProductCard = () => {
                                     src={prodDetail.data.attributes.hinh.data.attributes.url}
                                     alt=""
                                     style={{ width: 300, height: 300 }}
-                                    className='rounded-md object-cover'
+                                    className='rounded-md object-scale-down'
                                 />
                             </Col>
                             <Col xs={24} md={14}>

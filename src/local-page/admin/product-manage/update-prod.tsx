@@ -115,7 +115,7 @@ const UpdateProdForm = ({ close }: any) => {
                 >
                     {!imageFile
                         ? <div className='mb-2'>
-                            <img src={image} alt="" width={100} height={100} className='rounded-lg' />
+                            <img src={image} alt="" width={100} height={100} className='rounded-lg object-scale-down' />
                         </div>
                         : null
                     }
