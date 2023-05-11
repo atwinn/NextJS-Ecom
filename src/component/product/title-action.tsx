@@ -36,7 +36,7 @@ export default function TitleAndAction() {
                             Thêm sản phẩm
                         </Button>
                     </div>
-                    : <Search placeholder="Tìm kiếm sản phẩm" onSearch={onSearch} size='large' allowClear className='my-3 md:my-0' />}
+                    : <Search placeholder="Tìm kiếm sản phẩm" onSearch={onSearch} size='large' allowClear className='my-3 md:my-0' style={{ maxWidth: '250px' }} />}
                 <Modal
                     title="Thêm sản phẩm mới"
                     centered
