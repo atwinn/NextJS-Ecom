@@ -55,7 +55,7 @@ const UpdateProdForm = ({ close }: any) => {
         imageFile ? formData.append("files.hinh", imageFile) : null
 
         try {
-            const res = await axios.put(`/api/products/${prodId}`, formData, {
+            await axios.put(`/api/products/${prodId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },

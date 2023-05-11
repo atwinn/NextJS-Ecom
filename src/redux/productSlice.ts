@@ -36,6 +36,9 @@ const productSlice = createSlice({
     updateProd: (state, action) => {
       state.productId = action.payload
     },
+    searchProd: (state, action) => {
+      state.product = action.payload
+    },
     setfilterData: (state, action) => {
       state.filterData = action.payload
     }
@@ -57,7 +60,7 @@ const productSlice = createSlice({
       });
   },
 });
-export const { updateProd,setfilterData} = productSlice.actions;
+export const { updateProd, searchProd, setfilterData } = productSlice.actions;
 
 export default productSlice.reducer;
 export const selectProduct = (state: RootState) => state.product.product;
