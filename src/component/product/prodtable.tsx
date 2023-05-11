@@ -48,7 +48,7 @@ const ProdTable: React.FC = () => {
     const columns: ColumnsType<DataType> = [
         {
             dataIndex: 'hinh',
-            render: (record) => <Image src={record} alt="" className='object-cover' width={48} height={48} />,
+            render: (record) => <Image src={record} alt="" className='object-scale-down' width={48} height={48} />,
         },
         {
             title: 'Tên sản phẩm',

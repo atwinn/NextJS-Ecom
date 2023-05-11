@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux'
 import { setfilterData } from '@/redux/productSlice'
 
 const UserProduct = () => {
-    const {filterData} = useSelector((store:any) => store.product)
+    const { filterData } = useSelector((store: any) => store.product)
     const dispatch = useDispatch()
     const [prodData, setProdData] = useState([])
     // const [filterData, setFilterData] = useState<[]>()
@@ -61,11 +61,11 @@ const UserProduct = () => {
         // console.log("render SP");
         fetchProd()
     }, [searchParams])
-    const backRenderSP =  () => {
-    //  fetchProd()
-     dispatch(setfilterData(undefined)) //setFilterData(undefined)
+    const backRenderSP = () => {
+        //  fetchProd()
+        dispatch(setfilterData(undefined)) //setFilterData(undefined)
     }
-    
+
     const pageChange: PaginationProps['onChange'] = async (page) => {
         setLoading(true)
         try {
@@ -80,16 +80,16 @@ const UserProduct = () => {
             setLoading(false)
         }
     };
-        // console.log(filterData);
+    // console.log(filterData);
     return (
         <div className='p-5'>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
-                    {loading ? <Card><Skeleton active /> </Card>:
-                    <UserProdFilter  /> 
+                    {loading ? <Card><Skeleton active /> </Card> :
+                        <UserProdFilter />
                     }
                 </Col>
-                <Col lg={15} className='py-2 min-w-[78%] bg-white rounded-md'>
+                <Col lg={15} className='py-2 bg-white rounded-md'>
                     {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>
                         Không tìm thấy sản phẩm...
                         <Button onClick={backRenderSP}>

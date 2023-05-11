@@ -70,7 +70,7 @@ const ProdCard = (props: ProductData) => {
                         height={198}
                         alt="example"
                         src={props.image}
-                        className='h-48 object-cover object-center '
+                        className='h-48 object-scale-down mt-1'
                     />
                 }
                 actions={[
