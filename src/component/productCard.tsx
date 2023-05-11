@@ -93,7 +93,7 @@ const ProdCard = (props: ProductData) => {
                 <Link href={`/sanpham/${props.id}`}>
                     <Meta
                         title={props.name}
-                        description={formatMoney(props.price)}
+                        description={<div className='text-rose-600'>{formatMoney(props.price)}</div>}
                     />
                 </Link>
             </Card>
