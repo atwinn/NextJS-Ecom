@@ -15,6 +15,9 @@ interface DataType {
     name: string;
     age: number;
     address: string;
+    ten: string;
+    gia: number;
+    soLuong: number;
 }
 
 
@@ -37,15 +40,18 @@ const ProdTable: React.FC = () => {
         {
             title: 'Tên sản phẩm',
             dataIndex: 'ten',
+            sorter: (a, b) => a.ten.length - b.ten.length,
         },
         {
             title: 'Giá',
             dataIndex: 'gia',
             render: (text) => <div>{formatMoney(text)}</div>,
+            sorter: (a, b) => a.gia - b.gia,
         },
         {
             title: 'Số lượng',
             dataIndex: 'soLuong',
+            sorter: (a, b) => a.soLuong - b.soLuong,
         },
         {
             title: 'Loại',

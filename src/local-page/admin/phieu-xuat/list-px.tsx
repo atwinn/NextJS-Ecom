@@ -22,6 +22,9 @@ interface DataType {
     creator: string;
     createdAt: string;
     status: number;
+    tenKH: string;
+    tongTien: number;
+    pttt: string;
 }
 interface ExpandedDataType {
     key: React.Key;
@@ -172,12 +175,12 @@ const ListPhieuXuat: React.FC = () => {
     }
 
     const columns: ColumnsType<DataType> = [
-        { title: 'Khách Hàng', dataIndex: 'tenKH' },
+        { title: 'Khách Hàng', dataIndex: 'tenKH', sorter: (a, b) => a.tenKH.length - b.tenKH.length, showSorterTooltip: false },
         { title: 'Số Điện Thoại', dataIndex: 'sdt', render: (text) => <Tag color="geekblue" >0{text}</Tag> },
         { title: 'Địa Chi', dataIndex: 'diaChi' },
-        { title: 'Thanh Toán', dataIndex: 'pttt', render: (text) => <Tag color="green" >{text}</Tag> },
+        { title: 'Thanh Toán', dataIndex: 'pttt', render: (text) => <Tag color="green" >{text}</Tag>, sorter: (a, b) => a.pttt.length - b.pttt.length, showSorterTooltip: false },
         {
-            title: 'Trạng Thái', dataIndex: 'status', render: (_, record) =>
+            title: 'Trạng Thái', dataIndex: 'status', sorter: (a, b) => a.status - b.status, showSorterTooltip: false, render: (_, record) =>
                 <Radio.Group value={record.status.toString()} buttonStyle="solid" size='small' style={{ minWidth: 90 }}>
                     <Tooltip title="Chưa xác nhận">
                         <Radio.Button value="0"><PushpinOutlined /></Radio.Button>
@@ -215,7 +218,7 @@ const ListPhieuXuat: React.FC = () => {
                     </Tooltip>
                 </Radio.Group>
         },
-        { title: 'Tổng Tiền', dataIndex: 'tongTien', render: (text) => <div>{formatMoney(text)}</div>, },
+        { title: 'Tổng Tiền', dataIndex: 'tongTien', render: (text) => <div>{formatMoney(text)}</div>, sorter: (a, b) => a.tongTien - b.tongTien, showSorterTooltip: false },
         {
             title: 'Thao tác',
             key: 'operation',
