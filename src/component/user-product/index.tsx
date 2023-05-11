@@ -103,7 +103,7 @@ const DetailProductCard = () => {
                                 <div className='flex flex-col h-full justify-between gap-2'>
                                     <div>
                                         <Title level={2}>{prodDetail.data.attributes.tenSP}</Title>
-                                        <div className='text-rose-600 text-lg mb-2'>{formatMoney(prodDetail.data.attributes.gia)}</div>
+                                        <div className='text-rose-600 text-lg mb-2 font-semibold'>{formatMoney(prodDetail.data.attributes.gia)}</div>
                                         <p>{comment.length} Bình luận</p>
                                         <div className='rounded-md p-2 bg-slate-200 max-w-[300px]'>
                                             {prodDetail.data?.attributes.ctSanPham
