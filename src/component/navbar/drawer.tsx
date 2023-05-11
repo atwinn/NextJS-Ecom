@@ -96,7 +96,7 @@ const RespNav: React.FC = () => {
                 footer={[
                     userAuth != ""
                         ?
-                        <Link href="?action=logout" className='flex justify-between'>
+                        <Link href="/home?action=logout" className='flex justify-between'>
                             <Tag className='text-black text-lg' color='geekblue'>{userAuth}</Tag>
                             <Button onClick={onClose}><LogoutOutlined />Đăng Xuất</Button>
                         </Link>

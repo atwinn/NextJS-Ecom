@@ -67,7 +67,7 @@ const UserOrder = ({ data, fetchData }: any) => {
                                     ? item.product.hinh.url
                                     : "https://images.unsplash.com/photo-1590005354167-6da97870c757?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=881&q=80"}
                                 alt=""
-                                className='rounded-md object-fill w-12 h-12'
+                                className='rounded-md object-scale-down w-12 h-12'
                             />
                         </div>
                         <div className=''>

@@ -44,7 +44,7 @@ const UserProduct = () => {
                 setPaginate(res.data.meta.pagination)
                 setLoading(false)
             } else {
-                const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=8&populate=*")
+                const res = await axios.get("/api/products?pagination[page]=1&pagination[pageSize]=8&sort=id:asc&populate=*")
                 setProdData(res.data.data)
                 setShow(false)
                 setPaginate(res.data.meta.pagination)
@@ -71,7 +71,7 @@ const UserProduct = () => {
     const pageChange: PaginationProps['onChange'] = async (page) => {
         setLoading(true)
         try {
-            const res = await axios.get(`/api/products?pagination[page]=${page}&pagination[pageSize]=8&populate=*`)
+            const res = await axios.get(`/api/products?pagination[page]=${page}&pagination[pageSize]=8&sort=id:asc&populate=*`)
             setProdData(res.data.data)
             setPaginate(res.data.meta.pagination)
             setLoading(false)
@@ -121,6 +121,7 @@ const UserProduct = () => {
                                                 ? item.attributes.hinh.data.attributes.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.attributes.soLuongSP}
                                         />
                                     </Col>
                                 )) : filterData.map((item: any) => (
@@ -132,6 +133,7 @@ const UserProduct = () => {
                                                 ? item.hinh.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.soLuongSP}
                                         />
                                     </Col>
                                 ))
@@ -147,6 +149,7 @@ const UserProduct = () => {
                                                 ? item.hinh.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.soLuongSP}
                                         />
                                     </Col>
                                 ))

@@ -1,27 +1,28 @@
 import React, { useRef, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  Col } from "antd";
+import { Col } from "antd";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import ProdCard from "../productCard";
 
-export default function CarouselBestSell({data}:any) {
+export default function CarouselBestSell({ data }: any) {
 
   const result = data?.map(({ product }: any) => ({
     id: product.id,
     tenSP: product.tenSP,
     gia: product.gia,
     url: product.hinh.url,
+    soLuongSP: product.soLuongSP,
   }));
-  
+
   return (
     <>
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
-        autoplay={true}      
+        autoplay={true}
         pagination={{
           clickable: true,
         }}
@@ -45,29 +46,30 @@ export default function CarouselBestSell({data}:any) {
             spaceBetween: 50,
           },
         }}
-        
+
       >
         {/* <Col  xs={24} sm={12} md={8} lg={6}> */}
-        {result.map((item:any) => {
-                return (
-                  <>
-                    <SwiperSlide key={item.id}>
-                      <ProdCard
-                        name={item.tenSP}
-                        price={item.gia}
-                        image={
-                          item.url
-                            ? item.url
-                            : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                        }
-                        id={item.id}
-                      />
-                    </SwiperSlide>
-                  </>
-                );
-              })}
-              {/* </Col> */}
-        
+        {result.map((item: any) => {
+          return (
+            <>
+              <SwiperSlide key={item.id}>
+                <ProdCard
+                  name={item.tenSP}
+                  price={item.gia}
+                  image={
+                    item.url
+                      ? item.url
+                      : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                  }
+                  id={item.id}
+                  sl={item.soLuongSP}
+                />
+              </SwiperSlide>
+            </>
+          );
+        })}
+        {/* </Col> */}
+
       </Swiper>
     </>
   );

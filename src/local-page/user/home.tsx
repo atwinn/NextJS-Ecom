@@ -64,6 +64,7 @@ const TrangChu = () => {
       tenSP: item.attributes.tenSP,
       gia: item.attributes.gia,
       hinh: item.attributes.hinh.data?.attributes?.url,
+      soLuongSP: item.attributes.soLuongSP,
     };
   });
   const resultLoaiLap = dataLoaiLap?.map((item: any) => {
@@ -72,6 +73,7 @@ const TrangChu = () => {
       tenSP: item.attributes.tenSP,
       gia: item.attributes.gia,
       hinh: item.attributes.hinh.data?.attributes?.url,
+      soLuongSP: item.attributes.soLuongSP,
     };
   });
 
@@ -91,7 +93,7 @@ const TrangChu = () => {
               src="https://xgear.net/wp-content/uploads/2023/04/Nang-cap-la-phai-gap.jpg"
               alt="Slide 2"
               className="w-full h-96 object-cover rounded-lg"
-              
+
             />
           </div>
           <div>
@@ -108,9 +110,9 @@ const TrangChu = () => {
             <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
               Sản phẩm nổi bật ( •̀ ω •́ )✧
             </h1>
-            
-            <CarouselBestSell data={data}/>
-              
+
+            <CarouselBestSell data={data} />
+
           </Card>
           <Divider></Divider>
           <Card loading={loading}>
@@ -131,6 +133,7 @@ const TrangChu = () => {
                             : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                         }
                         id={item.id}
+                        sl={item.soLuongSP}
                       />
                     </Col>
                   </>
@@ -158,6 +161,7 @@ const TrangChu = () => {
                             : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                         }
                         id={item.id}
+                        sl={item.soLuongSP}
                       />
                     </Col>
                   </>

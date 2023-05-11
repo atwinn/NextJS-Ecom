@@ -39,8 +39,8 @@ const UserCard = ({ data, fectchData }: any) => {
                         <img
                             src={"https://cdn-icons-png.flaticon.com/512/149/149071.png"}
                             alt=""
-                            style={{ maxWidth: '100%' }}
-                            className='rounded-full object-fit'
+                            style={{ maxWidth: '80%' }}
+                            className='rounded-full object-fit '
                         />
                     </Col>
                     <Col xs={24} sm={14} lg={15}>
