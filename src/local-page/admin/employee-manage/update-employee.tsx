@@ -12,12 +12,10 @@ import { useSelector } from "react-redux";
 
 import dayjs from "dayjs";
 import axios from "axios";
-import { API_EMPLOYEE } from "@/pages/api/api";
 import moment from "moment";
 import { AppDispatch } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { fetchEmployees } from "@/redux/employeeSlice";
-import { closeModal } from "@/redux/modalSlice";
 const { TextArea } = Input;
 type SizeType = Parameters<typeof Form>[0]["size"];
 
@@ -50,8 +48,6 @@ const UpdateEmployee: React.FC = () => {
     const key = "updatable";
     const id = employeesId.id;
     values.ngaySinh = date1;
-    console.log(values);
-
     axios
       .put(`/api/nhan-viens/${id}`, { data: values })
       .then(function (response) {

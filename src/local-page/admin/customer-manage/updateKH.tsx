@@ -1,53 +1,79 @@
-import * as React from 'react';
-import { Button, Col, Form, Input, Row, message,DatePicker, DatePickerProps,Select } from "antd";
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import * as React from "react";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  message,
+  DatePicker,
+  DatePickerProps,
+  Select,
+} from "antd";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import moment from "moment";
 type SizeType = Parameters<typeof Form>[0]["size"];
 const { TextArea } = Input;
+import dayjs from "dayjs";
 
-export interface IUpdateKHProps {
-}
+export default function UpdateKH(props: any) {
+  console.log(props.data.ngaySinh !== "...");
 
-export default function UpdateKH (props: IUpdateKHProps) {
-    const [date1, setDate1] = React.useState(
-        // moment(employeesId.ngaySinh).format("YYYY-MM-DD")
-      );
-      const dispatch = useDispatch();
-    
-      const [componentSize, setComponentSize] = React.useState<SizeType | "default">(
-        "default"
-      );
-      const handleChangedate: DatePickerProps["onChange"] = (
-        data: any,
-        datastring: any
-      ) => {
-        setDate1(datastring);
-      };
-      const onFormLayoutChange = ({ size }: { size: SizeType }) => {
-        setComponentSize(size);
-      };
-    const onFinish = (value: any) => {
-        console.log(value);
-        // axios.put(`/api/khach-hangs/35`, {data: value}).then((res) => {
-        //     res.status == 200 ? message.success("thành công") : null
-        //     // dispatch(fetchNsx())
-        //     // dispatch(closeModal())
-        // }).catch((err) => {
-        //     message.error(err)
-        // })
-      };
+  const [date1, setDate1] = React.useState(
+    moment(props.data.ngaySinh).format("YYYY-MM-DD")
+  );
+  const dispatch = useDispatch();
+
+  const [componentSize, setComponentSize] = React.useState<
+    SizeType | "default"
+  >("default");
+  const handleChangedate: DatePickerProps["onChange"] = (
+    data: any,
+    datastring: any
+  ) => {
+    setDate1(datastring);
+  };
+  const onFormLayoutChange = ({ size }: { size: SizeType }) => {
+    setComponentSize(size);
+  };
+  const onFinish = async (value: any) => {
+    console.log(value);
+    await axios
+      .put(`/api/khach-hangs/${props.data.id}`, { data: value })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          message.success("thành công")
+          axios
+          .get("/api/khach-hangs?sort=id:desc&pagination[pageSize]=100")
+          .then((res) => {
+            // console.log(res);
+            props.setDataKH(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        }
+        // dispatch(closeModal())
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("lỗi")
+      });
+  };
   return (
     <>
-       <Form
+      <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
         layout="horizontal"
         initialValues={{
-        //   ten: employeesId.ten,
-        //   sdt: employeesId.sdt,
-        //   diaChi: employeesId.diaChi,
-        //   gioiTinh: employeesId.gioiTinh ? true : false,
-        //   ngaySinh: date1,
+          ten: props.data?.ten,
+          sdt: props.data?.sdt,
+          diaChi: props.data?.diaChi,
+          gioiTinh: props.data?.gioiTinh ? true : false,
+          ngaySinh: date1 ,
         }}
         onFinish={onFinish}
         onValuesChange={onFormLayoutChange}
@@ -91,7 +117,7 @@ export default function UpdateKH (props: IUpdateKHProps) {
           hasFeedback
         >
           <DatePicker
-            // defaultValue={dayjs(ngaySinh)}
+            defaultValue={dayjs(props.data?.ngaySinh)}
             onChange={handleChangedate}
           />
         </Form.Item>

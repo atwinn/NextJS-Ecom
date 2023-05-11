@@ -252,7 +252,6 @@ const ListPN = ({ expandedRowKeys, setExpandedRowKeys }: any) => {
       title: "Tổng tiền",
       dataIndex: "tongTien",
       key: "tongTien",
-      defaultSortOrder: "descend",
       sorter: (a, b) => parseInt(a.tongTien) - parseInt(b.tongTien),
       showSorterTooltip: false
     },

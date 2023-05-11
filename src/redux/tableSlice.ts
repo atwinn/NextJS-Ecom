@@ -25,6 +25,7 @@ export const initialState: TableState = {
   idPn: "",
   tab: "1",
   dataCTPn: [],
+  
 };
 
 const tableSlice = createSlice({

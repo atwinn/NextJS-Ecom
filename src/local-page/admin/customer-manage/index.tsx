@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import type { InputRef } from "antd";
-import { Button, Input, Space, Table,Divider,Tooltip,Popconfirm } from "antd";
+import {
+  Button,
+  Input,
+  Space,
+  Table,
+  Divider,
+  Tooltip,
+  Popconfirm,
+} from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
-import {
-    CloseOutlined,
-    EditOutlined,
-  } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import Modal1 from "@/component/modal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -30,23 +35,27 @@ type DataIndex = keyof DataType;
 const CustomerManage: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [dataKH, setDataKH] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dataInfor, setDataInfor] = useState<any>();
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
   const { isOpen } = useSelector((store: any) => store.modal);
   const dispatch = useDispatch<AppDispatch>();
-
   useEffect(() => {
+    setLoading(true)
     axios
-      .get("/api/khach-hangs")
+      .get("/api/khach-hangs?sort=id:desc&pagination[pageSize]=100")
       .then((res) => {
-        console.log(res);
+        // console.log(res);
+        setLoading(false)
         setDataKH(res.data);
       })
       .catch((err) => {
+        setLoading(false)
         console.log(err);
       });
   }, []);
-  console.log(dataKH);
+  // console.log(dataKH);
   let result;
   dataKH
     ? (result = dataKH.data.map((item: any) => {
@@ -55,14 +64,14 @@ const CustomerManage: React.FC = () => {
           ten: item.attributes.ten == null ? "..." : item.attributes.ten,
           sdt: item.attributes.sdt == null ? "..." : item.attributes.sdt,
           ngaySinh:
-            item.attributes.ngaySinh == null ? "..." : item.attributes.ngaySinh,
+            item.attributes.ngaySinh == null ? "2000-01-01" : item.attributes.ngaySinh,
           gioiTinh: item.attributes.gioiTinh == true ? "Nam" : "Nu",
           diaChi:
             item.attributes.diaChi == null ? "..." : item.attributes.diaChi,
         };
       }))
     : null;
-  console.log(result);
+  // console.log(result);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -200,14 +209,15 @@ const CustomerManage: React.FC = () => {
       title: "Action",
       key: "action",
       render: (_, record: any) => {
-        console.log(record);
+        // console.log(record);
         // const confirm = () => {
         //   console.log(record.id);
-          
+
         // };
         const handleChange = () => {
-
-            dispatch(openModal());
+          console.log(record);
+          setDataInfor(record);
+          dispatch(openModal());
         };
         return (
           <Space size="middle">
@@ -245,15 +255,15 @@ const CustomerManage: React.FC = () => {
 
   return (
     <>
-    {(isOpen &&
+      {isOpen && (
         <Modal1 title="Chỉnh sửa khách hàng">
-               <UpdateKH/> 
+          <UpdateKH data={dataInfor} setDataKH={setDataKH} />
         </Modal1>
       )}
-        <Divider></Divider>
-        <h1>Quản lý khách hàng</h1>
-        <Divider></Divider>
-      <Table columns={columns} dataSource={result} />;
+      <Divider></Divider>
+      <h1>Quản lý khách hàng</h1>
+      <Divider></Divider>
+      <Table loading={loading} columns={columns} dataSource={result} />;
     </>
   );
 };
