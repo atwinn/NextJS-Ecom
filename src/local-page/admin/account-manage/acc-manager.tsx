@@ -58,12 +58,12 @@ export default function AccountManager() {
         const hanldeBlocker = async () => {
           // console.log(statusBlocked == false ? true : false);
           await axios.put(`/api/users/${record.id}?sort=id:desc`, {blocked: statusBlocked == false ? true : false}).then((res) => {
-            console.log(res);
+            // console.log(res);
               dispatch(fetchAccountEmployees());
-            
+            message.success("Khóa thành công")
           } ).catch((err) => {
             console.log(err);
-            
+            message.success("Lỗi")
           })
         }
         return (
