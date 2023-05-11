@@ -113,7 +113,7 @@ const DetailProductCard = () => {
                                     </div>
                                     <div className='flex gap-2'>
                                         <InputNumber min={1} max={5} value={quantity} onChange={(value) => handleQuantityChange(value)} />
-                                        {prodDetail.data.attributes.gia === "0"
+                                        {prodDetail.data.attributes.soLuongSP === "0"
                                             ? <Button type="primary" disabled size='large'><ShoppingOutlined className='text-xl' />Hết hàng</Button>
                                             : <Button type="primary" size='large' onClick={handleAddToCart}><ShoppingOutlined className='text-xl' />Thêm vào giỏ</Button>}
                                     </div>

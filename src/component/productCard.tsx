@@ -15,7 +15,8 @@ interface ProductData {
     image: string,
     name: string,
     price: string,
-    id: number
+    id: number,
+    sl: string
 }
 
 const ProdCard = (props: ProductData) => {
@@ -75,9 +76,13 @@ const ProdCard = (props: ProductData) => {
                     />
                 }
                 actions={[
-                    <Tooltip title="Thêm vào giỏ hàng">
-                        <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />
-                    </Tooltip>,
+                    props.sl === "0"
+                        ? <Tooltip title="Hết hàng">
+                            <ShoppingCartOutlined key="cart" />
+                        </Tooltip>
+                        : <Tooltip title="Thêm vào giỏ hàng">
+                            <ShoppingCartOutlined key="cart" onClick={handleAddToCart} />
+                        </Tooltip>,
                     <Link href={`/sanpham/${props.id}`}>
                         <Tooltip title="Xem sản phẩm">
                             <ArrowRightOutlined key="arrow" className='text-lg' />

@@ -121,6 +121,7 @@ const UserProduct = () => {
                                                 ? item.attributes.hinh.data.attributes.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.attributes.soLuongSP}
                                         />
                                     </Col>
                                 )) : filterData.map((item: any) => (
@@ -132,6 +133,7 @@ const UserProduct = () => {
                                                 ? item.hinh.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.soLuongSP}
                                         />
                                     </Col>
                                 ))
@@ -147,6 +149,7 @@ const UserProduct = () => {
                                                 ? item.hinh.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
+                                            sl={item.soLuongSP}
                                         />
                                     </Col>
                                 ))
