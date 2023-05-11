@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { fetchCart } from '@/redux/cartSlice';
 const CLIENT_ID = "ATaOhULP-j3qS5A6R-J8ZUwLgoRhLDM5dL05X7eYcannZ0SEQrOeGTPouc71Wt5fWVJk45d7FrKmR2oJ"
 const { TextArea } = Input;
 
@@ -12,6 +15,7 @@ const Payment = ({ userId, cart, tongTien }: any) => {
     const [show, setShow] = useState(false)
     let money = Math.ceil(tongTien / 23622)
     const router = useRouter()
+    const dispatch = useDispatch<AppDispatch>()
     const onFinish = async (values: any) => {
         const data = {
             user_id: userId,
@@ -22,6 +26,7 @@ const Payment = ({ userId, cart, tongTien }: any) => {
         }
         try {
             await axios.post("/api/order", data)
+            dispatch(fetchCart(userId))
             notification.success({
                 message: 'Thành công',
                 description:
@@ -56,6 +61,7 @@ const Payment = ({ userId, cart, tongTien }: any) => {
         }
         try {
             await axios.post("/api/order", order_data)
+            dispatch(fetchCart(userId))
             notification.success({
                 message: 'Thành công',
                 description:
