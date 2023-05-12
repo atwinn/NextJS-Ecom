@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
-import { Col, Pagination, Row, message, Skeleton, Card, Drawer } from 'antd'
+import { Col, Pagination, Row, message, Skeleton, Card, Drawer,Divider } from 'antd'
 import { MenuFoldOutlined } from '@ant-design/icons'
 import UserProdFilter from '@/component/product-filter'
 import axios from 'axios'
@@ -10,7 +10,7 @@ import Button from 'antd/lib/button'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setfilterData } from '@/redux/productSlice'
-
+import { Empty } from 'antd';
 const UserProduct = () => {
     const { filterData } = useSelector((store: any) => store.product)
     const dispatch = useDispatch()
@@ -86,9 +86,9 @@ const UserProduct = () => {
     return (
         <div className='p-5'>
             <Drawer placement="right" width={370} onClose={() => setShowDrawer(false)} open={showDrawer}>
-                {loading ? <Card><Skeleton active /> </Card> :
+
                     <UserProdFilter />
-                }
+                
             </Drawer>
             <div className='relative mb-12 lg:hidden'>
                 <Button className='absolute right-0' onClick={() => setShowDrawer(true)}>
@@ -97,13 +97,13 @@ const UserProduct = () => {
             </div>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
-                    {loading ? <Card><Skeleton active /> </Card> :
+                    
                         <UserProdFilter />
-                    }
+                   
                 </Col>
                 <Col lg={15} className='py-2 bg-white rounded-md'>
                     {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>
-                        Không tìm thấy sản phẩm...
+                        <Empty description={"không tìm thấy sản phẩm"} /><br/>
                         <Button onClick={backRenderSP}>
                             Quay lại
                         </Button>
@@ -115,13 +115,13 @@ const UserProduct = () => {
                                 {!filterData ? prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
-                                            name={item.attributes.tenSP}
-                                            price={item.attributes.gia}
-                                            image={item.attributes.hinh.data?.attributes.url
-                                                ? item.attributes.hinh.data.attributes.url
+                                            name={item.attributes?.tenSP}
+                                            price={item.attributes?.gia}
+                                            image={item.attributes?.hinh.data?.attributes.url
+                                                ? item.attributes?.hinh.data.attributes.url
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
-                                            sl={item.attributes.soLuongSP}
+                                            sl={item.attributes?.soLuongSP}
                                         />
                                     </Col>
                                 )) : filterData.map((item: any) => (
@@ -139,7 +139,24 @@ const UserProduct = () => {
                                 ))
                                 }
                             </Row>
-                            : <Row gutter={[16, 16]} className='p-4'>
+                            : 
+                            
+                            <Row gutter={[16, 16]} className='p-4'>
+                                {filterData ? filterData.map((item: any) => (
+                                    <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
+                                        <ProdCard
+                                            name={item.tenSP}
+                                            price={item.gia}
+                                            image={item.hinh.url
+                                                ? item.hinh.url
+                                                : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+                                            id={item.id}
+                                            sl={item.soLuongSP}
+                                        />
+                                    </Col>
+                                )) : null
+                                }
+                                <Divider >Kết quả tìm kiếm: {searchParams.get("search")} </Divider>
                                 {prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
@@ -154,6 +171,7 @@ const UserProduct = () => {
                                     </Col>
                                 ))
                                 }
+                                
                             </Row>
                     }
                     {showSearch || filterData
