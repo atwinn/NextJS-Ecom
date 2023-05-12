@@ -123,10 +123,12 @@ const TrangChu = () => {
 
             </Card>
             <Divider></Divider>
-            <Card loading={loading}>
-              <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
-                👉 PC (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
-              </h1>
+            <Card loading={loading} className="bg-rose-500">
+              <div className="bg-white rounded-md p-3 mb-3">
+                <h1 className="custom-text text-2xl -mb-1.5 font-semibold text-black">
+                  🔥PC Giá Tốt
+                </h1>
+              </div>
               <Row gutter={[16, 16]}>
                 {resultLoaiPC.map((item): any => {
                   return (
