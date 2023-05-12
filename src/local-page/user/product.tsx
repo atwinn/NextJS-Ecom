@@ -64,7 +64,8 @@ const UserProduct = () => {
         fetchProd()
     }, [searchParams])
     const backRenderSP = () => {
-        //  fetchProd()
+        //  fetchProd() 
+        // setShow(true)
         dispatch(setfilterData(undefined)) //setFilterData(undefined)
     }
 
@@ -154,8 +155,8 @@ const UserProduct = () => {
                                             sl={item.soLuongSP}
                                         />
                                     </Col>
-                                )) : null
-                                }
+                                )) : 
+                                <>
                                 <Divider >Kết quả tìm kiếm: {searchParams.get("search")} </Divider>
                                 {prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
@@ -170,6 +171,9 @@ const UserProduct = () => {
                                         />
                                     </Col>
                                 ))
+                                }
+                                </>
+                                
                                 }
                                 
                             </Row>
