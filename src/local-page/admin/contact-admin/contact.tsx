@@ -47,11 +47,14 @@ export default function ContactAdmin() {
   lienhe
     ? (lienheArray = lienhe.map((item) => {
         const { email, name, message, status, createdAt } = item.attributes;
+        console.log(item);
+        
         return {
           lienhe_id: item.id,
           email,
           name,
           message,
+          statusfilter: item.attributes.status,
           status:
             status == false ? (
               <Tag color="red">Chưa phản hồi</Tag>
@@ -82,6 +85,19 @@ export default function ContactAdmin() {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      filters: [
+        {
+          text: 'Đã phản hồi ',
+          value: true,
+        },
+        {
+          text: 'Chưa phản hồi',
+          value: false,
+        },
+        
+      ],
+      onFilter: (value: any, record:any) => record.statusfilter == value,
+     
     },
     {
       title: "Ngày tạo",

@@ -28,16 +28,19 @@ const UserProdFilter = () => {
         renderMinMax();
     }, []);
     const handleChange = (props: any) => {
+        console.log(props);
         setRange({ min: props[0], max: props[1] });
     };
     const filter = async () => {
+        console.log(range.max , range.min);
+        
         // console.log("valueNsx", valueNsx.length == 0 , "valueLoai",valueLoai.join(","));
         // console.log(`/api/products/sortSP?minP=${range.min}&maxP=${range.max ==0 ? defaultRange?.max :range.max}&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",") }&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",") }`);
         setLoad(true);
         await axios
             .get(
-                `/api/products/sortSP?minP=${range.min == 0 ? (defaultRange ? defaultRange.min : null) : null
-                }&maxP=${range.max == 0 ? (defaultRange ? defaultRange.max : null) : null
+                `/api/products/sortSP?minP=${range.min == 0 ? (defaultRange ? defaultRange.min : null) : range.min
+                }&maxP=${range.max == 0 ? (defaultRange ? defaultRange.max : null) : range.max
                 }&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",")}&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",")
                 }`
             )
@@ -49,6 +52,7 @@ const UserProdFilter = () => {
                 }
             })
             .catch((err) => {
+                setLoad(false);
                 console.log(err);
             });
     };
