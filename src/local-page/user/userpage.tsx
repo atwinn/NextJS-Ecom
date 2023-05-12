@@ -61,7 +61,7 @@ const UserPage = () => {
                             {donHang && donHang?.length !== 0 ? donHang.map((item: any) => (
                                 <UserOrder data={item} fetchData={fetchDonHang} />
                             ))
-                                : <Empty description="Chưa có gì ở đây cả" />}
+                                : <Empty description="Chưa có gì ở đây cả" className='lg:w-[700px] sm:w-[500px] xs:w-full' />}
                         </div>
                     </Col>
                 </Row>
