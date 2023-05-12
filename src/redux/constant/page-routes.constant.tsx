@@ -1,26 +1,30 @@
 interface title {
-    route: string; title: string; key: string;
+    route: string; title: string; key: string; role?: any;
 }
 export const pageRoutes: { [key: string]: title } = {
     home: {
         route: "/page-admin",
         title: 'Dashboard',
         key: "1",
+        role: [3, 4, 6],
     },
     nhanVien: {
         route: "/page-admin/employee-manage/view",
         title: 'Quản lý nhân viên',
         key: "2",
+        role: [6],
     },
     sanPham: {
         route: "/page-admin/product-manage/view",
         title: 'Quản lý sản phẩm',
         key: "3",
+        role: [3, 4],
     },
     orderManage: {
         route: "/page-admin/order-manage/view",
         title: 'Quản lý đơn hàng',
         key: "4",
+        role: [3, 4],
     },
     trangchu: {
         route: "/",
@@ -56,6 +60,7 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/page-admin/account-manage/view",
         title: 'Quản lý tài khoản',
         key: "5",
+        role: [6],
     },
     forgotPass: {
         route: "/auth/forgot-pass",
@@ -111,15 +116,18 @@ export const pageRoutes: { [key: string]: title } = {
         route: "/page-admin/contact-page",
         title: 'Liên hệ - Admin',
         key: "8",
+        role: [3],
     },
     categoryAdmin: {
         route: "/page-admin/category-manage/view",
         title: 'Quản lý loại sản phẩm',
         key: "9",
+        role: [3, 4],
     },
     Customer: {
         route: "/page-admin/customer-manage",
         title: 'Quản lý khách hàng',
         key: "10",
+        role: [3],
     },
 };

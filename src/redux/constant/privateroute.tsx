@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../cookies";
 import { Spin } from 'antd';
+import { pageRoutes } from "./page-routes.constant";
 
 interface IProps {
     children: React.ReactNode,
@@ -25,9 +26,12 @@ const PrivateRoute = ({ children }: IProps) => {
         </div>;
     }
 
-    const allowedRoles = [3, 4, 6];
-    if (!allowedRoles.includes(role)) {
-        push("/auth/login");
+    const allowedRoutes = Object.values(pageRoutes).filter((route: any) => {
+        return !route.role || route.role.includes(role);
+    }).map((route: any) => route.route);
+
+    if (!allowedRoutes.includes(window.location.pathname)) {
+        push("/404");
         return null;
     }
 
