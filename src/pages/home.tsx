@@ -1,7 +1,10 @@
 import { UserLayoutManager } from '@/layout/layoutUser';
 import * as React from 'react';
-import TrangChu from '@/local-page/user/home';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
+const TrangChu = dynamic(() => import('@/local-page/user/home'), {
+    ssr: false
+});
 
 export interface IAppProps {
 }
