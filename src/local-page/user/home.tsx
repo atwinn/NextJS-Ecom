@@ -83,24 +83,24 @@ const TrangChu = () => {
         <Carousel lazyLoad="progressive" autoplay className="mb-4">
           <div>
             <img
-              src="https://xgear.net/wp-content/uploads/2023/05/Gia-re-zdach.jpg"
+              src="https://za.store.asus.com/media/wysiwyg/A15_Billboard_H_1.jpg"
               alt="Slide 1"
-              className="w-full h-96 object-cover rounded-lg"
+              className="w-full lg:h-[450px] md:h-80 h-52 object-cover rounded-lg"
             />
           </div>
           <div>
             <img
-              src="https://xgear.net/wp-content/uploads/2023/04/Nang-cap-la-phai-gap.jpg"
+              src="https://cdn.shopify.com/s/files/1/1183/6364/files/AppleMBPM2Banner.jpg?v=1674604100"
               alt="Slide 2"
-              className="w-full h-96 object-cover rounded-lg"
+              className="w-full lg:h-[450px] md:h-80 h-52 object-cover rounded-lg"
 
             />
           </div>
           <div>
             <img
-              src="https://xgear.net/wp-content/uploads/2023/04/Helios-Neo-16.jpg"
+              src="https://www.hankerz.com.eg/wp-content/uploads/2022/11/laptop-banner-.jpg"
               alt="Slide 3"
-              className="w-full h-96 object-cover rounded-lg"
+              className="w-full lg:h-[450px] md:h-80 h-52 object-cover rounded-lg"
             />
           </div>
         </Carousel>
