@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react'
 import ProdCard from '@/component/productCard'
 import { Col, Pagination, Row, message, Skeleton, Card, Drawer,Divider } from 'antd'
@@ -15,9 +16,9 @@ const UserProduct = () => {
     const { filterData } = useSelector((store: any) => store.product)
     const dispatch = useDispatch()
     const [prodData, setProdData] = useState([])
-    // const [filterData, setFilterData] = useState<[]>()
     const [showSearch, setShow] = useState<boolean>(false)
     const [loading, setLoading] = useState(true)
+    const [checkSearch, setCheckSearch] = useState(false)
     const [showDrawer, setShowDrawer] = useState<boolean>(false)
     const [paginate, setPaginate] = useState({
         page: 0,
@@ -25,20 +26,25 @@ const UserProduct = () => {
         pageSize: 0,
         total: 0
     })
+    let urlSearchParams
     const searchParams = useSearchParams()
-
     const fetchProd = async () => {
+        urlSearchParams = new URLSearchParams(window?.location?.search);
         setLoading(true)
         try {
             if (searchParams.has("search") && searchParams.get("search") !== "") {
                 const searchQuery = searchParams.get("search")
                 const res = await axios.get(`/api/products/tim-kiem?key=${searchQuery}`)
+                // setCheckSearch(true)
                 setProdData(res.data)
+                dispatch(setfilterData(undefined))
                 setShow(true)
                 setLoading(false)
             } else if (searchParams.has("loai")) {
                 const searchQuery = searchParams.get("loai")
                 const res = await axios.get(`/api/products?filters[maLoai][id][$eq]=${searchQuery}&populate=*&pagination[page]=1&pagination[pageSize]=100`)
+                // console.log(res.data);
+                setfilterData(undefined)
                 setProdData(res.data.data)
                 setShow(false)
                 setPaginate(res.data.meta.pagination)
@@ -83,7 +89,12 @@ const UserProduct = () => {
             setLoading(false)
         }
     };
-    // console.log(filterData);
+    if (searchParams.has("loai")) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete("loai")
+    }
+    console.log(filterData);
+    
     return (
         <div className='p-5'>
             <Drawer placement="right" width={370} onClose={() => setShowDrawer(false)} open={showDrawer}>
@@ -98,9 +109,7 @@ const UserProduct = () => {
             </div>
             <Row gutter={[16, 16]}>
                 <Col xs={0} lg={5}>
-                    
                         <UserProdFilter />
-                   
                 </Col>
                 <Col lg={15} className='py-2 bg-white rounded-md'>
                     {filterData?.length == 0 ? <div className='text-center text-xl font-bold w-full'>
@@ -113,7 +122,7 @@ const UserProduct = () => {
                         :
                         !showSearch ?
                             <Row gutter={[16, 16]} className='p-4'>
-                                {!filterData ? prodData && prodData.map((item: any) => (
+                                {!filterData  ? prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.attributes?.tenSP}
@@ -123,7 +132,7 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.attributes?.soLuongSP}
-                                        />
+                                        />dấdas
                                     </Col>
                                 )) : filterData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
@@ -135,15 +144,16 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        />
+                                        />Filter data khong có search
                                     </Col>
                                 ))
-                                }
+                                
+                               
+                            }
                             </Row>
                             : 
-                            
                             <Row gutter={[16, 16]} className='p-4'>
-                                {filterData ? filterData.map((item: any) => (
+                                {  filterData ? filterData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.tenSP}
@@ -153,12 +163,12 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        />
+                                        /> có secrch
                                     </Col>
-                                )) : 
+                                )) :  
                                 <>
                                 <Divider >Kết quả tìm kiếm: {searchParams.get("search")} </Divider>
-                                {prodData && prodData.map((item: any) => (
+                                { prodData && prodData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
                                         <ProdCard
                                             name={item.tenSP}
@@ -168,16 +178,17 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        />
+                                        /> search dảta
                                     </Col>
                                 ))
                                 }
-                                </>
+                                </> 
                                 
                                 }
                                 
                             </Row>
                     }
+
                     {showSearch || filterData
                         ? null
                         : <Pagination

@@ -31,18 +31,51 @@ const UserProdFilter = () => {
         console.log(props);
         setRange({ min: props[0], max: props[1] });
     };
-    const filter = async () => {
-        console.log(range.max , range.min);
+    // const setParamOnUrl = (paramName: string, paramValue: string) => {
+    //     const urlParams = new URLSearchParams(window.location.search);
+    //     urlParams.set(paramName, paramValue);
+    //     window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+    // }
+    function setParamOnUrl(paramName:string, paramValue:any) {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('search') ) {
+          urlParams.delete('search');
+        }
         
-        // console.log("valueNsx", valueNsx.length == 0 , "valueLoai",valueLoai.join(","));
+        if (Array.isArray(paramValue)) {
+            urlParams.set(paramName, paramValue.join(','));
+          } else {
+            urlParams.set(paramName, paramValue);
+          }
+        
+        const newUrl = `${window.location.pathname}?${urlParams}`;
+        window.history.replaceState({}, '', newUrl);
+      }
+    const getParamFromUrl = (paramName: string) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(paramName);
+    }
+    const filter = async () => {
+        setParamOnUrl("minP", `${range.min == 0 ? (defaultRange ? defaultRange.min : null) : range.min}`)
+        setParamOnUrl("maxP", `${range.max == 0 ? (defaultRange ? defaultRange.max : null) : range.max}`)
+        setParamOnUrl("maLoai",`${valueLoai.length == 0 ? 0 : valueLoai}`)
+        setParamOnUrl("maNSX",`${valueNsx.length == 0 ? 0 : valueNsx}`)
         // console.log(`/api/products/sortSP?minP=${range.min}&maxP=${range.max ==0 ? defaultRange?.max :range.max}&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",") }&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",") }`);
+        const queryMin = getParamFromUrl("minP")
+        const queryMax = getParamFromUrl("maxP")
+        const queryMaLoai = getParamFromUrl("maLoai")
+        const queryMaNsx = getParamFromUrl("maNSX")
         setLoad(true);
         await axios
             .get(
-                `/api/products/sortSP?minP=${range.min == 0 ? (defaultRange ? defaultRange.min : null) : range.min
-                }&maxP=${range.max == 0 ? (defaultRange ? defaultRange.max : null) : range.max
-                }&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",")}&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",")
+                `/api/products/sortSP?minP=${queryMin
+                }&maxP=${queryMax
+                }&maLoai=${queryMaLoai}&maNSX=${queryMaNsx
                 }`
+                // `/api/products/sortSP?minP=${range.min == 0 ? (defaultRange ? defaultRange.min : null) : range.min
+                // }&maxP=${range.max == 0 ? (defaultRange ? defaultRange.max : null) : range.max
+                // }&maLoai=${valueLoai.length == 0 ? 0 : valueLoai.join(",")}&maNSX=${valueNsx.length == 0 ? 0 : valueNsx.join(",")
+                // }`
             )
             .then((res) => {
                 console.log(res);
@@ -60,7 +93,7 @@ const UserProdFilter = () => {
         await axios
             .get("/api/nsxes?pagination[page]=1&pagination[pageSize]=100")
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status == 200) {
                     setNsx(res.data.data);
                 }
@@ -73,7 +106,7 @@ const UserProdFilter = () => {
         await axios
             .get("/api/loaiSps")
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status == 200) {
                     setLoaiSP(res.data.data);
                 }
@@ -86,7 +119,7 @@ const UserProdFilter = () => {
         await axios
             .get("/api/products/laymaxmin")
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 if (res.status == 200) {
                     setDefaultRange({
                         min: parseInt(res.data.gia_min.gia),
@@ -104,7 +137,6 @@ const UserProdFilter = () => {
     };
     const onChangeLoai = (checkedValues: CheckboxValueType[]) => {
         console.log(checkedValues);
-
         setValueLoai(checkedValues);
     };
     return (
