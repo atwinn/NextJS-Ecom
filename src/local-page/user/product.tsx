@@ -44,7 +44,7 @@ const UserProduct = () => {
                 const searchQuery = searchParams.get("loai")
                 const res = await axios.get(`/api/products?filters[maLoai][id][$eq]=${searchQuery}&populate=*&pagination[page]=1&pagination[pageSize]=100`)
                 // console.log(res.data);
-                setfilterData(undefined)
+                dispatch(setfilterData(undefined))
                 setProdData(res.data.data)
                 setShow(false)
                 setPaginate(res.data.meta.pagination)
