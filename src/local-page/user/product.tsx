@@ -132,7 +132,7 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.attributes?.soLuongSP}
-                                        />dấdas
+                                        />
                                     </Col>
                                 )) : filterData.map((item: any) => (
                                     <Col xs={12} lg={8} xl={6} key={item.id} className='flex justify-center'>
@@ -144,7 +144,7 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        />Filter data khong có search
+                                        />
                                     </Col>
                                 ))
                                 
@@ -163,7 +163,7 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        /> có secrch
+                                        />
                                     </Col>
                                 )) :  
                                 <>
@@ -178,7 +178,7 @@ const UserProduct = () => {
                                                 : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
                                             id={item.id}
                                             sl={item.soLuongSP}
-                                        /> search dảta
+                                        />
                                     </Col>
                                 ))
                                 }
