@@ -114,10 +114,12 @@ const TrangChu = () => {
           </Carousel>
           <div className="">
             <Divider></Divider>
-            <Card loading={loading}>
-              <h1 className="custom-text text-2xl font-semibold mb-4 text-black">
-                Sản phẩm nổi bật ( •̀ ω •́ )✧
-              </h1>
+            <Card loading={loading} className="bg-zinc-900">
+              <div className="bg-white rounded-md p-3 mb-10">
+                <h1 className="custom-text text-2xl -mb-1.5 font-semibold text-black">
+                  ♨️ Sản phẩm nổi bật
+                </h1>
+              </div>
 
               <CarouselBestSell data={data} />
 
