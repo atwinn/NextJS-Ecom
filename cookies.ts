@@ -10,14 +10,31 @@ export function setCookie(name: string, val: string) {
 }
 
 export function getCookie(name: string) {
-    const value = "; " + document.cookie;
-    const parts = value.split("; " + name + "=");
+    // Get the current cookie
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find((c) => c.startsWith(`${name}=`));
 
-    if (parts.length == 2) {
-        // @ts-ignore
-        return parts.pop().split(";").shift();
+    // If the cookie is not found, return null
+    if (!cookie) {
+        return null;
     }
+
+    // Get the cookie value
+    const value = cookie.split("=")[1];
+
+    // Check if the cookie has expired
+    const date = new Date();
+    const expires = new Date(cookie.split("; expires=")[1]);
+    if (date > expires) {
+        // The cookie has expired, so delete it
+        deleteCookie(name);
+        return null;
+    }
+
+    // Return the cookie value
+    return value;
 }
+
 
 export function deleteCookie(name: string) {
     const date = new Date();

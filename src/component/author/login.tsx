@@ -1,21 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Form, Input, Space } from "antd";
+import { Button, Card, message, Form, Input, Space } from "antd";
 import { Typography } from "antd";
 import {
   GoogleOutlined,
   GithubOutlined,
   FacebookOutlined,
 } from "@ant-design/icons";
-const { Title } = Typography;
 import "../../styles/Home.module.css";
 import Link from "next/link";
 import { pageRoutes } from "@/redux/constant/page-routes.constant";
 import Divider1 from "../devider";
 import type { CSSProperties } from "react";
 import { setCookie } from "../../../cookies";
-import { setUser } from "@/redux/userSlice";
-import { useDispatch } from "react-redux";
 
 const iconStyles: CSSProperties = {
   color: "rgba(0, 0, 0, 0.2)",
@@ -23,39 +20,76 @@ const iconStyles: CSSProperties = {
   verticalAlign: "middle",
   cursor: "pointer",
 };
-import axios from "axios"
+import axios, { CancelToken } from "axios"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "../../assets/logoL3M.png";
 
-
 const App: React.FC = () => {
-  const userName = useRef("");
-  const pass = useRef("");
+  const [loading, setLoading] = useState(false)
   const { push } = useRouter();
-  const dispatch = useDispatch();
 
-  const onFinish = () => {
-    const data = {
-      identifier: userName.current,
-      password: pass.current,
+  useEffect(() => {
+    const user = localStorage.getItem("id")
+    if (user) {
+      push("/")
     }
+  }, [])
 
-    axios.post("https://l3mshop.onrender.com/api/auth/local", data).then(res => {
-      if (res.status === 200) {
-        localStorage.setItem("username", res.data.user.username)
-        setCookie("token", res.data.jwt)
-        dispatch(setUser(res.data.user));
-        push("/sanpham")
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    const data = {
+      identifier: values.username,
+      password: values.password,
+    };
+    const source = axios.CancelToken.source()
+    const timeout = setTimeout(() => {
+      source.cancel("Request timeout")
+      message.warning("Hết thời gian vui lòng đăng nhập lại!")
+      setLoading(false);
+    }, 5000);
+    try {
+      const res = await axios.post("/api/auth/local", data, {
+        cancelToken: source.token
+      });
+      clearTimeout(timeout)
+      localStorage.setItem("username", res.data.user.username);
+      localStorage.setItem("id", res.data.user.id);
+      setCookie("token", res.data.jwt);
+      const userId = res.data.user.id;
+      const res2 = await axios.get(`/api/users/${userId}?populate=*`);
+      const role = res2.data.role.id;
+      setCookie("role", role);
+      setLoading(false);
+      if (role === 3 || role === 4 || role === 6) push("/page-admin")
+      else push("/")
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        message.error(error.response.data.error.message)
       }
-    })
-  };
+      clearTimeout(timeout)
+      setLoading(false);
+    }
+  }
+
+  const loginPLatForm = (key: string) => {
+    switch (key) {
+      case "google":
+        push(`https://l3mshop.onrender.com/api/connect/${key}`)
+        break;
+      case "facebook":
+        push(`https://l3mshop.onrender.com/api/connect/${key}`)
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
-        <Card bordered={false} className="sm:w-[35%] md:w-[30%] lg:w-[25%] xl:w-[20%]">
-          <Link href={"/sanpham"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
+        <Card bordered={false} className="max-w-[400px] w-full">
+          <Link href={"/"} className="flex justify-center mb-2"><Image src={logo} alt="" height={100} /></Link>
           <Form
             name="normal_login"
             className="login-form"
@@ -63,40 +97,34 @@ const App: React.FC = () => {
             onFinish={onFinish}
           >
             <Form.Item
+              name='username'
               rules={[
-                { required: true, message: "Vui lòng nhập username của bạn!" },
+                { required: true, message: "Vui lòng nhập Username hoặc E-mail!" },
               ]}
             >
               <Input
                 size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="Username"
-                onChange={(e) => (userName.current = e.target.value)}
+                placeholder="Username hoặc E-mail"
               />
             </Form.Item>
             <Form.Item
+              name='password'
               rules={[
                 { required: true, message: "Vui lòng nhập mật khẩu của bạn!" },
               ]}
             >
-              <Input
+              <Input.Password
                 size="large"
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
                 placeholder="Mật khẩu"
-                onChange={(e) => (pass.current = e.target.value)}
               />
             </Form.Item>
-            {/* <div className="flex justify-between">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Duy trì đăng nhập</Checkbox>
-              </Form.Item> */}
             <Form.Item>
               <Link className="login-form-forgot" href={pageRoutes.forgotPass.route}>
                 Quên mật khẩu
               </Link>
             </Form.Item>
-            {/* </div> */}
             <div className="flex justify-between">
               <Form.Item >
                 <Button
@@ -104,21 +132,20 @@ const App: React.FC = () => {
                   htmlType="submit"
                   className="login-form-button"
                   size="large"
+                  loading={loading}
                 >
                   Đăng nhập
                 </Button>
               </Form.Item>
-              <p className="lg:block hidden mt-2">Hoặc</p>
+              <p className="sm:block hidden mt-2">Hoặc</p>
               <Link href={pageRoutes.register.route}>
                 <Button
-                  type="primary"
+                  danger
                   size="large"
                 >
                   Đăng ký
                 </Button></Link>
-
             </div>
-
           </Form>
           <Divider1 name="Cách khác" />
           <div
@@ -144,9 +171,10 @@ const App: React.FC = () => {
               >
                 <GoogleOutlined
                   style={{ ...iconStyles, color: "#000" }}
-                  className="hover:text-2xl" />
+                  className="hover:text-2xl"
+                  onClick={() => loginPLatForm("google")} />
               </div>
-              <div
+              {/* <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -161,7 +189,7 @@ const App: React.FC = () => {
                 <GithubOutlined
                   style={{ ...iconStyles, color: "#000" }}
                   className="hover:text-2xl" />
-              </div>
+              </div> */}
               <div
                 style={{
                   display: "flex",
@@ -176,7 +204,8 @@ const App: React.FC = () => {
               >
                 <FacebookOutlined
                   style={{ ...iconStyles, color: "#333333" }}
-                  className="hover:text-2xl" />
+                  className="hover:text-2xl"
+                  onClick={() => loginPLatForm("facebook")} />
               </div>
             </Space>
           </div>

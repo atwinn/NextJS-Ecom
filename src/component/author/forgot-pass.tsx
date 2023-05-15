@@ -4,17 +4,30 @@ import { Typography } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 import "../../styles/Home.module.css";
+import axios from "axios";
+import { message } from "antd"
 
 const App: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values: any) => {
+    const data = {
+      email: values.email
+    }
+    try {
+      axios.post("/api/auth/forgot-password", data)
+      message.success('Vui lòng kiểm tra email của bạn để đặt lại mật khẩu')
+    } catch (error: any) {
+      if (typeof error.response !== 'undefined') {
+        message.error(error.response.data.error.message)
+      }
+    }
+
   };
   return (
     <>
       <div className="w-full m-auto h-[100vh] bg-slate-50 flex justify-center items-center">
         <Card bordered={false}>
-          <Title level={2} className="text-center">
-            Forgot pass
+          <Title level={3} className="text-center">
+            Nhập E-mail
           </Title>
           <Form
             name="normal_login"
@@ -23,8 +36,8 @@ const App: React.FC = () => {
             onFinish={onFinish}
           >
             <Form.Item
-              name="Email"
-              rules={[{ required: true, message: "Please input your email!" }]}
+              name="email"
+              rules={[{ required: true, message: "Vui lòng nhập email của bạn!" }]}
             >
               <Input
                 size="large"
@@ -40,7 +53,7 @@ const App: React.FC = () => {
                 htmlType="submit"
                 className="login-form-button"
               >
-                Submit
+                Gửi
               </Button>
             </Form.Item>
           </Form>

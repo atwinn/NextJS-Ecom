@@ -1,64 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Card } from "antd";
+import dynamic from "next/dynamic";
+import axios from "axios";
+const Pie = dynamic(() => import("@ant-design/plots").then(({ Pie }) => Pie), {
+  ssr: false,
+});
 
-import { Pie } from '@ant-design/plots';
-
-const DemoPie = () => {
-  const data = [
-    {
-      type: '分类一',
-      value: 27,
-    },
-    {
-      type: '分类二',
-      value: 25,
-    },
-    {
-      type: '分类三',
-      value: 18,
-    },
-    {
-      type: '分类四',
-      value: 15,
-    },
-    {
-      type: '分类五',
-      value: 10,
-    },
-    {
-      type: '其他',
-      value: 5,
-    },
-  ];
+const DemoPie = (props:any) => {
+  // console.log(props.data);
+  let data = [];
+  data = props.data?.map((item: any) => {
+    return {
+      type: item.tenLoai,
+      value: Math.round(item.phanTram * 100),
+    };
+  });
   const config: any = {
     appendPadding: 10,
     data,
-    angleField: 'value',
-    colorField: 'type',
+    angleField: "value",
+    colorField: "type",
     radius: 0.9,
     label: {
-      type: 'inner',
-      offset: '-30%',
-      content: ({ percent } : any) => `${(percent * 100).toFixed(0)}%`,
+      type: "inner",
+      offset: "-30%",
+      content: ({ percent }: any) => `${(percent * 100).toFixed(0)}%`,
       style: {
         fontSize: 14,
-        textAlign: 'center',
+        textAlign: "center",
       },
     },
     interactions: [
       {
-        type: 'element-active',
+        type: "element-active",
       },
     ],
   };
   return (
-    <Card bordered={false}>
-      
+    <Card loading={props.loading} bordered={false}>
       <Pie {...config} />
-
-      </Card>
-      );
-
+    </Card>
+  );
 };
 
-export default DemoPie
+export default DemoPie;

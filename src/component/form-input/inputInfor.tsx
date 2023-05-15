@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-import { Button, Col, Form, Input, Row,Space } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Space,
+  DatePicker,
+  message,
+} from "antd";
 import { Typography } from "antd";
 import { Select } from "antd";
-import Modal1 from "../modal";
+import type { DatePickerProps } from "antd";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { API_EMPLOYEE } from "@/pages/api/api";
+import { fetchEmployees } from "@/redux/employeeSlice";
+import { AppDispatch } from "@/redux/store";
+import { useSelector } from "react-redux";
+
 const { TextArea } = Input;
 const { Title } = Typography;
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 18 },
-};
 
 /* eslint-disable no-template-curly-in-string */
 const validateMessages = {
@@ -23,89 +35,149 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const onFinish = (values: any) => {
-  console.log(values);
-};
-
-const handleChange = (value: { value: string; label: React.ReactNode }) => {
-  console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-};
+// const handleChange = (value: boolean) => {
+//   console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+//   // return value
+// };
 const style: React.CSSProperties = { margin: "8px 16px" };
 const InputInfor: React.FC = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const {page} = useSelector((store:any) => store.pagination)
+  const dispatch = useDispatch<AppDispatch>();
+  const key = "updatable";
+  const [form] = Form.useForm();
+  const [date1, setDate1] = useState("");
+  const onFinish = (values: any) => {
+    values.ngaySinh = date1;
+    axios
+      .post(API_EMPLOYEE, { data: values })
+      .then(function (response) {
+        console.log(response);
+        response.status == 200
+          ? messageApi.open({
+              key,
+              type: "success",
+              content: "Thêm nhân viên thành công",
+              duration: 2,
+            })
+          : "lỗi";
+       dispatch(fetchEmployees(page));
+      })
+      .catch(function (error) {
+        messageApi.open({
+          key,
+          type: "error",
+          content: "Thêm không thành công",
+          duration: 2,
+        });
+        console.log(error);
+      })
+      .finally(function () {});
+  };
+
+  const handleChangedate: DatePickerProps["onChange"] = (
+    data: any,
+    datastring: string
+  ) => {
+    setDate1(datastring);
+  };
   return (
     <>
-        
+      {contextHolder}
       <div className="bg-white mt-5 py-5 border-b-2 rounded-md my-3">
-      <Title style={style} level={3}>
-        Thêm nhân viên
-      </Title>
+        <Title style={style} level={3}>
+          Thêm nhân viên
+        </Title>
         <Form
-          
-          {...layout}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15, offset: 1 }}
+          form={form}
           name="nest-messages"
           onFinish={onFinish}
           validateMessages={validateMessages}
         >
           <Row>
-            <Col style={style} sm={8} xs={9} >
+            <Col style={style} sm={8} xs={9}>
               <Form.Item
-                name={["user", "name"]}
-                label="Name"
-                rules={[{ required: true }]}
+                name={"ten"}
+                label="Tên"
+                rules={[
+                  { required: true, message: "Vui lòng nhập tên nhân viên!" },
+                  { min: 3, message: "Tên nhân viên phải có ít nhất 3 ký tự!" },
+                ]}
                 labelAlign="left"
               >
                 <Input />
               </Form.Item>
-              <Form.Item  label="Role" labelAlign="left" >
+              <Form.Item
+                name={"gioiTinh"}
+                label="Giới tính"
+                labelAlign="left"
+                rules={[
+                  { required: true, message: "Vui lòng chọn giới tính!" },
+                ]}
+              >
                 <Select
-                  labelInValue
-                  defaultValue={{ value: "1", label: "Nhân viên" }}
                   style={{ width: 120 }}
-                  onChange={handleChange}
-                  
+                  // onChange={handleChange}
                   options={[
                     {
-                      value: "1",
-                      label: "Nhân viên",
+                      value: true,
+                      label: "Nam",
                     },
                     {
-                      value: "2",
-                      label: "Thủ kho",
-                    },
-                    {
-                      value: "3",
-                      label: "Quản lý",
+                      value: false,
+                      label: "Nữ",
                     },
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col style={style} md={8} xs={9}>
-            <Form.Item
-                name={["user", "email"]}
-                label="Email"
-                rules={[{ type: "email" }]}
+              <Form.Item
+                // name={"ngaySinh"}
+                label="Năm sinh"
+                rules={[
+                  { required: true, message: "Vui lòng chọn ngày sinh!" }
+                ]}
                 labelAlign="left"
+                required
               >
-                <Input />
+                <DatePicker onChange={handleChangedate} />
               </Form.Item>
-              
-              <Form.Item name={["user", "introduction"]} label="SĐT" labelAlign="left">
+
+              <Form.Item
+                name={"sdt"}
+                label="SĐT"
+                labelAlign="left"
+                rules={[
+                  { required: true, message: "Vui lòng nhập số điện thoại!" },
+                  {
+                    pattern: /^\d{10}$/,
+                    message: "Số điện thoại phải có 10 chữ số!",
+                  },
+                ]}
+              >
                 <Input />
               </Form.Item>
             </Col>
             <Col style={style} md={6}>
-            <Form.Item name={["user", "website"]} label="Địa chỉ" labelAlign="left" > 
-              <TextArea allowClear/>
-              </Form.Item>
-              <Space className="flex justify-end">
-              <Button
-                type="primary"
-                style={{ backgroundColor: "#1890ff" }}
-                htmlType="submit"
+              <Form.Item
+                name={"diaChi"}
+                label="Địa chỉ"
+                labelAlign="left"
+                rules={[{ required: true, message: "Vui lòng nhập địa chỉ!" }]}
               >
-                Submit
-              </Button>
+                <TextArea allowClear />
+              </Form.Item>
+              <Space className="flex justify-center">
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#1890ff" }}
+                  htmlType="submit"
+                >
+                  Thêm nhân viên
+                </Button>
               </Space>
             </Col>
           </Row>

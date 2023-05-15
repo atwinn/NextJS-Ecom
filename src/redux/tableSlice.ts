@@ -1,29 +1,76 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export interface TableData {
-  sanpham: string;
-  soluong: number;
-  gia: number;
+  idgetSP?: string | number;
+  product: string | null;
+  soluong?: number | null | string;
+  gia?: number | null | string;
 }
 
-interface TableState {
+export interface TableState {
   data: TableData[];
+  dataInView: TableData[];
+  idNCC: string;
+  idSp: string;
+  idPn: string;
+  tab: string;
+  dataCTPn: TableData[];
 }
-
-const initialState: TableState = {
+export const initialState: TableState = {
   data: [],
+  dataInView: [],
+  idNCC: "",
+  idSp: "",
+  idPn: "",
+  tab: "1",
+  dataCTPn: [],
+  
 };
 
 const tableSlice = createSlice({
-  name: 'table',
+  name: "table",
   initialState,
   reducers: {
-    addRow(state, action: PayloadAction<TableData>) {
-      state.data.push(action.payload);
+    deleteRow(state) {
+      state.data.splice(0, state.data.length);
+    },
+    getNccId: (state, action) => {
+      state.idNCC = action.payload;
+    },
+    getSpId: (state, action) => {
+      state.idSp = action.payload;
+    },
+    getIdPN: (state, action) => {
+      state.idPn = action.payload;
+    },
+    getInforModalCtPN: (state, action) => {
+      state.dataCTPn = action.payload;
+    },
+    fetchCtPn: (state, action) => {
+     state.data = action.payload
+      
+    },
+    fetchCtPnInView: (state, action) => {
+     state.dataInView = action.payload
+      
+    },
+    setTab: (state, action) => {
+     state.tab = action.payload
+      
     },
   },
 });
 
-export const { addRow } = tableSlice.actions;
+export const {
+  getNccId,
+  getSpId,
+  getIdPN,
+  deleteRow,
+  getInforModalCtPN,
+  fetchCtPn,
+  fetchCtPnInView,
+  setTab
+} = tableSlice.actions;
 
 export default tableSlice.reducer;

@@ -3,9 +3,21 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 
 // Import các reducers của bạn
 import counterReducer from './counterSlice'
-import modalSlice from './modalSlide'
+import modalSlice from './modalSlice'
 import userSlice from './userSlice'
 import tableSlice from './tableSlice'
+import employeeSlide from './employeeSlice'
+import accountSlide from './accountSlice'
+import nccSlide from './nccSlice'
+import productSlice from './productSlice'
+import listPnSlice from './listPnSlice'
+import categorySlice from './categorySlice'
+import PaginationSlice from './pagimationSlice'
+import pagimationSlice from './pagimationSlice'
+import phieuXuatSlice from './phieuXuatSlice'
+import detailProdSlice from './detailProdSlice'
+import cartSlice from './cartSlice'
+import commentSlice from './commentSlice'
 
 // Tạo store với reducer của bạn
 const store = configureStore({
@@ -14,6 +26,17 @@ const store = configureStore({
     modal: modalSlice,
     user: userSlice,
     table: tableSlice,
+    employees: employeeSlide,
+    accEmployees: accountSlide,
+    ncc: nccSlide,
+    product: productSlice,
+    pn: listPnSlice,
+    category: categorySlice,
+    pagination: pagimationSlice,
+    phieuxuat: phieuXuatSlice,
+    detailProd: detailProdSlice,
+    cart: cartSlice,
+    comment: commentSlice,
   },
 })
 

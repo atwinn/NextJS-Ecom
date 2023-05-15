@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { Button, Modal } from "antd";
 import { useDispatch } from "react-redux";
-import { openModal, closeModal, currModal } from "../redux/modalSlide";
+import { openModal, closeModal, currModal } from "../redux/modalSlice";
 type ModalProps = {
   title?: string,
   children?: React.ReactNode;
@@ -20,12 +20,7 @@ const Modal1 = ({children,title} : ModalProps) => {
         title={title}
         open={true}
         onCancel={handleClose}
-        footer={[
-          <Button key="back" onClick={handleClose}>
-            Return
-          </Button>,
-          <Button key="submit" style={{backgroundColor:"#1890ff"}} type="primary">Submit</Button>,
-        ]}
+        footer={[]}
       >
        {children}
       </Modal>

@@ -1,13 +1,14 @@
-import { Space, Table, Tooltip, Button } from "antd";
+import { Table, Tooltip, Button,message } from "antd";
 import { FileAddOutlined } from "@ant-design/icons";
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 import { Form, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import { TableData, addRow } from "../../../redux/tableSlice";
-import { UserOutlined } from "@ant-design/icons";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { fetchCtPn, getSpId } from "../../../redux/tableSlice";
 import { AutoComplete } from "antd";
+import { fetchProduct } from "@/redux/productSlice";
+import axios from "axios";
 
 interface DataType {
   key?: React.Key;
@@ -25,12 +26,13 @@ const data: DataType[] = [
   },
 ];
 interface FormData {
-  sanpham: string;
+  product: string;
   soluong: string;
   gia: string;
+  phieu_nhap: string;
 }
 
-const renderTitle = (title: string) => (
+export const renderTitle = (title: string) => (
   <span>
     {title}
     <a
@@ -44,119 +46,155 @@ const renderTitle = (title: string) => (
   </span>
 );
 
-const renderItem = (title: string, count: number) => ({
-  value: title,
-  label: (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      {title}
-      <span>
-        <UserOutlined /> {count}
-      </span>
-    </div>
-  ),
-});
 
-const options = [
-  {
-    label: renderTitle("Libraries"),
-    options: [
-      renderItem("AntDesign", 10000),
-      renderItem("AntDesign UI", 10600),
-    ],
+const PhieuNhapTable = ({form}:any) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { idSp,idPn } = useSelector((store: any) => store.table);
+  // console.log("render PhieuNhap table");
+  
+  const {product} = useSelector((state: RootState) => state.product);
+  useEffect(() => {
+    dispatch(fetchProduct())
+  },[dispatch])
+  let result = []
+  product
+  ? (result = product.data?.map((item: any) => {
+    return {
+      id: item.id,
+      tenSP: item.attributes.tenSP,
+    };
+  }))
+  : null;
+ 
+  const renderItem = (title: string, count: number) => ({
+    id:count,
+    value: title,
+    label: title
+  });
+  const TenSP = result ? result.map((product: any) => renderItem(product.tenSP,product.id)) : [];
+  const options = [
+    {
+      label: renderTitle("Sản phẩm"),
+      options: TenSP
+    },
+  ];
+  const onSelect = (option: any) => {
+    const spId = TenSP.find((item:any) => item.value === option);
+    dispatch(getSpId(spId.id))
+    
   }
-];
-const App: React.FC = () => {
-  const [form] = Form.useForm();
-  const [sanpham, setSanpham] = useState("");
-  const dispatch = useDispatch();
-  const data1 = useSelector((state: RootState) => state.table.data);
+  const fetchCTPN = async () => { 
+    await axios
+        .get(`https://l3mshop.onrender.com/api/getCtPn?id_pn=${idPn}`)
+        .then((res) => {
+          console.log(res.data);
+          const data = res.data
+          const result = data.map((item:any) => {
+            return {
+              product: item.product.tenSP,
+              soluong: item.soluong,
+              gia: parseInt(item.gia),
+              idgetSP: item.product.id,
+            };
+          });
+          console.log(result);
+        dispatch(fetchCtPn(result))
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+   }
   const onFinish = (values: FormData) => {
-    const { sanpham, soluong, gia } = values;
-    dispatch(
-      addRow({ sanpham, soluong: parseInt(soluong), gia: parseInt(gia) })
-    );
-    form.resetFields();
-  };
+    values.phieu_nhap = idPn
+    values.product = idSp
+    console.log(values);
+    axios.post("/api/addCtPn",values).then((res) => {
+      console.log(res.data);
+      if (res.status == 200) {
+        fetchCTPN()
+        message.success("Thêm chi tiết PN thành công")
+      }
+    }).catch((err) => {
+      message.error(err.response.data.error.message)
+    })
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
   };
-
+  
   return (
-    <Form
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Table dataSource={data} pagination={false} style={{maxWidth: "100vw"}} scroll={{x:true}}>
-        <Form.Item name={sanpham} label="sanpham">
-          <Column
-            title="Sản phẩm"
-            dataIndex="sanpham"
-            render={(text: number, record: TableData, index: number) => {
-              return (
-                <>
+    <Form onFinish={onFinish} form={form}>
+      <Table
+        dataSource={data}
+        pagination={false}
+        style={{ maxWidth: "100vw" }}
+        scroll={{ x: true }}
+      >
+        <Column
+          title="Sản phẩm"
+          dataIndex="product"
+          render={() => {
+            return (
+              <>
+                <Form.Item name={"product"}>
                   <AutoComplete
                     popupClassName="certain-category-search-dropdown"
                     dropdownMatchSelectWidth={300}
                     style={{ width: 300 }}
                     options={options}
+                    onSelect={onSelect}
                   />
-                </>
-              );
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="gia" label="gia">
-          <Column
-            title="Giá"
-            dataIndex="gia"
-            key="address"
-            render={() => {
-              return (
-                <>
-                  <Input type="number" min={0} style={{minWidth:100}}/>
-                </>
-              );
-            }}
-          />
-        </Form.Item>
-        <Form.Item name="soluong" label="soluong">
-          <Column
-            title="Số lượng"
-            dataIndex="soluong"
-            key="tags"
-            render={() => {
-              return (
-                <>
-                  <Input type="number" min={0} style={{minWidth:100}}/>
-                </>
-              );
-            }}
-          />
-        </Form.Item>
+                </Form.Item>
+              </>
+            );
+          }}
+        />
+        <Column
+          title="Giá"
+          dataIndex="gia"
+          key="address"
+          render={() => {
+            return (
+              <>
+                <Form.Item name="gia">
+                  <Input type="number" min={0} style={{ minWidth: 100 }} />
+                </Form.Item>
+              </>
+            );
+          }}
+        />
+        <Column
+          title="Số lượng"
+          dataIndex="soluong"
+          key="tags"
+          render={() => {
+            return (
+              <>
+                <Form.Item name="soluong">
+                  <Input type="number" min={0} style={{ minWidth: 100 }} />
+                </Form.Item>
+              </>
+            );
+          }}
+        />
         <Column
           title="Action"
           key="action"
           render={(_: any, record: DataType) => (
-            <Tooltip title={"thêm"}>
-              <Button
-                htmlType="submit"
-                className="flex justify-center items-center"
-                shape="circle"
-                icon={<FileAddOutlined />}
-              />
+            <Form.Item>
+                <Tooltip title={"thêm"}>
+                <Button
+                  htmlType="submit"
+                  className="flex justify-center items-center"
+                  shape="circle"
+                  icon={<FileAddOutlined />}
+                />
             </Tooltip>
+              </Form.Item>
           )}
         />
       </Table>
     </Form>
-  );
+  ); 
 };
 
-export default App;
+export default React.memo(PhieuNhapTable);

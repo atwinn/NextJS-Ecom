@@ -1,80 +1,244 @@
-import React from 'react';
-import { Button, Form, Input, Select, Space, Tooltip, Typography } from 'antd';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button, Form, Input, Select, Upload, Image, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { fetchCategory } from '@/redux/categorySlice';
+import { useSelector } from 'react-redux';
+import { selectCategory } from '@/redux/categorySlice';
+import { AppDispatch } from '@/redux/store';
+import { fetchNcc, fetchNsx, selectNcc, selectNsx } from '@/redux/nccSlice';
+import { UploadOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { fetchProduct } from '@/redux/productSlice';
+import dynamic from "next/dynamic";
+import 'suneditor/dist/css/suneditor.min.css';
+import SunEditorCore from "suneditor/src/lib/core";
+
+const SunEditor = dynamic(() => import("suneditor-react"), {
+    ssr: false,
+});
 
 const { Option } = Select;
+const { TextArea } = Input;
 
-const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-};
+const ProdForm = ({ close }: any) => {
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch<AppDispatch>()
+    const category = useSelector(selectCategory)
+    const ncc = useSelector(selectNcc)
+    const nsx = useSelector(selectNsx)
+    const [file, setFile] = useState<File | null>(null)
 
-const ProdForm: React.FC = () => (
-    <Form
-        name="complex-form"
-        onFinish={onFinish}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600, marginTop: '20px', paddingLeft: '30px' }}
-    >
-        <Form.Item label="Tên sản phẩm">
+    const editor = useRef<SunEditorCore>();
+    const getSunEditorInstance = (sunEditor: SunEditorCore) => {
+        editor.current = sunEditor;
+    };
+
+    const onFinish = async (values: any) => {
+        const formData = new FormData();
+        setLoading(true)
+        if (file) {
+            const data = {
+                tenSP: values.tenSP,
+                gia: values.gia,
+                baoHanh: values.baoHanh,
+                ctSanPham: values.ctSP,
+                moTa: values.mota,
+                maLoai: values.loai,
+                maNCC: values.ncc,
+                maNSX: values.nsx,
+            }
+
+            formData.append("data", JSON.stringify(data))
+            formData.append("files.hinh", file);
+
+            try {
+                const res = await axios.post("/api/products", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                })
+                setLoading(false)
+                form.resetFields()
+                close()
+                dispatch(fetchProduct())
+                message.success("Thêm sản phẩm thành công")
+            } catch (error: any) {
+                if (typeof error.response !== 'undefined') {
+                    if (error.response.status === 400 || error.response.status === 403 || error.response.status === 404 || error.response.status === 500) {
+                        message.error(error.response.data.error.message)
+                    }
+                }
+                setLoading(false)
+            }
+        }
+    };
+
+    useEffect(() => {
+        dispatch(fetchCategory())
+        dispatch(fetchNcc())
+        dispatch(fetchNsx())
+    }, [dispatch])
+
+    return (
+        <Form
+            form={form}
+            name="updateUserForm"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            style={{ maxWidth: 1000 }}
+            onFinish={onFinish}
+            autoComplete="off"
+        >
             <Form.Item
-                name="username"
-                noStyle
-                rules={[{ required: true, message: 'Username is required' }]}
+                label="Ảnh sản phẩm"
+                name="anhSP"
+                rules={[{
+                    required: true, message: 'Vui lòng chọn ảnh sản phẩm!'
+                },
+                ({ getFieldValue }) => ({
+                    validator(_, value) {
+                        if (file === null) {
+                            return Promise.reject('Vui lòng chọn ảnh sản phẩm!');
+                        }
+                        return Promise.resolve();
+                    },
+                })]}
             >
-                <Input style={{ width: '100%' }} placeholder="Please input" />
-            </Form.Item>
-        </Form.Item>
-        <Form.Item label="Giá">
-            <Form.Item
-                name="price"
-                noStyle
-                rules={[{ required: true, message: 'Price is required' }]}
-            >
-                <Input style={{ width: '100%' }} placeholder="Please input" />
-            </Form.Item>
-        </Form.Item>
-        <Form.Item label="Address">
-            <Input.Group compact>
-                <Form.Item
-                    name={['address', 'province']}
-                    noStyle
-                    rules={[{ required: true, message: 'Province is required' }]}
+                <Upload
+                    accept=".jpg,.png"
+                    maxCount={1}
+                    listType="picture"
+                    beforeUpload={(file) => {
+                        setFile(file)
+                        return false
+                    }}
+                    onRemove={() => setFile(null)}
                 >
-                    <Select placeholder="Select province">
-                        <Option value="Zhejiang">Zhejiang</Option>
-                        <Option value="Jiangsu">Jiangsu</Option>
+                    <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
+                </Upload>
+            </Form.Item>
+            <Form.Item
+                label="Tên sản phẩm"
+                name="tenSP"
+                rules={[{ required: true, message: 'Vui lòng nhập tên sản phẩm!' }]}
+            >
+                <Input placeholder='Nhập tên sản phẩm' />
+            </Form.Item>
+            <Form.Item
+                label="Giá"
+                name="gia"
+                rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm!' },
+                {
+                    pattern: /^\d+$/,
+                    message: "Phải là số!",
+                }]}
+            >
+                <Input placeholder='Giá sản phẩm' />
+            </Form.Item>
+            <div className='flex justify-between space-x-2'>
+                <Form.Item
+                    label="Loại sản phẩm"
+                    name="loai"
+                    rules={[{ required: true, message: 'Vui lòng chọn loại sản phẩm' }]}
+                    className='w-full'
+                >
+                    <Select
+                        placeholder="Chọn loại sản phẩm"
+                    >
+                        {category && category.data?.map((item: any) => (
+                            <Option value={item.id} key={item.id}>{item.attributes.tenLoai}</Option>
+                        ))}
                     </Select>
                 </Form.Item>
                 <Form.Item
-                    name={['address', 'street']}
-                    noStyle
-                    rules={[{ required: true, message: 'Street is required' }]}
+                    label="Bảo hành"
+                    name="baoHanh"
+                    rules={[{ required: true, message: 'Vui lòng chọn thời hạn bảo hành' }]}
+                    className='w-full'
                 >
-                    <Input style={{ width: '50%' }} placeholder="Input street" />
+                    <Select
+                        placeholder="Thời hạn bảo hành"
+                    >
+                        <Option value="6">6 tháng</Option>
+                        <Option value="12">12 tháng</Option>
+                        <Option value="24">24 tháng</Option>
+                    </Select>
                 </Form.Item>
-            </Input.Group>
-        </Form.Item>
-        <Form.Item label="BirthDate" style={{ marginBottom: 0 }}>
+            </div>
+            <div className='flex justify-between space-x-2'>
+                <Form.Item
+                    label="Nhà cung cấp"
+                    name="ncc"
+                    rules={[{ required: true, message: 'Vui lòng chọn nhà cung cấp' }]}
+                    className='w-full'
+                >
+                    <Select
+                        placeholder="Chọn nhà cung cấp"
+                    >
+                        {ncc && ncc.data?.map((item: any) => (
+                            <Option value={item.id} key={item.id}>{item.attributes.tenNCC}</Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Nhà sản xuất"
+                    name="nsx"
+                    rules={[{ required: true, message: 'Vui lòng chọn nhà sản xuất' }]}
+                    className='w-full'
+                >
+                    <Select
+                        placeholder="Chọn nhà sản xuất"
+                    >
+                        {nsx && nsx.data?.map((item: any) => (
+                            <Option value={item.id} key={item.id}>{item.attributes.tenNSX}</Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+            </div>
             <Form.Item
-                name="year"
-                rules={[{ required: true }]}
-                style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
+                label="Mô tả"
+                name="mota"
+                rules={[{ required: true, message: 'Vui lòng nhập mô tả sản phẩm!' }]}
             >
-                <Input placeholder="Input birth year" />
+                <SunEditor
+                    getSunEditorInstance={getSunEditorInstance}
+                    setOptions={{
+                        height: "200",
+                        buttonList: [
+                            ["undo", "redo", "font", "fontSize", "formatBlock"],
+                            ["bold", "underline", "italic", "strike", "subscript", "superscript"],
+                            ["fontColor", "hiliteColor", "outdent", "indent", "align", "horizontalRule", "list", "table"],
+                            ["link", "image", "video", "fullScreen", "showBlocks"],
+                        ],
+                    }}
+                />
             </Form.Item>
             <Form.Item
-                name="month"
-                rules={[{ required: true }]}
-                style={{ display: 'inline-block', width: 'calc(50% - 8px)', margin: '0 8px' }}
+                label="Chi tiết sản phẩm"
+                name="ctSP"
+                rules={[{ required: true, message: 'Vui lòng nhập chi tiết sản phẩm!' }]}
             >
-                <Input placeholder="Input birth month" />
+                <SunEditor
+                    getSunEditorInstance={getSunEditorInstance}
+                    setOptions={{
+                        height: "200",
+                        buttonList: [
+                            ["undo", "redo", "font", "fontSize", "formatBlock"],
+                            ["bold", "underline", "italic"],
+                            ["fontColor", "hiliteColor", "align", "list", "table", "fullScreen"],
+                        ],
+                    }}
+                    defaultValue='<p>CPU:<br>RAM:<br>GPU:<br>SSD:<br>PSU:</p>'
+                />
             </Form.Item>
-        </Form.Item>
-        <Form.Item label=" " colon={false}>
-            <Button type="primary" htmlType="submit">
-                Submit
-            </Button>
-        </Form.Item>
-    </Form>
-);
+            <Form.Item wrapperCol={{ span: 24 }}>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                    Thêm mới
+                </Button>
+            </Form.Item>
+        </Form>
+    );
+}
 
 export default ProdForm;
