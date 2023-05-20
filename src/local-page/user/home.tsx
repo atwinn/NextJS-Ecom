@@ -84,7 +84,7 @@ const TrangChu = () => {
       {loading
         ? <div style={{ width: '100vw', height: '100vh' }} className='bg-white flex justify-center items-center flex-col gap-12'>
           <Spin indicator={antIcon} />
-          <p className='custom-text font-semibold text-lg'>Đang tải trang đợi chút nhé</p>
+          <p className='custom-text font-semibold text-lg'>Vì sử dụng Server miễn phí nên phải đợi vài phút để server hoạt động trở lại, Anh/Chị/Bạn đợi chút nhé</p>
         </div>
         :
         <div className="mx-auto p-4">
